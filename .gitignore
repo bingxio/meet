@@ -1,0 +1,20 @@
+# editor ignore files.
+
+.idea
+.vscode
+
+# cmake ignore files.
+
+CMakeFiles
+CMakeCache.txt
+cmake-build-debug
+cmake_install.cmake
+build
+
+# build debug file.
+
+meet
+meet.cbp
+meet.exe
+
+*.swp
