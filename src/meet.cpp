@@ -22,6 +22,7 @@
 #include <cstring>
 
 #include "meet.h"
+#include "lexer.h"
 
 using namespace std;
 
@@ -64,13 +65,15 @@ void runFile(const char* path) {
 
     string source((istreambuf_iterator<char>(fileStream)), (istreambuf_iterator<char>()));
 
-    cout << source << endl;
+    run(source);
 
     fileStream.close();
 }
 
-void run(const char* source) {
-    cout << source << endl;
+void run(const string source) {
+    Lexer lexer(source);
+
+    vector<Token> tokens = lexer.tokenizer();
 }
 
 int main(int argc, char** argv) {

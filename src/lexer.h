@@ -20,4 +20,36 @@
 #ifndef MEET_LEXER_H
 #define MEET_LEXER_H
 
+#include <iostream>
+#include <vector>
+#include <map>
+
+#include "token.h"
+
+class Lexer {
+    private:
+        std::string source;
+        std::vector<Token> tokens;
+
+        std::map<std::string, TokenType> keywords;
+
+        int position;
+
+        char look(int pos);
+
+        TokenType isKeyword(std::string identifier);
+
+        void addToken(Token token);
+
+        void lexIdentifier();
+        void lexString();
+        void lexNumber();
+        void lexComment();
+        void lexWriteSpace();
+    public:
+        Lexer(std::string source);
+
+        std::vector<Token> tokenizer();
+};
+
 #endif

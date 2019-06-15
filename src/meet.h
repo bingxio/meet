@@ -20,7 +20,7 @@
 #ifndef MEET_MEET_H
 #define MEET_MEET_H
 
-void run(const char* source);
+void run(std::string source);
 
 void runFile(const char* path);
 

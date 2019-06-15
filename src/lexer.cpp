@@ -17,4 +17,61 @@
  * Email: 1171840237@qq.com
  * Github: https://github.com/turaiiao
  */
+#include <iostream>
+
 #include "lexer.h"
+
+Lexer::Lexer(std::string source) {
+    this->source = std::move(source);
+    this->tokens = std::vector<Token>();
+    this->position = 0;
+
+    this->keywords["var"] = TOKEN_VAR;
+}
+
+std::vector<Token> Lexer::tokenizer() {
+    while (this->source.length() > this->position) {
+        char current = look(0);
+
+        std::cout << current << std::endl;
+
+        this->position ++;
+    }
+
+    return this->tokens;
+}
+
+char Lexer::look(int pos) {
+    if (this->position + pos > this->source.length())
+        return '\0';
+    else
+        return this->source.at(this->position + pos);
+}
+
+void Lexer::addToken(Token token) {
+    this->tokens.emplace_back(token);
+}
+
+TokenType Lexer::isKeyword(std::string identifier) {
+    return TOKEN_EOF;
+}
+
+void Lexer::lexIdentifier() {
+
+}
+
+void Lexer::lexString() {
+
+}
+
+void Lexer::lexNumber() {
+
+}
+
+void Lexer::lexComment() {
+
+}
+
+void Lexer::lexWriteSpace() {
+
+}
