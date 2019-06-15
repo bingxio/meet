@@ -19,23 +19,26 @@
  */
 #include <iostream>
 #include <fstream>
+#include <cstring>
 
 #include "meet.h"
 
 using namespace std;
 
 static void repl() {
-    string line;
+    char* line = (char *) malloc(1024);
 
     cout << "\n\t Meet Programming Language 1.0.0 (debug, June 10 2019, 19:24) \n" << endl;
 
     while (true) {
         cout << "meet > ";
 
-        cin >> line;
+        cin.getline(line, 1024);
 
-        if (line.length() == 0)
+        if (strlen(line) == 0)
             continue;
+        else
+            run(line);
     }
 }
 
@@ -67,6 +70,6 @@ int main(int argc, char** argv) {
     else if (argc == 2)
         runFile(argv[1]);
     else
-        cout << "usage: " << argv[0] << "[ .meet file path ]" << endl;
+        cout << "usage: " << argv[0] << " [ .meet file path ] " << endl;
     return 0;
 }
