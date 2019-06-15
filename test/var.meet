@@ -1,18 +1,9 @@
 
 # variable definition test.
 
-# int
-# float
-# string
-# boolean
-# any
+# int, float, string, boolean, any
 
-var a = 200
-var b = 12.5
-var c = 'Hello, '
-var f = 'World !'
-var e = true
-var f = false
+var a = 200, b = 12.5, c = 'Hello, ', d = 'World !', e = true, f = false # variable a type is any.
 
 var g = 2
 
