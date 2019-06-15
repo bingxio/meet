@@ -17,8 +17,8 @@
  * Email: 1171840237@qq.com
  * Github: https://github.com/turaiiao
  */
-#ifndef MEET_MEET_HPP
-#define MEET_MEET_HPP
+#ifndef MEET_MEET_H
+#define MEET_MEET_H
 
 void run(const char* source);
 

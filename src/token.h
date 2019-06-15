@@ -1,5 +1,5 @@
 /**
- * Meet Programming Language Lexer.
+ * Meet Programming Language Tokens.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
  * Email: 1171840237@qq.com
  * Github: https://github.com/turaiiao
  */
-#ifndef MEET_LEXER_HPP
-#define MEET_LEXER_HPP
+#ifndef MEET_TOKEN_H
+#define MEET_TOKEN_H
 
 #endif

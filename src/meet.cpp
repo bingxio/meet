@@ -18,27 +18,43 @@
  * Github: https://github.com/turaiiao
  */
 #include <iostream>
-#include <string.h>
+#include <fstream>
 
-#include "meet.hpp"
+#include "meet.h"
 
 using namespace std;
 
 static void repl() {
-    char* line = (char *) malloc(1024);
+    string line;
+
+    cout << "\n\t Meet Programming Language 1.0.0 (debug, June 10 2019, 19:24) \n" << endl;
 
     while (true) {
         cout << "meet > ";
 
         cin >> line;
 
-        if (strlen(line) != -1)
-            run(line);
+        if (line.length() == 0)
+            continue;
     }
 }
 
 void runFile(const char* path) {
-    cout << path << endl;
+    ifstream fileStream;
+
+    fileStream.open(path);
+
+    if (fileStream.fail()) {
+        cout << "cannot open file." << endl;
+
+        exit(64);
+    }
+
+    string source((istreambuf_iterator<char>(fileStream)), (istreambuf_iterator<char>()));
+
+    cout << source << endl;
+
+    fileStream.close();
 }
 
 void run(const char* source) {
