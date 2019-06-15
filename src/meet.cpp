@@ -71,9 +71,11 @@ void runFile(const char* path) {
 }
 
 void run(const string source) {
-    Lexer lexer(source);
+    Lexer* lexer = new Lexer(source);
 
-    vector<Token> tokens = lexer.tokenizer();
+    vector<Token> tokens = lexer->tokenizer();
+
+    delete lexer;
 }
 
 int main(int argc, char** argv) {
