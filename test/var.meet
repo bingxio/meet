@@ -1,0 +1,28 @@
+
+# variable definition test.
+
+# int
+# float
+# string
+# boolean
+# any
+
+var a = 200;
+var b = 12.5;
+var c = 'Hello, ';
+var f = 'World !';
+var e = true;
+var f = false;
+
+var g = 2;
+
+g = 6;
+g = 1.2;
+g = 'Hello, World !';
+g = true;
+g = false;
+
+var h: int = 3; # type of specified variable.
+
+h = 12;
+h = 1.2; # error: cannot be defined as other types, the current type is an integer.

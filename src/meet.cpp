@@ -35,9 +35,14 @@ static void repl() {
 
         cin.getline(line, 1024);
 
-        if (strlen(line) == 0)
-            continue;
-        else
+        cout << strlen(line) << endl;
+
+        if (strlen(line) == 1) {
+            if (line[0] == ' ' || line[0] == '\r' || line[0] == '\t' || line[0] == '\n')
+                continue;
+            else
+                run(line);
+        } else
             run(line);
     }
 }

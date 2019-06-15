@@ -18,3 +18,19 @@
  * Github: https://github.com/turaiiao
  */
 #include "token.h"
+
+Token::Token(TokenType type, std::string literal, int line): literal(literal), line(line) {
+    this -> type = type;
+}
+
+TokenType Token::getTokenType() {
+    return this -> type;
+}
+
+std::string Token::getTokenLiteral() {
+    return this -> literal;
+}
+
+int Token::getTokenLine() {
+    return this -> line;
+}
