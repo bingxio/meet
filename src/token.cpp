@@ -20,17 +20,17 @@
 #include "token.h"
 
 Token::Token(TokenType type, std::string literal, int line): literal(literal), line(line) {
-    this -> type = type;
+    this->type = type;
 }
 
 TokenType Token::getTokenType() {
-    return this -> type;
+    return this->type;
 }
 
 std::string Token::getTokenLiteral() {
-    return this -> literal;
+    return this->literal;
 }
 
 int Token::getTokenLine() {
-    return this -> line;
+    return this->line;
 }

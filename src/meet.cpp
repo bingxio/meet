@@ -35,15 +35,19 @@ static void repl() {
 
         cin.getline(line, 1024);
 
-        cout << strlen(line) << endl;
+        bool haveWriteSpace = false;
 
-        if (strlen(line) == 1) {
-            if (line[0] == ' ' || line[0] == '\r' || line[0] == '\t' || line[0] == '\n')
-                continue;
+        for (int i = 0; i < strlen(line); i ++) {
+            if (line[i] == 32)
+                haveWriteSpace = true;
             else
-                run(line);
-        } else
-            run(line);
+                haveWriteSpace = false;
+        }
+
+        if (haveWriteSpace || line[0] == '\0')
+            continue;
+        
+        run(line);
     }
 }
 
@@ -53,7 +57,7 @@ void runFile(const char* path) {
     fileStream.open(path);
 
     if (fileStream.fail()) {
-        cout << "cannot open file." << endl;
+        cerr << "cannot open file." << endl;
 
         exit(64);
     }
