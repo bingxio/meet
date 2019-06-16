@@ -22,13 +22,13 @@
 #include <cstring>
 #include <cstdio>
 
-#include "lexer.hpp"
-#include "token.hpp"
-#include "common.hpp"
+#include "Lexer.hpp"
+#include "Token.hpp"
+#include "Common.hpp"
 
 using namespace std;
 
-static void run(const string source);
+static void run(const string& source);
 
 static void repl() {
     char* line = (char *) malloc(1024);
@@ -42,12 +42,8 @@ static void repl() {
 
         bool haveWriteSpace = false;
 
-        for (int i = 0; i < strlen(line); i ++) {
-            if (line[i] == 32)
-                haveWriteSpace = true;
-            else
-                haveWriteSpace = false;
-        }
+        for (int i = 0; i < strlen(line); i ++)
+            haveWriteSpace = line[i] == 32;
 
         if (haveWriteSpace || line[0] == '\0')
             continue;
@@ -74,7 +70,7 @@ static void runFile(const char* path) {
     fileStream.close();
 }
 
-static void run(const string source) {
+static void run(const string& source) {
     Lexer* lexer = new Lexer(source);
 
     vector<Token> tokens = lexer->tokenizer();

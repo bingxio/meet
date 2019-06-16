@@ -24,7 +24,7 @@
 #include <vector>
 #include <map>
 
-#include "token.hpp"
+#include "Token.hpp"
 
 class Lexer {
     private:
@@ -40,10 +40,10 @@ class Lexer {
 
         bool isAtEnd();
 
-        TokenType isKeyword(std::string identifier);
+        TokenType isKeyword(const std::string& identifier);
 
-        void addToken(TokenType type);
-        void addToken(TokenType type, bool skipTwoPos);
+        void addToken(const TokenType& type);
+        void addToken(const TokenType& type, bool skipTwoPos);
         void addToken(TokenType type, std::string literal, int skip);
 
         void lexIdentifier();
@@ -52,7 +52,7 @@ class Lexer {
         void lexSymbol();
         void lexSkipWriteSpace();
     public:
-        Lexer(std::string source);
+        explicit Lexer(std::string source);
 
         std::vector<Token> tokenizer();
 };

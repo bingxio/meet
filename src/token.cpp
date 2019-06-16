@@ -17,10 +17,12 @@
  * Email: 1171840237@qq.com
  * Github: https://github.com/turaiiao
  */
-#include "token.hpp"
+#include <utility>
 
-Token::Token(TokenType type, std::string literal, int line): literal(literal), line(line) {
-    this->type = type;
+#include "Token.hpp"
+
+Token::Token(TokenType type, std::string literal, int line): literal(std::move(literal)), line(line) {
+    this->type = std::move(type);
 }
 
 TokenType Token::getTokenType() {
@@ -35,7 +37,7 @@ int Token::getTokenLine() {
     return this->line;
 }
 
-std::string getTokenLiteralWithType(TokenType tokenType) {
+std::string getTokenLiteralWithType(const TokenType& tokenType) {
     if (tokenType == TOKEN_LPAREN)           return "TOKEN_LPAREN";
     if (tokenType == TOKEN_RPAREN)           return "TOKEN_RPAREN";
     if (tokenType == TOKEN_LBRACE)           return "TOKEN_LBRACE";
@@ -104,5 +106,5 @@ std::string getTokenLiteralWithType(TokenType tokenType) {
     if (tokenType == TOKEN_MATCH)            return "TOKEN_MATCH";
     if (tokenType == TOKEN_EOF)              return "TOKEN_EOF";
 
-    return "UNKNOW";
+    return "UNKNOWN";
 }

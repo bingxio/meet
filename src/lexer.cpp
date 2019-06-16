@@ -19,8 +19,9 @@
  */
 #include <iostream>
 #include <sstream>
+#include <utility>
 
-#include "lexer.hpp"
+#include "Lexer.hpp"
 
 Lexer::Lexer(std::string source) {
     this->source = std::move(source);
@@ -98,11 +99,11 @@ bool Lexer::isAtEnd() {
     return this->source.length() - 1 <= this->position;
 }
 
-void Lexer::addToken(TokenType type) {
+void Lexer::addToken(const TokenType& type) {
     addToken(type, false);
 }
 
-void Lexer::addToken(TokenType type, bool skipTwoPos) {
+void Lexer::addToken(const TokenType& type, bool skipTwoPos) {
     if (skipTwoPos)
         addToken(type, look() + std::string(1, look(1)), 2);
     else
@@ -116,11 +117,11 @@ void Lexer::addToken(TokenType type, std::string literal, int skip) {
         this->position += skip;
 }
 
-TokenType Lexer::isKeyword(std::string identifier) {
-    std::map<std::string, TokenType>::iterator finded = this->keywords.find(identifier);
+TokenType Lexer::isKeyword(const std::string& identifier) {
+    std::map<std::string, TokenType>::iterator find = this->keywords.find(identifier);
 
-    if (finded != this->keywords.end())
-        return finded->second;
+    if (find != this->keywords.end())
+        return find->second;
     else
         return TOKEN_EOF;
 }

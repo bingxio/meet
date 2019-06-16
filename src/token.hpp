@@ -113,6 +113,6 @@ class Token {
         int getTokenLine();
 };
 
-std::string getTokenLiteralWithType(TokenType tokenType);
+std::string getTokenLiteralWithType(const TokenType& tokenType);
 
 #endif
