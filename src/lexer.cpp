@@ -20,7 +20,7 @@
 #include <iostream>
 #include <sstream>
 
-#include "lexer.h"
+#include "lexer.hpp"
 
 Lexer::Lexer(std::string source) {
     this->source = std::move(source);
@@ -40,12 +40,12 @@ std::vector<Token> Lexer::tokenizer() {
         else if (isalpha(current)) lexIdentifier();
         else if (isdigit(current)) lexNumber();
 
-        else if (current = '\'') lexString();
+        else if ((int) current == 39) lexString();
 
         else lexSymbol();
     }
 
-    addToken(TOKEN_EOF, "EOF", ++ this->line);
+    addToken(TOKEN_EOF, "EOF", 0);
 
     return this->tokens;
 }
@@ -55,18 +55,34 @@ char Lexer::look() {
 }
 
 char Lexer::look(int pos) {
-    if (this->position + pos > this->source.length())
+    if (this->position + pos > (this->source.length() - 1))
         return '\0';
     else
         return this->source.at(this->position + pos);
 }
 
 bool Lexer::isAtEnd() {
-    return this->source.length() <= this->position;
+    return (this->source.length() - 1) < this->position;
 }
 
-void Lexer::addToken(TokenType type, std::string literal, int line) {
-    this->tokens.emplace_back(type, literal, line);
+void Lexer::addToken(TokenType type) {
+    addToken(type, false);
+}
+
+void Lexer::addToken(TokenType type, bool skipTwoPos) {
+    if (skipTwoPos)
+        addToken(type, look() + std::string(1, look(1)), 2);
+    else
+        addToken(type, std::string(1, look()), 1);
+}
+
+void Lexer::addToken(TokenType type, std::string literal, int skip) {
+    if (type == TOKEN_EOF)
+        this->tokens.emplace_back(type, literal, ++ this->line);
+    else
+        this->tokens.emplace_back(type, literal, this->line);
+
+    if (skip) this->position += skip;
 }
 
 TokenType Lexer::isKeyword(std::string identifier) {
@@ -79,7 +95,20 @@ TokenType Lexer::isKeyword(std::string identifier) {
 }
 
 void Lexer::lexIdentifier() {
-    std::cout << "lex identifier" << std::endl;
+    std::stringstream literalStream;
+
+    while (isalpha(look())) {
+        literalStream << look();
+
+        if (isAtEnd())
+            break;
+        else
+            this->position ++;
+    }
+
+    TokenType type = isKeyword(literalStream.str());
+
+    addToken(type != TOKEN_EOF ? type : TOKEN_VALUE_IDENTIFIER, literalStream.str(), 1);
 }
 
 void Lexer::lexString() {
@@ -87,26 +116,118 @@ void Lexer::lexString() {
 
     this->position ++;
 
+    if (isAtEnd())
+        throw std::runtime_error("syntax error: expect string lost right mark.");
+
     while (look() != '\'') {
         literalStream << look();
 
-        this->position ++;
-
         if (isAtEnd())
             throw std::runtime_error("syntax error: expect string lost right mark.");
+        else
+            this->position ++;
     }
 
-    this->position ++;
-
-    addToken(TOKEN_VALUE_STRING, literalStream.str(), this->line);
+    addToken(TOKEN_VALUE_STRING, literalStream.str(), 1);
 }
 
 void Lexer::lexNumber() {
-    std::cout << "lex number" << std::endl;
+    std::stringstream literalStream;
+
+    bool haveDot = false;
+
+    while (isdigit(look()) || look() == '.') {
+        literalStream << look();
+
+        if (look() == '.')
+            haveDot = true;
+
+        if (isAtEnd())
+            break;
+        else
+            this->position ++;
+    }
+
+    addToken(haveDot ? TOKEN_VALUE_FLOAT : TOKEN_VALUE_INT, literalStream.str(), 1);
 }
 
 void Lexer::lexSymbol() {
-    std::cout << "lex symbol" << std::endl;
+    switch (look()) {
+        case '+':
+            look(1) == '=' ? addToken(TOKEN_PLUS_EQUAL, true) : 
+                addToken(TOKEN_PLUS, false);
+            break;
+        case '-':
+            look(1) == '>' ? addToken(TOKEN_MINUS_GREATER, true) :
+                look(1) == '=' ? addToken(TOKEN_MINUS_EQUAL, true) :
+                    addToken(TOKEN_MINUS, false);
+            break;
+        case '*':
+            look(1) == '=' ? addToken(TOKEN_STAR_EQUAL, true) :
+                addToken(TOKEN_STAR, false);
+            break;
+        case '/':
+            look(1) == '=' ? addToken(TOKEN_SLASH_EQUAL, true) :
+                addToken(TOKEN_SLASH, false);
+            break;
+        case ';':
+            addToken(TOKEN_SEMICOLON);
+            break;
+        case ':':
+            addToken(TOKEN_COLON);
+            break;
+        case '.':
+            addToken(TOKEN_DOT);
+            break;
+        case ',':
+            addToken(TOKEN_COMMA);
+            break;
+        case '(':
+            addToken(TOKEN_LPAREN);
+            break;
+        case ')':
+            addToken(TOKEN_RPAREN);
+            break;
+        case '{':
+            addToken(TOKEN_LBRACE);
+            break;
+        case '}':
+            addToken(TOKEN_RBRACE);
+            break;
+        case '[':
+            addToken(TOKEN_LBRACKET);
+            break;
+        case ']':
+            addToken(TOKEN_RBRACKET);
+            break;
+        case '=':
+            look(1) == '=' ? addToken(TOKEN_EQUAL_EQUAL, true) :
+                addToken(TOKEN_EQUAL, false);
+            break;
+        case '!':
+            look(1) == '=' ? addToken(TOKEN_BANG_EQUAL, true) :
+                addToken(TOKEN_BANG, false);
+            break;
+        case '>':
+            look(1) == '=' ? addToken(TOKEN_GREATER_EQUAL, true) :
+                addToken(TOKEN_GREATER, false);
+            break;
+        case '<':
+            look(1) == '=' ? addToken(TOKEN_LESS_EQUAL, true) :
+                addToken(TOKEN_LESS, false);
+            break;
+        case '|':
+            addToken(TOKEN_OR);
+            break;
+        case '&':
+            addToken(TOKEN_AND);
+            break;
+        case '%':
+            addToken(TOKEN_MODULAR);
+            break;
+        default:
+            throw std::runtime_error("syntax error: unexpect character.");
+    }
 }
 
 void Lexer::lexSkipWriteSpace() {
@@ -121,7 +242,8 @@ void Lexer::lexSkipWriteSpace() {
             this->position ++;
             break;
         case '#':
-            while (look(1) != '\n' && !isAtEnd())
+            while (look() != '\n' && !isAtEnd())
                 this->position ++;
+            this->position ++;
     }
 }

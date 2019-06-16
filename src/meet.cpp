@@ -22,9 +22,9 @@
 #include <cstring>
 #include <cstdio>
 
-#include "meet.h"
-#include "lexer.h"
-#include "token.h"
+#include "meet.hpp"
+#include "lexer.hpp"
+#include "token.hpp"
 
 using namespace std;
 

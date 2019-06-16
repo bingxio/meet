@@ -24,7 +24,7 @@
 #include <vector>
 #include <map>
 
-#include "token.h"
+#include "token.hpp"
 
 class Lexer {
     private:
@@ -42,7 +42,9 @@ class Lexer {
 
         TokenType isKeyword(std::string identifier);
 
-        void addToken(TokenType type, std::string literal, int line);
+        void addToken(TokenType type);
+        void addToken(TokenType type, bool skipTwoPos);
+        void addToken(TokenType type, std::string literal, int skip);
 
         void lexIdentifier();
         void lexString();

@@ -17,7 +17,7 @@
  * Email: 1171840237@qq.com
  * Github: https://github.com/turaiiao
  */
-#include "token.h"
+#include "token.hpp"
 
 Token::Token(TokenType type, std::string literal, int line): literal(literal), line(line) {
     this->type = type;
