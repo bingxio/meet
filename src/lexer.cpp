@@ -149,6 +149,15 @@ void Lexer::lexString() {
 
     this->position ++;
 
+    if (look(0) == 0)
+        throw std::runtime_error("syntax error: expect string lost right mark.");
+
+    if (look(0) == '\'') {
+        addToken(TOKEN_VALUE_STRING, "", 1);
+
+        return;
+    }
+
     while (look() != '\'') {
         literalStream << look();
 
