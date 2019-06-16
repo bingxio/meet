@@ -54,10 +54,10 @@ typedef std::string TokenType;
 #define TOKEN_COLON         ":"
 #define TOKEN_MINUS_GREATER "->"
 
-#define TOKEN_VALUE_INT         ""
-#define TOKEN_VALUE_FLOAT       ""
-#define TOKEN_VALUE_STRING      ""
-#define TOKEN_VALUE_IDENTIFIER  ""
+#define TOKEN_VALUE_INT         "TOKEN_VALUE_INT"
+#define TOKEN_VALUE_FLOAT       "TOKEN_VALUE_FLOAT"
+#define TOKEN_VALUE_STRING      "TOKEN_VALUE_STRING"
+#define TOKEN_VALUE_IDENTIFIER  "TOKEN_VALUE_IDENTIFIER"
 
 #define TOKEN_INT      "int"
 #define TOKEN_FLOAT    "float"

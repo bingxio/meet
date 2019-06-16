@@ -83,7 +83,7 @@ static void run(const string source) {
     int i = 0;
 
     for (vector<Token>::iterator token = tokens.begin(); token != tokens.end(); token ++) {
-        printf("token: %5d %-20s : %-50s : %5d \n", i ++, 
+        printf("token: %5d %-25s : %-50s : %5d \n", i ++, 
             getTokenLiteralWithType(token->getTokenType()).c_str(), token->getTokenLiteral().c_str(), 
                 token->getTokenLine());
     }
