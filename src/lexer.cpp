@@ -28,14 +28,47 @@ Lexer::Lexer(std::string source) {
     this->line = 1;
     this->position = 0;
 
-    this->keywords["var"] = TOKEN_VAR;
+    this->keywords["int"]     = TOKEN_INT;
+    this->keywords["float"]   = TOKEN_FLOAT;
+    this->keywords["string"]  = TOKEN_STRING;
+    this->keywords["boolean"] = TOKEN_BOOLEAN;
+    this->keywords["list"]    = TOKEN_LIST;
+    this->keywords["any"]     = TOKEN_ANY;
+    this->keywords["null"]    = TOKEN_NULL;
+    this->keywords["true"]    = TOKEN_TRUE;
+    this->keywords["false"]   = TOKEN_FALSE;
+
+    this->keywords["var"]      = TOKEN_VAR;
+    this->keywords["or"]       = TOKEN_OR;
+    this->keywords["and"]      = TOKEN_AND;
+    this->keywords["import"]   = TOKEN_IMPORT;
+    this->keywords["show"]     = TOKEN_SHOW;
+    this->keywords["as"]       = TOKEN_AS;
+    this->keywords["open"]     = TOKEN_OPEN;
+    this->keywords["fun"]      = TOKEN_FUN;
+    this->keywords["return"]   = TOKEN_RETURN;
+    this->keywords["enum"]     = TOKEN_ENUM;
+    this->keywords["data"]     = TOKEN_DATA;
+    this->keywords["impl"]     = TOKEN_IMPL;
+    this->keywords["if"]       = TOKEN_IF;
+    this->keywords["elif"]     = TOKEN_ELIF;
+    this->keywords["else"]     = TOKEN_ELSE;
+    this->keywords["trait"]    = TOKEN_TRAIT;
+    this->keywords["init"]     = TOKEN_INIT;
+    this->keywords["this"]     = TOKEN_THIS;
+    this->keywords["then"]     = TOKEN_THEN;
+    this->keywords["override"] = TOKEN_OVERRIDE;
+    this->keywords["new"]      = TOKEN_NEW;
+    this->keywords["for"]      = TOKEN_FOR;
+    this->keywords["while"]    = TOKEN_WHILE;
+    this->keywords["match"]    = TOKEN_MATCH;
 }
 
 std::vector<Token> Lexer::tokenizer() {
-    while (this->source.length() > this->position) {
+    while (this->source.length() - 1 >= this->position) {
         char current = look();
 
-        if (isspace(current) || isblank(current) || current == '#')  lexSkipWriteSpace();
+        if (isspace(current) || current == '#')  lexSkipWriteSpace();
 
         else if (isalpha(current)) lexIdentifier();
         else if (isdigit(current)) lexNumber();
@@ -55,14 +88,14 @@ char Lexer::look() {
 }
 
 char Lexer::look(int pos) {
-    if (this->position + pos > (this->source.length() - 1))
+    if (this->position + pos > this->source.length() - 1)
         return '\0';
     else
         return this->source.at(this->position + pos);
 }
 
 bool Lexer::isAtEnd() {
-    return (this->source.length() - 1) < this->position;
+    return this->source.length() - 1 <= this->position;
 }
 
 void Lexer::addToken(TokenType type) {
@@ -77,12 +110,10 @@ void Lexer::addToken(TokenType type, bool skipTwoPos) {
 }
 
 void Lexer::addToken(TokenType type, std::string literal, int skip) {
-    if (type == TOKEN_EOF)
-        this->tokens.emplace_back(type, literal, ++ this->line);
-    else
-        this->tokens.emplace_back(type, literal, this->line);
+    this->tokens.emplace_back(type, literal, this->line);
 
-    if (skip) this->position += skip;
+    if (skip) 
+        this->position += skip;
 }
 
 TokenType Lexer::isKeyword(std::string identifier) {
@@ -100,24 +131,23 @@ void Lexer::lexIdentifier() {
     while (isalpha(look())) {
         literalStream << look();
 
-        if (isAtEnd())
+        if (isAtEnd()) {
+            this->position ++;
+
             break;
-        else
+        } else 
             this->position ++;
     }
 
     TokenType type = isKeyword(literalStream.str());
 
-    addToken(type != TOKEN_EOF ? type : TOKEN_VALUE_IDENTIFIER, literalStream.str(), 1);
+    addToken(type != TOKEN_EOF ? type : TOKEN_VALUE_IDENTIFIER, literalStream.str(), 0);
 }
 
 void Lexer::lexString() {
     std::stringstream literalStream;
 
     this->position ++;
-
-    if (isAtEnd())
-        throw std::runtime_error("syntax error: expect string lost right mark.");
 
     while (look() != '\'') {
         literalStream << look();
@@ -142,13 +172,15 @@ void Lexer::lexNumber() {
         if (look() == '.')
             haveDot = true;
 
-        if (isAtEnd())
+        if (isAtEnd()) {
+            this->position ++;
+
             break;
-        else
+        } else
             this->position ++;
     }
 
-    addToken(haveDot ? TOKEN_VALUE_FLOAT : TOKEN_VALUE_INT, literalStream.str(), 1);
+    addToken(haveDot ? TOKEN_VALUE_FLOAT : TOKEN_VALUE_INT, literalStream.str(), 0);
 }
 
 void Lexer::lexSymbol() {
@@ -244,6 +276,5 @@ void Lexer::lexSkipWriteSpace() {
         case '#':
             while (look() != '\n' && !isAtEnd())
                 this->position ++;
-            this->position ++;
     }
 }

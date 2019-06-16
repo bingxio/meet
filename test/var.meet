@@ -16,4 +16,4 @@ g = false
 var h: int = 3 # type of specified variable.
 
 h = 12
-h = 1.2 # error: cannot be defined as other types, the current type is an integer.
+h = 1.2 # error in type: cannot be defined as other types, the current type is an integer.
