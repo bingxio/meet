@@ -22,11 +22,13 @@
 #include <cstring>
 #include <cstdio>
 
-#include "meet.hpp"
 #include "lexer.hpp"
 #include "token.hpp"
+#include "common.hpp"
 
 using namespace std;
+
+static void run(const string source);
 
 static void repl() {
     char* line = (char *) malloc(1024);
@@ -54,7 +56,7 @@ static void repl() {
     }
 }
 
-void runFile(const char* path) {
+static void runFile(const char* path) {
     ifstream fileStream;
 
     fileStream.open(path);
@@ -72,11 +74,12 @@ void runFile(const char* path) {
     fileStream.close();
 }
 
-void run(const string source) {
+static void run(const string source) {
     Lexer* lexer = new Lexer(source);
 
     vector<Token> tokens = lexer->tokenizer();
 
+#ifdef DEBUG_LEXER
     int i = 0;
 
     for (vector<Token>::iterator token = tokens.begin(); token != tokens.end(); token ++) {
@@ -84,6 +87,7 @@ void run(const string source) {
             getTokenLiteralWithType(token->getTokenType()).c_str(), token->getTokenLiteral().c_str(), 
                 token->getTokenLine());
     }
+#endif
 
     delete lexer;
 }

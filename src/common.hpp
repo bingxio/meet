@@ -1,5 +1,5 @@
 /**
- * Meet Programming Language Main.
+ * Meet Programming Language Common.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,11 +17,9 @@
  * Email: 1171840237@qq.com
  * Github: https://github.com/turaiiao
  */
-#ifndef MEET_MEET_H
-#define MEET_MEET_H
+#ifndef MEET_COMMON_H
+#define MEET_COMMON_H
 
-void run(std::string source);
-
-void runFile(const char* path);
+#define DEBUG_LEXER
 
 #endif
