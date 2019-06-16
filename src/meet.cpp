@@ -20,9 +20,11 @@
 #include <iostream>
 #include <fstream>
 #include <cstring>
+#include <cstdio>
 
 #include "meet.h"
 #include "lexer.h"
+#include "token.h"
 
 using namespace std;
 
@@ -74,6 +76,14 @@ void run(const string source) {
     Lexer* lexer = new Lexer(source);
 
     vector<Token> tokens = lexer->tokenizer();
+
+    int i = 0;
+
+    for (vector<Token>::iterator token = tokens.begin(); token != tokens.end(); token ++) {
+        printf("token: %5d %-20s : %-50s : %5d \n", i ++, 
+            getTokenLiteralWithType(token->getTokenType()).c_str(), token->getTokenLiteral().c_str(), 
+                token->getTokenLine());
+    }
 
     delete lexer;
 }

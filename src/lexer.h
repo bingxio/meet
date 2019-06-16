@@ -30,22 +30,25 @@ class Lexer {
     private:
         std::string source;
         std::vector<Token> tokens;
-
         std::map<std::string, TokenType> keywords;
 
+        int line;
         int position;
 
+        char look();
         char look(int pos);
+
+        bool isAtEnd();
 
         TokenType isKeyword(std::string identifier);
 
-        void addToken(Token token);
+        void addToken(TokenType type, std::string literal, int line);
 
         void lexIdentifier();
         void lexString();
         void lexNumber();
-        void lexComment();
-        void lexWriteSpace();
+        void lexSymbol();
+        void lexSkipWriteSpace();
     public:
         Lexer(std::string source);
 

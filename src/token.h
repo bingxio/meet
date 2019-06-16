@@ -54,12 +54,10 @@ typedef std::string TokenType;
 #define TOKEN_COLON         ":"
 #define TOKEN_MINUS_GREATER "->"
 
-#define TOKEN_VALUE_INT
-#define TOKEN_VALUE_FLOAT
-#define TOKEN_VALUE_STRING
-#define TOKEN_VALUE_BOOLEAN
-#define TOKEN_VALUE_IDENTIFIER
-#define TOKEN_VALUE_ANY
+#define TOKEN_VALUE_INT         ""
+#define TOKEN_VALUE_FLOAT       ""
+#define TOKEN_VALUE_STRING      ""
+#define TOKEN_VALUE_IDENTIFIER  ""
 
 #define TOKEN_INT      "int"
 #define TOKEN_FLOAT    "float"
@@ -114,5 +112,7 @@ class Token {
 
         int getTokenLine();
 };
+
+std::string getTokenLiteralWithType(TokenType tokenType);
 
 #endif

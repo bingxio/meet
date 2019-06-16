@@ -18,12 +18,14 @@
  * Github: https://github.com/turaiiao
  */
 #include <iostream>
+#include <sstream>
 
 #include "lexer.h"
 
 Lexer::Lexer(std::string source) {
     this->source = std::move(source);
     this->tokens = std::vector<Token>();
+    this->line = 1;
     this->position = 0;
 
     this->keywords["var"] = TOKEN_VAR;
@@ -31,14 +33,25 @@ Lexer::Lexer(std::string source) {
 
 std::vector<Token> Lexer::tokenizer() {
     while (this->source.length() > this->position) {
-        char current = look(0);
+        char current = look();
 
-        std::cout << current << std::endl;
+        if (isspace(current) || isblank(current) || current == '#')  lexSkipWriteSpace();
 
-        this->position ++;
+        else if (isalpha(current)) lexIdentifier();
+        else if (isdigit(current)) lexNumber();
+
+        else if (current = '\'') lexString();
+
+        else lexSymbol();
     }
 
+    addToken(TOKEN_EOF, "EOF", ++ this->line);
+
     return this->tokens;
+}
+
+char Lexer::look() {
+    return this->source.at(this->position);
 }
 
 char Lexer::look(int pos) {
@@ -48,30 +61,67 @@ char Lexer::look(int pos) {
         return this->source.at(this->position + pos);
 }
 
-void Lexer::addToken(Token token) {
-    this->tokens.emplace_back(token);
+bool Lexer::isAtEnd() {
+    return this->source.length() <= this->position;
+}
+
+void Lexer::addToken(TokenType type, std::string literal, int line) {
+    this->tokens.emplace_back(type, literal, line);
 }
 
 TokenType Lexer::isKeyword(std::string identifier) {
-    return TOKEN_EOF;
+    std::map<std::string, TokenType>::iterator finded = this->keywords.find(identifier);
+
+    if (finded != this->keywords.end())
+        return finded->second;
+    else
+        return TOKEN_EOF;
 }
 
 void Lexer::lexIdentifier() {
-
+    std::cout << "lex identifier" << std::endl;
 }
 
 void Lexer::lexString() {
+    std::stringstream literalStream;
 
+    this->position ++;
+
+    while (look() != '\'') {
+        literalStream << look();
+
+        this->position ++;
+
+        if (isAtEnd())
+            throw std::runtime_error("syntax error: expect string lost right mark.");
+    }
+
+    this->position ++;
+
+    addToken(TOKEN_VALUE_STRING, literalStream.str(), this->line);
 }
 
 void Lexer::lexNumber() {
-
+    std::cout << "lex number" << std::endl;
 }
 
-void Lexer::lexComment() {
-
+void Lexer::lexSymbol() {
+    std::cout << "lex symbol" << std::endl;
 }
 
-void Lexer::lexWriteSpace() {
-
+void Lexer::lexSkipWriteSpace() {
+    switch (look()) {
+        case ' ':
+        case '\r':
+        case '\t':
+            this->position ++;
+            break;
+        case '\n':
+            this->line ++;
+            this->position ++;
+            break;
+        case '#':
+            while (look(1) != '\n' && !isAtEnd())
+                this->position ++;
+    }
 }
