@@ -25,6 +25,7 @@
 #include "Lexer.hpp"
 #include "Token.hpp"
 #include "Common.hpp"
+#include "Parser.hpp"
 
 using namespace std;
 
@@ -71,21 +72,32 @@ static void runFile(const char* path) {
 }
 
 static void run(const string& source) {
+    int i = 0;
+
     Lexer* lexer = new Lexer(source);
 
     vector<Token> tokens = lexer->tokenizer();
 
 #ifdef DEBUG_LEXER
-    int i = 0;
-
-    for (vector<Token>::iterator token = tokens.begin(); token != tokens.end(); token ++) {
+    for (auto token : tokens)
         printf("token: %5d %-25s : %-50s : %5d \n", i ++, 
-            getTokenLiteralWithType(token->getTokenType()).c_str(), token->getTokenLiteral().c_str(), 
-                token->getTokenLine());
-    }
+            getTokenLiteralWithType(token.getTokenType()).c_str(), token.getTokenLiteral().c_str(), 
+                token.getTokenLine());
+    i = 0;
+#endif
+
+    Parser* parser = new Parser(tokens);
+
+    vector<Statement> statements = parser->parseProgram();
+
+#ifdef DEBUG_PARSE
+    // for (auto stmt : statements)
+    //     printf("statement: %5d : %-50s \n", i ++, stmt.toString());
+    i = 0;
 #endif
 
     delete lexer;
+    delete parser;
 }
 
 int main(int argc, char** argv) {

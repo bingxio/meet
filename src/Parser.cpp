@@ -18,3 +18,32 @@
  * Github: https://github.com/turaiiao
  */
 #include "Parser.hpp"
+
+Parser::Parser(std::vector<Token> tokens) {
+    this->tokens = std::move(tokens);
+    this->statements = std::vector<Statement>();
+    this->position = 0;
+}
+
+std::vector<Statement> Parser::parseProgram() {
+    return this->statements;
+}
+
+void Parser::insertStatement(const Statement& stmt) {
+    this->statements.push_back(stmt);
+}
+
+Token Parser::look() {
+    return this->tokens.at(this->position);
+}
+
+Token Parser::look(int pos) {
+    if (this->position + pos > this->tokens.size() - 1)
+        return Token(TOKEN_EOF, "EOF", 0);
+    else
+        return this->tokens.at(this->position + pos);
+}
+
+bool Parser::isAtEnd() {
+    return look().getTokenType() == TOKEN_EOF;
+}

@@ -23,6 +23,7 @@
 class Expression {
     public:
         virtual ~Expression() = default;
+        virtual void toString() = 0;
 };
 
 #endif

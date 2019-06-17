@@ -20,16 +20,22 @@
 #ifndef MEET_LITERAL_EXPRESSION_H
 #define MEET_LITERAL_EXPRESSION_H
 
-#include <utility>
-
-#include "Expression.hpp"
-#include "Token.hpp"
+#include "../Expression.hpp"
+#include "../Token.hpp"
 
 class LiteralExpression: public Expression {
-    public:
-        explicit LiteralExpression(Token token): token(std::move(token)) {}
     private:
         Token token;
+    public:
+        explicit LiteralExpression(Token token): token(std::move(token)) {}
+
+        ~LiteralExpression() {
+            delete &token;
+        }
+
+        void toString() {
+            std::cout << "LiteralExpression" << std::endl;
+        }
 };
 
 #endif

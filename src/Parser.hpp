@@ -20,4 +20,28 @@
 #ifndef MEET_PARSER_H
 #define MEET_PARSER_H
 
+#include <vector>
+
+#include "Token.hpp"
+#include "Statement.hpp"
+
+class Parser {
+    private:
+        std::vector<Token> tokens;
+        std::vector<Statement> statements;
+
+        int position;
+
+        Token look();
+        Token look(int pos);
+
+        bool isAtEnd();
+
+        void insertStatement(const Statement& stmt);
+    public:
+        explicit Parser(std::vector<Token> tokens);
+
+        std::vector<Statement> parseProgram();
+};
+
 #endif

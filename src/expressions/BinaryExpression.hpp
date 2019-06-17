@@ -20,24 +20,27 @@
 #ifndef MEET_BINARY_EXPRESSION_HPP
 #define MEET_BINARY_EXPRESSION_HPP
 
-#include <utility>
+#include "../Expression.hpp"
+#include "../Token.hpp"
 
-#include "Expression.hpp"
-#include "Token.hpp"
-
-class BinaryExpression {
-    public:
-        explicit BinaryExpression(Expression left, Token operator, Expression right) {
-            left = std::move(left);
-            operator = std::move(operator);
-            right = std::move(right);
-        }
+class BinaryExpression: public Expression {
     private:
-        Expression left;
+        Expression* left, right;
 
         Token operator;
+    public:
+        explicit BinaryExpression(Expression left, Token operator, Expression right):
+            left(std::move(left)), operator(std::move(operator)), right(std::move(right)) {}
 
-        Expression right;
+        ~BinaryExpression() {
+            delete left;
+            delete right;
+            delete &operator;
+        }
+
+        void toString() {
+            std::cout << "BinaryExpression" << std::endl;
+        }
 };
 
 #endif

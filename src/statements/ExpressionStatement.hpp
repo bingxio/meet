@@ -1,5 +1,5 @@
 /**
- * Meet Programming Language Common.
+ * Meet Programming Language Statement.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,10 +17,26 @@
  * Email: 1171840237@qq.com
  * Github: https://github.com/turaiiao
  */
-#ifndef MEET_COMMON_H
-#define MEET_COMMON_H
+#ifndef MEET_EXPRESSION_STATEMENT_H
+#define MEET_EXPRESSION_STATEMENT_H
 
-#define DEBUG_LEXER
-#define DEBUG_PARSE
+#include "../Statement.hpp"
+#include "../Expression.hpp"
+
+class ExpressionStatement: public Statement {
+    private:
+        Expression* expression;
+    public:
+        explicit ExpressionStatement(Expression* expression):
+            expression(std::move(expression)) {}
+
+        ~ExpressionStatement() {
+            delete expression;
+        }
+
+        void toString() {
+            std::cout << "ExpressionStatement" << std::endl;
+        }
+};
 
 #endif
