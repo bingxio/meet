@@ -97,22 +97,18 @@ typedef std::string TokenType;
 #define TOKEN_EOF     "EOF"
 
 class Token {
-    private:
+    public:
         TokenType type;
 
         std::string literal;
 
         int line;
-    public:
+
         explicit Token(TokenType type, std::string literal, int line);
-
-        TokenType getTokenType();
-
-        std::string getTokenLiteral();
-
-        int getTokenLine();
 };
 
 std::string getTokenLiteralWithType(const TokenType& tokenType);
+
+bool isTyped(const Token& token);
 
 #endif

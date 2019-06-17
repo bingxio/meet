@@ -6,3 +6,5 @@
 # 1 + 3
 
 var a = 1 + 2, b = 12, c = 'hello world'
+
+# var a: int = 1 + 3 * 2, b: string = 'hello'

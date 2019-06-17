@@ -24,9 +24,9 @@
 #include "../Expression.hpp"
 
 class ExpressionStatement: public Statement {
-    private:
-        Expression* expression;
     public:
+        Expression* expression;
+
         explicit ExpressionStatement(Expression* expression):
             expression(std::move(expression)) {}
 
@@ -35,7 +35,7 @@ class ExpressionStatement: public Statement {
         }
 
         std::string classType() {
-            return "ExpressionStatement";
+            return STATEMENT_EXPRESSION;
         }
 
         std::string toString() {

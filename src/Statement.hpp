@@ -22,8 +22,8 @@
 
 #include <iostream>
 
-#define VAR_STATEMENT        "VAR_STATEMENT"
-#define EXPRESSION_STATEMENT "EXPRESSION_STATEMENT"
+#define STATEMENT_EXPRESSION "STATEMENT_EXPRESSION"
+#define STATEMENT_VAR        "STATEMENT_VAR"
 
 class Statement {
     public:

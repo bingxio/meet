@@ -23,9 +23,9 @@
 #include "../Expression.hpp"
 
 class VariableExpression: public Expression {
-    private:
-        Token name;
     public:
+        Token name;
+        
         VariableExpression(Token name): name(std::move(name)) {}
 
         ~VariableExpression() {
@@ -33,11 +33,11 @@ class VariableExpression: public Expression {
         }
 
         std::string classType() {
-            return VARIABLE_EXPRESSION;
+            return EXPRESSION_VARIABLE;
         }
 
         std::string toString() {
-            return "[ VariableExpression: name = " + name.getTokenLiteral() + " ]";
+            return "[ VariableExpression: name = " + name.literal + " ]";
         }
 };
 

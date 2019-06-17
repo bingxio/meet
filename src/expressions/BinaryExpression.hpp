@@ -24,12 +24,12 @@
 #include "../Token.hpp"
 
 class BinaryExpression: public Expression {
-    private:
+    public:
         Expression* left;
         Expression* right;
 
         Token token;
-    public:
+
         explicit BinaryExpression(Expression* left, Token token, Expression* right):
             left(std::move(left)), token(std::move(token)), right(std::move(right)) {}
 
@@ -40,11 +40,11 @@ class BinaryExpression: public Expression {
         }
 
         std::string classType() {
-            return BINARY_EXPRESSION;
+            return EXPRESSION_BINARY;
         }
 
         std::string toString() {
-            return "[ BinaryExpression: left = " + left->toString() + ", token = " + token.getTokenLiteral()  + 
+            return "[ BinaryExpression: left = " + left->toString() + ", token = " + token.literal  + 
                 ", right = " + right->toString() + " ]";
         }
 };

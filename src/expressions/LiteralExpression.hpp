@@ -24,9 +24,9 @@
 #include "../Token.hpp"
 
 class LiteralExpression: public Expression {
-    private:
-        Token token;
     public:
+        Token token;
+
         explicit LiteralExpression(Token token): token(std::move(token)) {}
 
         ~LiteralExpression() {
@@ -34,11 +34,11 @@ class LiteralExpression: public Expression {
         }
 
         std::string classType() {
-            return LITERAL_EXPRESSION;
+            return EXPRESSION_LITERAL;
         }
 
         std::string toString() {
-            return "[ LiteralExpression: token = " + token.getTokenLiteral() + " ]";
+            return "[ LiteralExpression: token = " + token.literal + " ]";
         }
 };
 

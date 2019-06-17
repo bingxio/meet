@@ -23,9 +23,9 @@
 #include "../Expression.hpp"
 
 class GroupExpression: public Expression {
-    private:
-        Expression* expression;
     public:
+        Expression* expression;
+
         GroupExpression(Expression* expression): expression(std::move(expression)) {}
 
         ~GroupExpression() {
@@ -33,7 +33,7 @@ class GroupExpression: public Expression {
         }
 
         std::string classType() {
-            return GROUP_EXPRESSION;
+            return EXPRESSION_GROUP;
         }
 
         std::string toString() {

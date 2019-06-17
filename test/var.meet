@@ -3,7 +3,7 @@
 
 # int, float, string, boolean, any
 
-var a = 200, b = 12.5, c = 'Hello, ', d = 'World !', e = true, f = false # variable a type is any.
+var a = 200, b = 12.5, c = 'Hello, ', d = 'World !', e = true, f = false # variable list type is any.
 
 var g = 2
 

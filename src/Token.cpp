@@ -25,16 +25,9 @@ Token::Token(TokenType type, std::string literal, int line): literal(std::move(l
     this->type = std::move(type);
 }
 
-TokenType Token::getTokenType() {
-    return this->type;
-}
-
-std::string Token::getTokenLiteral() {
-    return this->literal;
-}
-
-int Token::getTokenLine() {
-    return this->line;
+bool isTyped(const Token& token) {
+    return token.type == TOKEN_INT || token.type == TOKEN_STRING || token.type == TOKEN_FLOAT ||
+        token.type == TOKEN_LIST || token.type == TOKEN_BOOLEAN;
 }
 
 std::string getTokenLiteralWithType(const TokenType& tokenType) {

@@ -51,7 +51,7 @@ Token Parser::look(int pos) {
 }
 
 bool Parser::look(TokenType tokenType) {
-    bool equal = look().getTokenType() == tokenType;
+    bool equal = look().type == tokenType;
 
     if (equal)
         this->position ++;
@@ -60,11 +60,11 @@ bool Parser::look(TokenType tokenType) {
 }
 
 bool Parser::isAtEnd() {
-    return look(0).getTokenType() == TOKEN_EOF;
+    return look(0).type == TOKEN_EOF;
 }
 
 void Parser::error(std::string message) {
-    throw std::runtime_error("[ line " + std::to_string(look().getTokenLine()) + " ] " + message);
+    throw std::runtime_error("[ line " + std::to_string(look().line) + " ] " + message);
 }
 
 Statement* Parser::statement() {
@@ -83,8 +83,30 @@ Expression* Parser::assignment() {
     if (look(TOKEN_EQUAL)) {
         Expression* initializer = assignment();
 
-        if (expr->classType() == VARIABLE_EXPRESSION) {
-            
+        if (expr->classType() == EXPRESSION_VARIABLE) {
+            Token name = ((VariableExpression *) expr)->name;
+
+            return new AssignExpression(name, initializer, Token(TOKEN_ANY, "", 0));
+        }
+
+        error("syntax error: invalid assignment target.");
+    }
+
+    if (look(TOKEN_COLON)) {
+        Token name = look(-2);
+        Token type = look();
+
+        if (isTyped(type)) {
+            this->position ++;
+        
+            if (look(TOKEN_EQUAL) == false)
+                error("syntax error: missing equal for assign expression.");
+
+            Expression* initializer = expression();
+
+            return new AssignExpression(name, initializer, type);
+
+            error("syntax error: unknown variable type " + look().literal + ".");
         }
     }
 
@@ -139,7 +161,7 @@ Expression* Parser::primary() {
         Expression* expr = expression();
 
         if (look(TOKEN_RPAREN) == false)
-            error("parsing error: expect ')' after expression.");
+            error("syntax error: expect ')' after expression.");
         
         return new GroupExpression(expr);
     }
@@ -147,7 +169,7 @@ Expression* Parser::primary() {
     if (look(TOKEN_NULL) || look(TOKEN_TRUE) || look(TOKEN_FALSE))
         return new LiteralExpression(previous());
 
-    error("parsing error: illegal expression.");
+    error("syntax error: illegal expression.");
 
     return NULL;
 }
@@ -157,17 +179,34 @@ Statement* Parser::expressionStatement() {
 }
 
 Statement* Parser::varStatement() {
-    std::string name = look().getTokenLiteral();
+    std::vector<AssignExpression *> list = std::vector<AssignExpression *>();
 
-    if (look(TOKEN_VALUE_IDENTIFIER) == false)
-        error("parsing error: variable name can only be english character sequences.");
+    bool firstParseStatement = true;
 
-    if (look(TOKEN_EQUAL) == false)
-        error("parsing error: expect '=' after var keyword.");
+    while (firstParseStatement || look().type == TOKEN_COMMA) {
+        if (look().type == TOKEN_COMMA)
+            this->position ++;
 
-    Expression* initializer = expression();
+        Expression* expr = expression();
 
-    if (look(TOKEN_COMMA)) {
-        std::map<std::string, Expression *> list = std::map<std::string, Expression *>();
+        if (expr->classType() == EXPRESSION_VARIABLE && look().type == TOKEN_COLON) {
+            expr = expression();
+
+            if (expr->classType() != EXPRESSION_ASSIGN)
+                error("syntax error: variable initializer must be assignment.");
+
+            list.push_back((AssignExpression *) expr);
+
+            continue;
+        }
+
+        if (expr->classType() != EXPRESSION_ASSIGN)
+            error("syntax error: variable initializer must be assignment.");
+        
+        list.push_back((AssignExpression *) expr);
+
+        firstParseStatement = false;
     }
+
+    return new VarStatement(list);
 }

@@ -23,11 +23,11 @@
 #include "../Expression.hpp"
 
 class UnaryExpression: public Expression {
-    private:
+    public:
         Token token;
 
         Expression* expression;
-    public:
+
         UnaryExpression(Token token, Expression* expression): token(std::move(token)), 
             expression(std::move(expression)) {}
 
@@ -37,11 +37,11 @@ class UnaryExpression: public Expression {
         }
 
         std::string classType() {
-            return UNARY_EXPRESSION;
+            return EXPRESSION_UNARY;
         }
 
         std::string toString() {
-            return "[ UnaryExpression: token = " + token.getTokenLiteral() + ", expr = " + 
+            return "[ UnaryExpression: token = " + token.literal + ", expr = " + 
                 expression->toString() + " ]";
         }
 };

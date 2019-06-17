@@ -24,25 +24,28 @@
 #include "../Token.hpp"
 
 class AssignExpression: public Expression {
-    private:
+    public:
         Token name;
 
         Expression* initializer;
-    public:
-        AssignExpression(Token name, Expression* initializer): name(std::move(name)),
-            initializer(std::move(initializer)) {}
+
+        Token typed;
+
+        AssignExpression(Token name, Expression* initializer, Token typed): name(std::move(name)),
+            initializer(std::move(initializer)), typed(std::move(typed)) {}
 
         ~AssignExpression() {
             delete &name;
             delete initializer;
+            delete &typed;
         }
 
         std::string classType() {
-            return ASSIGN_EXPRESSION;
+            return EXPRESSION_ASSIGN;
         }
 
         std::string toString() {
-            return "[ AssignExpression: name = " + name.getTokenLiteral() + ", initializer = " +
+            return "[ AssignExpression: name = " + name.literal + ", initializer = " +
                 initializer->toString() + " ]";
         }
 };

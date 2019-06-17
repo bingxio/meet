@@ -20,58 +20,46 @@
 #ifndef MEET_VAR_STATEMENT
 #define MEET_VAR_STATEMENT
 
-#include <map>
+#include <vector>
 #include <sstream>
 
-#include "../Expression.hpp"
 #include "../Statement.hpp"
+#include "../expressions/AssignExpression.hpp"
 
 class VarStatement: public Statement {
-    private:
-        std::string name;
-
-        Expression* initializer;
-
-        std::map<std::string, Expression *> list;
     public:
-        VarStatement(std::string name, Expression* initializer): name(std::move(name)), 
-            initializer(std::move(initializer)) {}
+        std::vector<AssignExpression *> list;
 
-        VarStatement(std::map<std::string, Expression *> list) {
-            list = std::move(list);
-        }
+        VarStatement(std::vector<AssignExpression *> list): list(std::move(list)) {}
 
         ~VarStatement() {
-            delete &name;
-            delete initializer;
-
             list.clear();
 
-            std::map<std::string, Expression *>().swap(list);
+            std::vector<AssignExpression *>().swap(list);
         }
 
         std::string classType() {
-            return "VarStatement";
+            return STATEMENT_VAR;
         }
 
         std::string toString() {
-            if (list.size()) {
-                std::stringstream stream;
+            std::stringstream stream;
 
-                stream << "[ VarStatement: list = ";
+            stream << "[ VarStatement: list = [ ";
 
-                for (auto i : list) {
-                    stream << i.first << " -> ";
-                    stream << i.second->toString() << " ";
-                }
+            for (auto i : list) {
+                stream << "name = " << i->name.literal << ", value = ";
+                stream << i->initializer->toString() << ", type = ";
 
-                stream << "]";
-
-                return stream.str();
+                if (i->typed.literal.length() != 0)
+                    stream << i->typed.literal << " | ";
+                else
+                    stream << "any" << " | ";
             }
 
-            return "[ VarStatement: token = " + name + ", initializer = " + 
-                initializer->toString() + " ]";
+            stream << "]";
+
+            return stream.str();
         }
 };
 
