@@ -39,8 +39,12 @@ class BinaryExpression: public Expression {
             delete &token;
         }
 
+        std::string classType() {
+            return BINARY_EXPRESSION;
+        }
+
         std::string toString() {
-            return "BinaryExpression [ left = " + left->toString() + ", token = " + token.getTokenLiteral()  + 
+            return "[ BinaryExpression: left = " + left->toString() + ", token = " + token.getTokenLiteral()  + 
                 ", right = " + right->toString() + " ]";
         }
 };

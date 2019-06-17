@@ -17,28 +17,33 @@
  * Email: 1171840237@qq.com
  * Github: https://github.com/turaiiao
  */
-#ifndef MEET_LITERAL_EXPRESSION_H
-#define MEET_LITERAL_EXPRESSION_H
+#ifndef MEET_ASSIGN_EXPRESSION_H
+#define MEET_ASSIGN_EXPRESSION_H
 
 #include "../Expression.hpp"
 #include "../Token.hpp"
 
-class LiteralExpression: public Expression {
+class AssignExpression: public Expression {
     private:
-        Token token;
-    public:
-        explicit LiteralExpression(Token token): token(std::move(token)) {}
+        Token name;
 
-        ~LiteralExpression() {
-            delete &token;
+        Expression* initializer;
+    public:
+        AssignExpression(Token name, Expression* initializer): name(std::move(name)),
+            initializer(std::move(initializer)) {}
+
+        ~AssignExpression() {
+            delete &name;
+            delete initializer;
         }
 
         std::string classType() {
-            return LITERAL_EXPRESSION;
+            return ASSIGN_EXPRESSION;
         }
 
         std::string toString() {
-            return "[ LiteralExpression: token = " + token.getTokenLiteral() + " ]";
+            return "[ AssignExpression: name = " + name.getTokenLiteral() + ", initializer = " +
+                initializer->toString() + " ]";
         }
 };
 

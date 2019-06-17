@@ -28,8 +28,13 @@
 
 #include "expressions/LiteralExpression.hpp"
 #include "expressions/BinaryExpression.hpp"
+#include "expressions/GroupExpression.hpp"
+#include "expressions/VariableExpression.hpp"
+#include "expressions/UnaryExpression.hpp"
+#include "expressions/AssignExpression.hpp"
 
 #include "statements/ExpressionStatement.hpp"
+#include "statements/VarStatement.hpp"
 
 class Parser {
     private:
@@ -45,16 +50,25 @@ class Parser {
         bool isAtEnd();
         bool look(TokenType tokenType);
 
+        void error(std::string message);
         void insertStatement(Statement* stmt);
-
-        Statement* statement();
+        
         Expression* expression();
-
+        Expression* assignment();
+        Expression* logicalOr();
+        Expression* logicalAnd();
+        Expression* equality();
+        Expression* comparison();
         Expression* addition();
         Expression* multiplication();
+        Expression* unary();
+        Expression* call();
+        Expression* finishCall();
         Expression* primary();
 
-        ExpressionStatement* expressionStatement();
+        Statement* statement();
+        Statement* expressionStatement();
+        Statement* varStatement();
     public:
         explicit Parser(std::vector<Token> tokens);
 

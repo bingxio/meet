@@ -22,9 +22,17 @@
 
 #include <iostream>
 
+#define ASSIGN_EXPRESSION   "ASSIGN_EXPRESSION"
+#define BINARY_EXPRESSION   "BINARY_EXPRESSION"
+#define GROUP_EXPRESSION    "GROUP_EXPRESSION"
+#define LITERAL_EXPRESSION  "LITERAL_EXPRESSION"
+#define UNARY_EXPRESSION    "UNARY_EXPRESSION"
+#define VARIABLE_EXPRESSION "VARIABLE_EXPRESSION"
+
 class Expression {
     public:
         virtual ~Expression() = default;
+        virtual std::string classType() = 0;
         virtual std::string toString() = 0;
 };
 

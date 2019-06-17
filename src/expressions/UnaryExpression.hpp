@@ -17,28 +17,32 @@
  * Email: 1171840237@qq.com
  * Github: https://github.com/turaiiao
  */
-#ifndef MEET_LITERAL_EXPRESSION_H
-#define MEET_LITERAL_EXPRESSION_H
+#ifndef MEET_UNARY_EXPRESSION_H
+#define MEET_UNARY_EXPRESSION_H
 
 #include "../Expression.hpp"
-#include "../Token.hpp"
 
-class LiteralExpression: public Expression {
+class UnaryExpression: public Expression {
     private:
         Token token;
-    public:
-        explicit LiteralExpression(Token token): token(std::move(token)) {}
 
-        ~LiteralExpression() {
+        Expression* expression;
+    public:
+        UnaryExpression(Token token, Expression* expression): token(std::move(token)), 
+            expression(std::move(expression)) {}
+
+        ~UnaryExpression() {
             delete &token;
+            delete expression;
         }
 
         std::string classType() {
-            return LITERAL_EXPRESSION;
+            return UNARY_EXPRESSION;
         }
 
         std::string toString() {
-            return "[ LiteralExpression: token = " + token.getTokenLiteral() + " ]";
+            return "[ UnaryExpression: token = " + token.getTokenLiteral() + ", expr = " + 
+                expression->toString() + " ]";
         }
 };
 

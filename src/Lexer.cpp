@@ -286,5 +286,7 @@ void Lexer::lexSkipWriteSpace() {
         case '#':
             while (look() != '\n' && !isAtEnd())
                 this->position ++;
+
+            if (isAtEnd()) this->position ++;
     }
 }

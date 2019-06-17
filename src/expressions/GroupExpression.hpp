@@ -1,5 +1,5 @@
 /**
- * Meet Programming Language Statement.
+ * Meet Programming Language Expression.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,19 +17,28 @@
  * Email: 1171840237@qq.com
  * Github: https://github.com/turaiiao
  */
-#ifndef MEET_STATEMENT_H
-#define MEET_STATEMENT_H
+#ifndef MEET_GROUP_EXPRESSION_H
+#define MEET_GROUP_EXPRESSION_H
 
-#include <iostream>
+#include "../Expression.hpp"
 
-#define VAR_STATEMENT        "VAR_STATEMENT"
-#define EXPRESSION_STATEMENT "EXPRESSION_STATEMENT"
-
-class Statement {
+class GroupExpression: public Expression {
+    private:
+        Expression* expression;
     public:
-        virtual ~Statement() = default;
-        virtual std::string classType() = 0;
-        virtual std::string toString() = 0;
+        GroupExpression(Expression* expression): expression(std::move(expression)) {}
+
+        ~GroupExpression() {
+            delete expression;
+        }
+
+        std::string classType() {
+            return GROUP_EXPRESSION;
+        }
+
+        std::string toString() {
+            return "[ GroupExpression: expr = " + expression->toString() + " ]";
+        }
 };
 
 #endif

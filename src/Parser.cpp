@@ -63,20 +63,38 @@ bool Parser::isAtEnd() {
     return look(0).getTokenType() == TOKEN_EOF;
 }
 
+void Parser::error(std::string message) {
+    throw std::runtime_error("[ line " + std::to_string(look().getTokenLine()) + " ] " + message);
+}
+
 Statement* Parser::statement() {
-    if (look(TOKEN_VAR)) 
-        std::cout << "Parse var statement." << std::endl;
+    if (look(TOKEN_VAR))
+        return varStatement();
     return expressionStatement();
 }
 
 Expression* Parser::expression() {
-    return addition();
+    return assignment();
+}
+
+Expression* Parser::assignment() {
+    Expression* expr = addition();
+
+    if (look(TOKEN_EQUAL)) {
+        Expression* initializer = assignment();
+
+        if (expr->classType() == VARIABLE_EXPRESSION) {
+            
+        }
+    }
+
+    return expr;
 }
 
 Expression* Parser::addition() {
     Expression* expr = multiplication();
 
-    if (look(TOKEN_PLUS) || look(TOKEN_MINUS)) {
+    while (look(TOKEN_PLUS) || look(TOKEN_MINUS)) {
         Token op = previous();
         Expression* right = multiplication();
 
@@ -87,11 +105,11 @@ Expression* Parser::addition() {
 }
 
 Expression* Parser::multiplication() {
-    Expression* expr = primary();
+    Expression* expr = unary();
 
-    if (look(TOKEN_STAR) || look(TOKEN_SLASH)) {
+    while (look(TOKEN_STAR) || look(TOKEN_SLASH)) {
         Token op = previous();
-        Expression* right = primary();
+        Expression* right = unary();
 
         expr = new BinaryExpression(expr, op, right);
     }
@@ -99,12 +117,57 @@ Expression* Parser::multiplication() {
     return expr;
 }
 
-Expression* Parser::primary() {
-    if (look(TOKEN_VALUE_INT))
-        return new LiteralExpression(previous());
-    throw std::runtime_error("parsing error: unknown token -> " + look().getTokenLiteral());
+Expression* Parser::unary() {
+    if (look(TOKEN_BANG) || look(TOKEN_MINUS)) {
+        Token op = previous();
+        Expression* expression = unary();
+
+        return new UnaryExpression(op, expression);
+    }
+
+    return primary();
 }
 
-ExpressionStatement* Parser::expressionStatement() {
+Expression* Parser::primary() {
+    if (look(TOKEN_VALUE_INT) || look(TOKEN_VALUE_STRING) || look(TOKEN_VALUE_FLOAT))
+        return new LiteralExpression(previous());
+
+    if (look(TOKEN_VALUE_IDENTIFIER))
+        return new VariableExpression(previous());
+    
+    if (look(TOKEN_LPAREN)) {
+        Expression* expr = expression();
+
+        if (look(TOKEN_RPAREN) == false)
+            error("parsing error: expect ')' after expression.");
+        
+        return new GroupExpression(expr);
+    }
+
+    if (look(TOKEN_NULL) || look(TOKEN_TRUE) || look(TOKEN_FALSE))
+        return new LiteralExpression(previous());
+
+    error("parsing error: illegal expression.");
+
+    return NULL;
+}
+
+Statement* Parser::expressionStatement() {
     return new ExpressionStatement(expression());
+}
+
+Statement* Parser::varStatement() {
+    std::string name = look().getTokenLiteral();
+
+    if (look(TOKEN_VALUE_IDENTIFIER) == false)
+        error("parsing error: variable name can only be english character sequences.");
+
+    if (look(TOKEN_EQUAL) == false)
+        error("parsing error: expect '=' after var keyword.");
+
+    Expression* initializer = expression();
+
+    if (look(TOKEN_COMMA)) {
+        std::map<std::string, Expression *> list = std::map<std::string, Expression *>();
+    }
 }
