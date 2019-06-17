@@ -25,20 +25,21 @@
 
 class BinaryExpression: public Expression {
     private:
-        Expression* left, right;
+        Expression* left;
+        Expression* right;
 
-        Token operator;
+        Token op;
     public:
-        explicit BinaryExpression(Expression left, Token operator, Expression right):
-            left(std::move(left)), operator(std::move(operator)), right(std::move(right)) {}
+        explicit BinaryExpression(Expression* left, Token op, Expression* right):
+            left(std::move(left)), op(std::move(op)), right(std::move(right)) {}
 
         ~BinaryExpression() {
             delete left;
             delete right;
-            delete &operator;
+            delete &op;
         }
 
-        std::String toString() {
+        std::string toString() {
             return "BinaryExpression";
         }
 };

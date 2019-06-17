@@ -20,6 +20,8 @@
 #ifndef MEET_EXPRESSION_H
 #define MEET_EXPRESSION_H
 
+#include <iostream>
+
 class Expression {
     public:
         virtual ~Expression() = default;

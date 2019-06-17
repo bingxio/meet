@@ -22,8 +22,14 @@
 
 #include <vector>
 
-#include "Token.hpp"
 #include "Statement.hpp"
+#include "Expression.hpp"
+#include "Token.hpp"
+
+#include "expressions/LiteralExpression.hpp"
+#include "expressions/BinaryExpression.hpp"
+
+#include "statements/ExpressionStatement.hpp"
 
 class Parser {
     private:
@@ -34,10 +40,21 @@ class Parser {
 
         Token look();
         Token look(int pos);
+        Token previous();
 
         bool isAtEnd();
+        bool look(TokenType tokenType);
 
         void insertStatement(Statement* stmt);
+
+        Statement* statement();
+        Expression* expression();
+
+        Expression* addition();
+        Expression* multiplication();
+        Expression* primary();
+
+        ExpressionStatement* expressionStatement();
     public:
         explicit Parser(std::vector<Token> tokens);
 

@@ -26,11 +26,17 @@ Parser::Parser(std::vector<Token> tokens) {
 }
 
 std::vector<Statement *> Parser::parseProgram() {
+    while (this->tokens.size() - 1 >= this->position)
+        statement();
     return this->statements;
 }
 
 void Parser::insertStatement(Statement* stmt) {
     this->statements.push_back(stmt);
+}
+
+Token Parser::previous() {
+    return this->tokens.at(this->position - 1);
 }
 
 Token Parser::look() {
@@ -44,6 +50,63 @@ Token Parser::look(int pos) {
         return this->tokens.at(this->position + pos);
 }
 
+bool Parser::look(TokenType tokenType) {
+    bool equal = look().getTokenType() == tokenType;
+
+    if (equal)
+        this->position ++;
+
+    return equal;
+}
+
 bool Parser::isAtEnd() {
-    return look().getTokenType() == TOKEN_EOF;
+    return look(0).getTokenType() == TOKEN_EOF;
+}
+
+Statement* Parser::statement() {
+    TokenType tokenType = look().getTokenType();
+
+    if (tokenType == TOKEN_VAR) std::cout << "Parse var statement." << std::endl;
+
+    else expressionStatement();
+}
+
+Expression* Parser::expression() {
+    return addition();
+}
+
+Expression* Parser::addition() {
+    Expression* expr = multiplication();
+
+    if (look(TOKEN_PLUS) || look(TOKEN_MINUS)) {
+        Token op = previous();
+        Expression* right = multiplication();
+
+        expr = new BinaryExpression(expr, op, right);
+    }
+
+    return expr;
+}
+
+Expression* Parser::multiplication() {
+    Expression* expr = primary();
+
+    if (look(TOKEN_STAR) || look(TOKEN_SLASH)) {
+        Token op = previous();
+        Expression* right = primary();
+
+        expr = new BinaryExpression(expr, op, right);
+    }
+
+    return expr;
+}
+
+Expression* Parser::primary() {
+    if (look(TOKEN_VALUE_INT))
+        return new LiteralExpression(look());
+    throw std::runtime_error("parsing error: illegal expression.");
+}
+
+ExpressionStatement* Parser::expressionStatement() {
+    return new ExpressionStatement(expression());
 }
