@@ -35,7 +35,7 @@ class ExpressionStatement: public Statement {
         }
 
         std::string toString() {
-            return "ExpressionStatement";
+            return "ExpressionStatement [ expr = " + expression->toString() + " ]";
         }
 };
 

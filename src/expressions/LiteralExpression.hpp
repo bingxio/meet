@@ -34,7 +34,7 @@ class LiteralExpression: public Expression {
         }
 
         std::string toString() {
-            return "LiteralExpression";
+            return "LiteralExpression [ token = " + token.getTokenLiteral() + " ]";
         }
 };
 

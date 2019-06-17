@@ -29,12 +29,18 @@
 
 using namespace std;
 
+static void partitionLine() {
+    for (int i = 0; i < 92; i ++)
+        cout << "-";
+    cout << endl;
+}
+
 static void run(const string& source);
 
 static void repl() {
     char* line = (char *) malloc(1024);
 
-    cout << "\n\t Meet Programming Language 1.0.0 (debug, June 10 2019, 19:24) \n" << endl;
+    cout << "\n\t Meet Programming Language 1.0.0 (debug mode, June 10 2019, 19:24) \n" << endl;
 
     while (true) {
         cout << "meet > ";
@@ -80,9 +86,11 @@ static void run(const string& source) {
 
 #ifdef DEBUG_LEXER
     for (auto token : tokens)
-        printf("token: %5d %-25s : %-50s : %5d \n", i ++, 
+        printf("%-5d %-25s : %-50s : %5d \n", i ++, 
             getTokenLiteralWithType(token.getTokenType()).c_str(), token.getTokenLiteral().c_str(), 
                 token.getTokenLine());
+    partitionLine();
+
     i = 0;
 #endif
 
@@ -92,7 +100,9 @@ static void run(const string& source) {
 
 #ifdef DEBUG_PARSE
     for (auto stmt : statements)
-        printf("statement: %5d : %-50s \n", i ++, stmt->toString());
+        printf("%-5d %-50s \n", i ++, stmt->toString().c_str());
+    partitionLine();
+
     i = 0;
 #endif
 

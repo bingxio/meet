@@ -26,8 +26,8 @@ Parser::Parser(std::vector<Token> tokens) {
 }
 
 std::vector<Statement *> Parser::parseProgram() {
-    while (this->tokens.size() - 1 >= this->position)
-        statement();
+    while (this->tokens.size() - 1 >= this->position && !isAtEnd())
+        insertStatement(statement());
     return this->statements;
 }
 
@@ -64,11 +64,9 @@ bool Parser::isAtEnd() {
 }
 
 Statement* Parser::statement() {
-    TokenType tokenType = look().getTokenType();
-
-    if (tokenType == TOKEN_VAR) std::cout << "Parse var statement." << std::endl;
-
-    else expressionStatement();
+    if (look(TOKEN_VAR)) 
+        std::cout << "Parse var statement." << std::endl;
+    return expressionStatement();
 }
 
 Expression* Parser::expression() {
@@ -103,8 +101,8 @@ Expression* Parser::multiplication() {
 
 Expression* Parser::primary() {
     if (look(TOKEN_VALUE_INT))
-        return new LiteralExpression(look());
-    throw std::runtime_error("parsing error: illegal expression.");
+        return new LiteralExpression(previous());
+    throw std::runtime_error("parsing error: unknown token -> " + look().getTokenLiteral());
 }
 
 ExpressionStatement* Parser::expressionStatement() {
