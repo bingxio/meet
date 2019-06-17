@@ -21,15 +21,15 @@
 
 Parser::Parser(std::vector<Token> tokens) {
     this->tokens = std::move(tokens);
-    this->statements = std::vector<Statement>();
+    this->statements = std::vector<Statement *>();
     this->position = 0;
 }
 
-std::vector<Statement> Parser::parseProgram() {
+std::vector<Statement *> Parser::parseProgram() {
     return this->statements;
 }
 
-void Parser::insertStatement(const Statement& stmt) {
+void Parser::insertStatement(Statement* stmt) {
     this->statements.push_back(stmt);
 }
 

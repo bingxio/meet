@@ -38,8 +38,8 @@ class BinaryExpression: public Expression {
             delete &operator;
         }
 
-        void toString() {
-            std::cout << "BinaryExpression" << std::endl;
+        std::String toString() {
+            return "BinaryExpression";
         }
 };
 

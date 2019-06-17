@@ -28,7 +28,7 @@
 class Parser {
     private:
         std::vector<Token> tokens;
-        std::vector<Statement> statements;
+        std::vector<Statement *> statements;
 
         int position;
 
@@ -37,11 +37,11 @@ class Parser {
 
         bool isAtEnd();
 
-        void insertStatement(const Statement& stmt);
+        void insertStatement(Statement* stmt);
     public:
         explicit Parser(std::vector<Token> tokens);
 
-        std::vector<Statement> parseProgram();
+        std::vector<Statement *> parseProgram();
 };
 
 #endif

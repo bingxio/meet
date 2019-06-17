@@ -33,8 +33,8 @@ class LiteralExpression: public Expression {
             delete &token;
         }
 
-        void toString() {
-            std::cout << "LiteralExpression" << std::endl;
+        std::string toString() {
+            return "LiteralExpression";
         }
 };
 

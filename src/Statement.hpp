@@ -23,7 +23,7 @@
 class Statement {
     public:
         virtual ~Statement() = default;
-        virtual void toString() = 0;
+        virtual std::string toString() = 0;
 };
 
 #endif

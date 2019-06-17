@@ -88,11 +88,11 @@ static void run(const string& source) {
 
     Parser* parser = new Parser(tokens);
 
-    vector<Statement> statements = parser->parseProgram();
+    vector<Statement *> statements = parser->parseProgram();
 
 #ifdef DEBUG_PARSE
-    // for (auto stmt : statements)
-    //     printf("statement: %5d : %-50s \n", i ++, stmt.toString());
+    for (auto stmt : statements)
+        printf("statement: %5d : %-50s \n", i ++, stmt->toString());
     i = 0;
 #endif
 

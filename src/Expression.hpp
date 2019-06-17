@@ -23,7 +23,7 @@
 class Expression {
     public:
         virtual ~Expression() = default;
-        virtual void toString() = 0;
+        virtual std::string toString() = 0;
 };
 
 #endif
