@@ -33,6 +33,16 @@ class Value {
 
         explicit Value() = default;
 
+        Value operator + (const Value& a);
+        Value operator - (const Value& b);
+        Value operator * (const Value& b);
+        Value operator / (const Value& b);
+        Value operator % (const Value& b);
+        Value operator > (const Value& b);
+        Value operator < (const Value& b);
+        Value operator >= (const Value& b);
+        Value operator <= (const Value& b);
+
         bool valueNumber = false;
         bool valueString = false;
         bool valueBool = false;
@@ -42,7 +52,7 @@ class Value {
         bool boolValue = false;
         std::string stringValue = std::string();
 
-        void setConstant(bool constant);
+        void printValue();
 };
 
 Value backValueWithToken(Token token);

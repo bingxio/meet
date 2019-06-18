@@ -27,6 +27,7 @@
 #include "Expression.hpp"
 
 #include "expressions/LiteralExpression.hpp"
+#include "expressions/BinaryExpression.hpp"
 
 #include "statements/ExpressionStatement.hpp"
 
@@ -40,11 +41,12 @@ class Interpreter {
 
         Statement* look();
 
-        void executeExpression(Expression* expr);
-        void executeExpressionStatement();
         void executeVarStatement();
 
+        Value executeExpressionStatement();
+        Value executeExpression(Expression* expr);
         Value executeLiteralExpression(Expression* expr);
+        Value executeBinaryExpression(Expression* expr);
     public:
         explicit Interpreter(std::vector<Statement *> statements);
 

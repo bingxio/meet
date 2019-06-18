@@ -39,6 +39,8 @@ static void partitionLine() {
 static void run(const string& source);
 
 static void repl() {
+
+#define MEET_REPL_MODE
     char* line = (char *) malloc(1024);
 
     cout << "\n\t Meet Programming Language 1.0.0 (debug mode, June 10 2019, 19:24) \n" << endl;

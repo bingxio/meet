@@ -117,6 +117,10 @@ void Lexer::addToken(TokenType type, std::string literal, int skip) {
         this->position += skip;
 }
 
+void Lexer::error(std::string message) {
+    throw std::runtime_error("[ line " + std::to_string(this->line) + " ] " + message);
+}
+
 TokenType Lexer::isKeyword(const std::string& identifier) {
     std::map<std::string, TokenType>::iterator find = this->keywords.find(identifier);
 
@@ -151,7 +155,7 @@ void Lexer::lexString() {
     this->position ++;
 
     if (look(0) == 0)
-        throw std::runtime_error("syntax error: expect string lost right mark.");
+        error("syntax error: expect string lost right mark.");
 
     if (look(0) == '\'') {
         addToken(TOKEN_VALUE_STRING, "", 1);
@@ -163,7 +167,7 @@ void Lexer::lexString() {
         literalStream << look();
 
         if (isAtEnd())
-            throw std::runtime_error("syntax error: expect string lost right mark.");
+            error("syntax error: expect string lost right mark.");
         else
             this->position ++;
     }
@@ -268,7 +272,7 @@ void Lexer::lexSymbol() {
             addToken(TOKEN_MODULAR);
             break;
         default:
-            throw std::runtime_error("syntax error: unexpect character.");
+            error("syntax error: unexpect character.");
     }
 }
 

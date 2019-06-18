@@ -46,17 +46,45 @@ void Interpreter::execute() {
     }
 }
 
-void Interpreter::executeExpression(Expression* expr) {
+Value Interpreter::executeExpression(Expression* expr) {
     if (expr->classType() == EXPRESSION_LITERAL)
-        executeLiteralExpression(expr);
+        return executeLiteralExpression(expr);
+
+    if (expr->classType() == EXPRESSION_BINARY)
+        return executeBinaryExpression(expr);
+
+    throw std::runtime_error("type error: unknow expression.");
 }
 
 Value Interpreter::executeLiteralExpression(Expression* expr) {
     return backValueWithToken(((LiteralExpression *) expr)->token);
 }
 
-void Interpreter::executeExpressionStatement() {
-    executeExpression(((ExpressionStatement *) look())->expression);
+Value Interpreter::executeBinaryExpression(Expression* expr) {
+    BinaryExpression* a = (BinaryExpression *) expr;
+
+    Value l = executeExpression(a->left);
+    Value r = executeExpression(a->right);
+
+    if (a->token.type == TOKEN_PLUS)          return l + r;
+    if (a->token.type == TOKEN_MINUS)         return l - r;
+    if (a->token.type == TOKEN_STAR)          return l * r;    
+    if (a->token.type == TOKEN_SLASH)         return l / r;
+    if (a->token.type == TOKEN_MODULAR)       return l % r;
+    if (a->token.type == TOKEN_GREATER)       return l > r;
+    if (a->token.type == TOKEN_GREATER_EQUAL) return l >= r;
+    if (a->token.type == TOKEN_LESS)          return l < r;
+    if (a->token.type == TOKEN_LESS_EQUAL)    return l <= r;
+
+    throw std::runtime_error("type error: unknow operator for binary expression.");
+}
+
+Value Interpreter::executeExpressionStatement() {
+    Value a = executeExpression(((ExpressionStatement *) look())->expression);
+// #ifdef MEET_REPL_MODE
+    a.printValue();
+// #endif
+    return a;
 }
 
 void Interpreter::executeVarStatement() {

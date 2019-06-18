@@ -34,8 +34,24 @@ Value::Value(bool value) {
     this->boolValue = value;
 }
 
-void Value::setConstant(bool constant) {
-    this->valueConstant = constant;
+void Value::printValue() {
+    if (this->valueNumber) {
+        std::cout << this->numberValue << std::endl;
+
+        return;
+    }
+
+    if (this->valueString) {
+        std::cout << this->stringValue << std::endl;
+
+        return;
+    }
+
+    if (this->valueBool) {
+        this->boolValue ? std::cout << "true" << std::endl : std::cout << "false" << std::endl;
+
+        return;
+    }
 }
 
 Value backValueWithToken(Token token) {
@@ -52,4 +68,69 @@ Value backValueWithToken(Token token) {
         return Value(false);
 
     throw std::runtime_error("type error: unknow literal token decode to value.");
+}
+
+Value Value::operator + (const Value& a) {
+    if (this->valueNumber && a.valueNumber)
+        return Value(this->numberValue + a.numberValue);
+
+    if (this->valueString && a.valueString)
+        return Value(this->stringValue + a.stringValue);
+    
+    throw std::runtime_error("type error: Operands must be two numbers or two strings.");
+}
+
+Value Value::operator - (const Value& a) {
+    if (this->valueNumber && a.valueNumber)
+        return Value(this->numberValue - a.numberValue);
+    throw std::runtime_error("type error: Operands must be two numbers.");
+}
+
+Value Value::operator * (const Value& a) {
+    if (this->valueNumber && a.valueNumber)
+        return Value(this->numberValue * a.numberValue);
+    throw std::runtime_error("type error: Operands must be two numbers.");
+}
+
+Value Value::operator / (const Value& a) {
+    if (this->valueNumber && a.valueNumber)
+        return Value(this->numberValue / a.numberValue);
+    throw std::runtime_error("type error: Operands must be two numbers.");
+}
+
+Value Value::operator % (const Value& a) {
+    if (this->valueNumber && a.valueNumber) {
+        int x = (int) this->valueNumber;
+        int y = (int) a.valueNumber;
+
+        double z = x % y;
+
+        return Value(z);
+    }
+
+    throw std::runtime_error("type error: Operands must be two numbers.");
+}
+
+Value Value::operator > (const Value& a) {
+    if (this->valueNumber && a.valueNumber)
+        return Value(this->numberValue > a.numberValue);
+    throw std::runtime_error("type error: Operands must be two numbers.");
+}
+
+Value Value::operator < (const Value& a) {
+    if (this->valueNumber && a.valueNumber)
+        return Value(this->numberValue < a.numberValue);
+    throw std::runtime_error("type error: Operands must be two numbers.");
+}
+
+Value Value::operator >= (const Value& a) {
+    if (this->valueNumber && a.valueNumber)
+        return Value(this->numberValue >= a.numberValue);
+    throw std::runtime_error("type error: Operands must be two numbers.");
+}
+
+Value Value::operator <= (const Value& a) {
+    if (this->valueNumber && a.valueNumber)
+        return Value(this->numberValue <= a.numberValue);
+    throw std::runtime_error("type error: Operands must be two numbers.");
 }

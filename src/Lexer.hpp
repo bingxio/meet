@@ -50,6 +50,8 @@ class Lexer {
         void lexNumber();
         void lexSymbol();
         void lexSkipWriteSpace();
+
+        void error(std::string message);
     public:
         explicit Lexer(std::string source);
 
