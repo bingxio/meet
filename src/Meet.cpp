@@ -82,9 +82,8 @@ static void run(const string& source, bool replMode) {
 
 #ifdef DEBUG_LEXER
     for (auto token : tokens)
-        printf("%-5d %-25s : %-50s : %5d \n", i ++, 
-            getTokenLiteralWithType(token.type).c_str(), token.literal.c_str(), 
-                token.line);
+        printf("%-5d %-25s : %-50s : %5d \n", i ++, getTokenLiteralWithType(token.type).c_str(), 
+            token.literal.c_str(), token.line);
     partitionLine();
 
     i = 0;

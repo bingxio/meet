@@ -62,6 +62,12 @@ Value Interpreter::executeExpression(Expression* expr) {
     if (expr->classType() == EXPRESSION_BINARY)
         return executeBinaryExpression(expr);
 
+    if (expr->classType() == EXPRESSION_GROUP)
+        return executeGroupExpression(expr);
+
+    if (expr->classType() == EXPRESSION_UNARY)
+        return executeUnaryExpression(expr);
+
     throw std::runtime_error("type error: unknow expression.");
 }
 
@@ -86,6 +92,27 @@ Value Interpreter::executeBinaryExpression(Expression* expr) {
     if (a->token.type == TOKEN_LESS_EQUAL)    return l <= r;
 
     throw std::runtime_error("type error: unknow operator for binary expression.");
+}
+
+Value Interpreter::executeGroupExpression(Expression* expr) {
+    return executeExpression(((GroupExpression *) expr)->expression);
+}
+
+Value Interpreter::executeUnaryExpression(Expression* expr) {
+    UnaryExpression* unaryExpr = (UnaryExpression *) expr;
+
+    Value a = executeExpression(unaryExpr->expression);
+
+    if (unaryExpr->token.type == TOKEN_BANG) {
+
+        if (a.valueBool)
+            return Value(!a.boolValue);
+
+        if (a.valueNumber)
+            return Value(!a.numberValue);
+    }
+
+    throw std::runtime_error("type error: unknow operator for unary expression.");
 }
 
 Value Interpreter::executeExpressionStatement() {

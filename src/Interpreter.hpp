@@ -28,6 +28,8 @@
 
 #include "expressions/LiteralExpression.hpp"
 #include "expressions/BinaryExpression.hpp"
+#include "expressions/GroupExpression.hpp"
+#include "expressions/UnaryExpression.hpp"
 
 #include "statements/ExpressionStatement.hpp"
 
@@ -50,6 +52,8 @@ class Interpreter {
         Value executeExpression(Expression* expr);
         Value executeLiteralExpression(Expression* expr);
         Value executeBinaryExpression(Expression* expr);
+        Value executeGroupExpression(Expression* expr);
+        Value executeUnaryExpression(Expression* expr);
     public:
         explicit Interpreter(std::vector<Statement *> statements, bool replMode);
 
