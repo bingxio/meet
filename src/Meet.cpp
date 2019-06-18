@@ -26,6 +26,7 @@
 #include "Token.hpp"
 #include "Common.hpp"
 #include "Parser.hpp"
+#include "Interpreter.hpp"
 
 using namespace std;
 
@@ -105,6 +106,8 @@ static void run(const string& source) {
 
     i = 0;
 #endif
+
+    Interpreter* interpret = new Interpreter(statements);
 
     delete lexer;
     delete parser;

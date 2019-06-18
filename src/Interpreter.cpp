@@ -17,3 +17,12 @@
  * Email: 1171840237@qq.com
  * Github: https://github.com/turaiiao
  */
+#include "Interpreter.hpp"
+
+Interpreter::Interpreter(std::vector<Statement *> statements) {
+    this->statements = std::move(statements);
+}
+
+void Interpreter::execute() {
+    std::cout << this->statements.size() << std::endl;
+}

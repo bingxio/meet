@@ -17,3 +17,20 @@
  * Email: 1171840237@qq.com
  * Github: https://github.com/turaiiao
  */
+#ifndef MEET_INTERPRETER_H
+#define MEET_INTERPRETER_H
+
+#include <vector>
+
+#include "Statement.hpp"
+
+class Interpreter {
+    private:
+        std::vector<Statement *> statements;
+    public:
+        explicit Interpreter(std::vector<Statement *> statements);
+
+        void execute();
+};
+
+#endif
