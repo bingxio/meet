@@ -19,30 +19,39 @@
  */
 #include "Interpreter.hpp"
 
-Interpreter::Interpreter(std::vector<Statement *> statements) {
+Interpreter::Interpreter(std::vector<Statement *> statements, bool replMode) {
     this->statements = std::move(statements);
+    this->size = this->statements.size();
     this->position = 0;
+    this->replMode = replMode;
 }
 
 Statement* Interpreter::look() {
     return this->statements.at(this->position);
 }
 
-void Interpreter::removeStatement(int pos) {
+int Interpreter::removeStatement(int pos) {
     std::vector<Statement *>::iterator a = this->statements.begin() + pos;
 
-    this->statements.erase(a);
+    if (*a == NULL)
+        return 0;
+    else {
+        this->statements.erase(a);
+        this->position --;
+
+        return this->statements.size();
+    }
 }
 
 void Interpreter::execute() {
-    while (this->statements.size()) {
+    while (this->size) {
         if (look()->classType() == STATEMENT_EXPRESSION)
             executeExpressionStatement();
         
         if (look()->classType() == STATEMENT_VAR)
             executeVarStatement();
 
-        removeStatement(this->position ++);
+        this->size = removeStatement(this->position ++);
     }
 }
 
@@ -68,7 +77,7 @@ Value Interpreter::executeBinaryExpression(Expression* expr) {
 
     if (a->token.type == TOKEN_PLUS)          return l + r;
     if (a->token.type == TOKEN_MINUS)         return l - r;
-    if (a->token.type == TOKEN_STAR)          return l * r;    
+    if (a->token.type == TOKEN_STAR)          return l * r;
     if (a->token.type == TOKEN_SLASH)         return l / r;
     if (a->token.type == TOKEN_MODULAR)       return l % r;
     if (a->token.type == TOKEN_GREATER)       return l > r;
@@ -81,9 +90,10 @@ Value Interpreter::executeBinaryExpression(Expression* expr) {
 
 Value Interpreter::executeExpressionStatement() {
     Value a = executeExpression(((ExpressionStatement *) look())->expression);
-// #ifdef MEET_REPL_MODE
-    a.printValue();
-// #endif
+
+    if (this->replMode)
+        a.printValue();
+
     return a;
 }
 

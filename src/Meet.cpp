@@ -36,11 +36,9 @@ static void partitionLine() {
     cout << endl;
 }
 
-static void run(const string& source);
+static void run(const string& source, bool replMode);
 
 static void repl() {
-
-#define MEET_REPL_MODE
     char* line = (char *) malloc(1024);
 
     cout << "\n\t Meet Programming Language 1.0.0 (debug mode, June 10 2019, 19:24) \n" << endl;
@@ -58,7 +56,7 @@ static void repl() {
         if (haveWriteSpace || line[0] == '\0')
             continue;
         
-        run(line);
+        run(line, true);
     }
 }
 
@@ -75,12 +73,12 @@ static void runFile(const char* path) {
 
     string source((istreambuf_iterator<char>(fileStream)), (istreambuf_iterator<char>()));
 
-    run(source);
+    run(source, false);
 
     fileStream.close();
 }
 
-static void run(const string& source) {
+static void run(const string& source, bool replMode) {
     int i = 0;
 
     Lexer* lexer = new Lexer(source);
@@ -109,7 +107,7 @@ static void run(const string& source) {
     i = 0;
 #endif
 
-    Interpreter* interpret = new Interpreter(statements);
+    Interpreter* interpret = new Interpreter(statements, replMode);
 
     interpret->execute();
 

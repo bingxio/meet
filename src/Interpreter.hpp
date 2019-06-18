@@ -35,9 +35,12 @@ class Interpreter {
     private:
         std::vector<Statement *> statements;
 
+        int size;
         int position;
 
-        void removeStatement(int pos);
+        int removeStatement(int pos);
+
+        bool replMode = false;
 
         Statement* look();
 
@@ -48,7 +51,7 @@ class Interpreter {
         Value executeLiteralExpression(Expression* expr);
         Value executeBinaryExpression(Expression* expr);
     public:
-        explicit Interpreter(std::vector<Statement *> statements);
+        explicit Interpreter(std::vector<Statement *> statements, bool replMode);
 
         void execute();
 };
