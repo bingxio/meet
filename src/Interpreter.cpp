@@ -110,6 +110,16 @@ Value Interpreter::executeUnaryExpression(Expression* expr) {
 
         if (a.valueNumber)
             return Value(!a.numberValue);
+
+        throw std::runtime_error("type error: unknow operator for unary expression.");
+    }
+
+    if (unaryExpr->token.type == TOKEN_MINUS) {
+
+        if (a.valueNumber)
+            return Value(-a.numberValue);
+
+        throw std::runtime_error("type error: unknow operator for unary expression.");
     }
 
     throw std::runtime_error("type error: unknow operator for unary expression.");
