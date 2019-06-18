@@ -120,7 +120,7 @@ Expression* Parser::logicalOr() {
         Token op = previous();
         Expression* right = logicalAnd();
 
-        expr = LogicalExpression(expr, op, right);
+        expr = new LogicalExpression(expr, op, right);
     }
 
     return expr;
@@ -133,7 +133,7 @@ Expression* Parser::logicalAnd() {
         Token op = previous();
         Expression* right = equality();
 
-        expr = LogicalExpression(expr, op, right);
+        expr = new LogicalExpression(expr, op, right);
     }
 
     return expr;
