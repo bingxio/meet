@@ -222,7 +222,7 @@ Expression* Parser::primary() {
     if (look(TOKEN_NULL) || look(TOKEN_TRUE) || look(TOKEN_FALSE))
         return new LiteralExpression(previous());
 
-    error("syntax error: illegal expression.");
+    error("syntax error: illegal expression, token '" + look().literal + "'.");
 
     return NULL;
 }
