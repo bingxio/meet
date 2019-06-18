@@ -113,10 +113,63 @@ Expression* Parser::assignment() {
     return expr;
 }
 
+Expression* Parser::logicalOr() {
+    Expression* expr = logicalAnd();
+
+    while (look(TOKEN_OR)) {
+        Token op = previous();
+        Expression* right = logicalAnd();
+
+        expr = LogicalExpression(expr, op, right);
+    }
+
+    return expr;
+}
+
+Expression* Parser::logicalAnd() {
+    Expression* expr = equality();
+
+    while (look(TOKEN_AND)) {
+        Token op = previous();
+        Expression* right = equality();
+
+        expr = LogicalExpression(expr, op, right);
+    }
+
+    return expr;
+}
+
+Expression* Parser::equality() {
+    Expression* expr = comparison();
+
+    while (look(TOKEN_EQUAL) || look(TOKEN_BANG_EQUAL)) {
+        Token op = previous();
+        Expression* right = comparison();
+
+        expr = new BinaryExpression(expr, op, right);
+    }
+
+    return expr;
+}
+
+Expression* Parser::comparison() {
+    Expression* expr = addition();
+
+    while (look(TOKEN_GREATER) || look(TOKEN_GREATER_EQUAL) ||
+            look(TOKEN_LESS) || look(TOKEN_LESS_EQUAL)) {
+        Token op = previous();
+        Expression* right = addition();
+
+        expr = new BinaryExpression(expr, op, right);
+    }
+
+    return expr;
+}
+
 Expression* Parser::addition() {
     Expression* expr = multiplication();
 
-    while (look(TOKEN_PLUS) || look(TOKEN_MINUS)) {
+    while (look(TOKEN_PLUS) || look(TOKEN_MINUS)) { 
         Token op = previous();
         Expression* right = multiplication();
 

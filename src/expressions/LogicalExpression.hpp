@@ -17,28 +17,36 @@
  * Email: 1171840237@qq.com
  * Github: https://github.com/turaiiao
  */
-#ifndef MEET_LITERAL_EXPRESSION_H
-#define MEET_LITERAL_EXPRESSION_H
+#ifndef MEET_LOGICAL_EXPRESSION_H
+#define MEET_LOGICAL_EXPRESSION_H
 
 #include "../Token.hpp"
 #include "../Expression.hpp"
 
-class LiteralExpression: public Expression {
+class LogicalExpression: public Expression {
     public:
+        Expression* left;
+
         Token token;
 
-        LiteralExpression(Token token): token(std::move(token)) {}
+        Expression* right;
 
-        ~LiteralExpression() {
+        LogicalExpression(Expression* left, Token token, Expression* right): left(std::move(left)),
+            token(std::move(token)), right(std::move(right)) {}
+
+        ~LogicalExpression() {
+            delete left;
             delete &token;
+            delete right;
         }
 
         std::string classType() {
-            return EXPRESSION_LITERAL;
+            return EXPRESSION_LOGICAL;
         }
 
         std::string toString() {
-            return "[ LiteralExpression: token = " + token.literal + " ]";
+            return "[ LogicalExpr: left = " + left->toString() + ", operator = " + token.literal + ", right = "
+                + right->toString() + " ]";
         }
 };
 

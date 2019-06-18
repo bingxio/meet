@@ -32,6 +32,7 @@
 #include "expressions/VariableExpression.hpp"
 #include "expressions/UnaryExpression.hpp"
 #include "expressions/AssignExpression.hpp"
+#include "expressions/LogicalExpression.hpp"
 
 #include "statements/ExpressionStatement.hpp"
 #include "statements/VarStatement.hpp"
