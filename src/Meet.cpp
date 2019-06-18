@@ -48,12 +48,7 @@ static void repl() {
 
         cin.getline(line, 1024);
 
-        bool haveWriteSpace = false;
-
-        for (int i = 0; i < strlen(line); i ++)
-            haveWriteSpace = line[i] == 32;
-
-        if (haveWriteSpace || line[0] == '\0')
+        if (strlen(line) == 0)
             continue;
         
         run(line, true);
