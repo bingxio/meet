@@ -21,8 +21,44 @@
 
 Interpreter::Interpreter(std::vector<Statement *> statements) {
     this->statements = std::move(statements);
+    this->position = 0;
+}
+
+Statement* Interpreter::look() {
+    return this->statements.at(this->position);
+}
+
+void Interpreter::removeStatement(int pos) {
+    std::vector<Statement *>::iterator a = this->statements.begin() + pos;
+
+    this->statements.erase(a);
 }
 
 void Interpreter::execute() {
-    std::cout << this->statements.size() << std::endl;
+    while (this->statements.size()) {
+        if (look()->classType() == STATEMENT_EXPRESSION)
+            executeExpressionStatement();
+        
+        if (look()->classType() == STATEMENT_VAR)
+            executeVarStatement();
+
+        removeStatement(this->position ++);
+    }
+}
+
+void Interpreter::executeExpression(Expression* expr) {
+    if (expr->classType() == EXPRESSION_LITERAL)
+        executeLiteralExpression(expr);
+}
+
+Value Interpreter::executeLiteralExpression(Expression* expr) {
+    return backValueWithToken(((LiteralExpression *) expr)->token);
+}
+
+void Interpreter::executeExpressionStatement() {
+    executeExpression(((ExpressionStatement *) look())->expression);
+}
+
+void Interpreter::executeVarStatement() {
+
 }

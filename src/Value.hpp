@@ -23,6 +23,8 @@
 #include <iostream>
 #include <map>
 
+#include "Token.hpp"
+
 class Value {
     public:
         explicit Value(double value);
@@ -42,5 +44,7 @@ class Value {
 
         void setConstant(bool constant);
 };
+
+Value backValueWithToken(Token token);
 
 #endif

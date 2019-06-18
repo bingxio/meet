@@ -22,11 +22,29 @@
 
 #include <vector>
 
+#include "Value.hpp"
 #include "Statement.hpp"
+#include "Expression.hpp"
+
+#include "expressions/LiteralExpression.hpp"
+
+#include "statements/ExpressionStatement.hpp"
 
 class Interpreter {
     private:
         std::vector<Statement *> statements;
+
+        int position;
+
+        void removeStatement(int pos);
+
+        Statement* look();
+
+        void executeExpression(Expression* expr);
+        void executeExpressionStatement();
+        void executeVarStatement();
+
+        Value executeLiteralExpression(Expression* expr);
     public:
         explicit Interpreter(std::vector<Statement *> statements);
 

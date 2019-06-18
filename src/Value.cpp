@@ -34,6 +34,22 @@ Value::Value(bool value) {
     this->boolValue = value;
 }
 
-Value::setConstant(bool constant) {
+void Value::setConstant(bool constant) {
     this->valueConstant = constant;
+}
+
+Value backValueWithToken(Token token) {
+    if (token.type == TOKEN_VALUE_INT || token.type == TOKEN_VALUE_FLOAT)
+        return Value(std::stod(token.literal));
+
+    if (token.type == TOKEN_VALUE_STRING)
+        return Value(token.literal);
+
+    if (token.type == TOKEN_TRUE)
+        return Value(true);
+
+    if (token.type == TOKEN_FALSE)
+        return Value(false);
+
+    throw std::runtime_error("type error: unknow literal token decode to value.");
 }

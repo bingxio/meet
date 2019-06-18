@@ -109,8 +109,11 @@ static void run(const string& source) {
 
     Interpreter* interpret = new Interpreter(statements);
 
+    interpret->execute();
+
     delete lexer;
     delete parser;
+    delete interpret;
 }
 
 int main(int argc, char** argv) {
