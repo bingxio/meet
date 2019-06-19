@@ -21,9 +21,18 @@
 
 Interpreter::Interpreter(std::vector<Statement *> statements, bool replMode) {
     this->statements = std::move(statements);
+    this->environment = std::map<Token, Value>();
     this->size = this->statements.size();
     this->position = 0;
     this->replMode = replMode;
+}
+
+void Interpreter::assign(Token token, Value value) {
+    this->environment.insert(std::pair<Token, Value>(token, value));
+}
+
+Value Interpreter::get(Token token) {
+
 }
 
 Statement* Interpreter::look() {

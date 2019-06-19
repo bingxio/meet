@@ -21,7 +21,9 @@
 #define MEET_INTERPRETER_H
 
 #include <vector>
+#include <map>
 
+#include "Token.hpp"
 #include "Value.hpp"
 #include "Statement.hpp"
 #include "Expression.hpp"
@@ -36,6 +38,7 @@
 class Interpreter {
     private:
         std::vector<Statement *> statements;
+        std::map<Token, Value> environment;
 
         int size;
         int position;
@@ -46,7 +49,11 @@ class Interpreter {
 
         Statement* look();
 
+        void assign(Token token, Value value);
+
         void executeVarStatement();
+
+        Value get(Token token);
 
         Value executeExpressionStatement();
         Value executeExpression(Expression* expr);
