@@ -31,7 +31,7 @@ class Value {
         explicit Value(std::string value);
         explicit Value(bool value);
 
-        explicit Value() = default;
+        Value(); // Null value.
 
         Value operator + (const Value& a);
         Value operator - (const Value& b);
@@ -42,11 +42,13 @@ class Value {
         Value operator < (const Value& b);
         Value operator >= (const Value& b);
         Value operator <= (const Value& b);
+        Value operator != (const Value& b);
+        Value operator == (const Value& b);
 
         bool valueNumber = false;
         bool valueString = false;
         bool valueBool = false;
-        bool valueConstant = false;
+        bool valueNull = false;
 
         double numberValue = 0;
         bool boolValue = false;

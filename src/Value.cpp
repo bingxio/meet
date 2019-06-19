@@ -34,6 +34,10 @@ Value::Value(bool value) {
     this->boolValue = value;
 }
 
+Value::Value() {
+    this->valueNull = true;
+}
+
 void Value::printValue() {
     if (this->valueNumber) {
         std::cout << this->numberValue << std::endl;
@@ -52,6 +56,9 @@ void Value::printValue() {
 
         return;
     }
+
+    if (this->valueNull)
+        std::cout << "null" << std::endl;
 }
 
 Value backValueWithToken(Token token) {
@@ -66,6 +73,9 @@ Value backValueWithToken(Token token) {
 
     if (token.type == TOKEN_FALSE)
         return Value(false);
+
+    if (token.type == TOKEN_NULL)
+        return Value();
 
     throw std::runtime_error("type error: unknow literal token decode to value.");
 }
@@ -133,4 +143,96 @@ Value Value::operator <= (const Value& a) {
     if (this->valueNumber && a.valueNumber)
         return Value(this->numberValue <= a.numberValue);
     throw std::runtime_error("type error: Operands must be two numbers.");
+}
+
+Value Value::operator != (const Value& a) {
+    if (this->valueNull) {
+        if (a.valueNull)   return Value(false);
+        if (a.valueNumber) return Value(a.numberValue != 0);
+        if (a.valueString) return Value(a.stringValue != "");
+        if (a.valueBool)   return Value(true);
+    }
+
+    if (this->valueNumber) {
+        if (a.valueNull)   return Value(a.numberValue != 0);
+        if (a.valueNumber) return Value(this->numberValue != a.numberValue);
+
+        if (a.valueBool) {
+            if (a.boolValue)
+                return Value(this->numberValue <= 1);
+            else
+                return Value(this->numberValue >= 0);
+        }
+
+        if (a.valueString)
+            throw std::runtime_error("type error: cannot comparison number with string.");
+    }
+
+    if (this->valueString) {
+        if (a.valueNull)   return Value(this->stringValue != "");
+        if (a.valueString) return Value(this->stringValue != a.stringValue);
+
+        throw std::runtime_error("type error: string cannot comparison not null and string.");
+    }
+
+    if (this->valueBool) {
+        if (a.valueBool) return Value(this->boolValue != a.boolValue);
+
+        if (a.valueNumber) {
+            if (this->boolValue)
+                return Value(a.numberValue >= 1);
+            else
+                return Value(a.numberValue <= 0);
+        }
+
+        throw std::runtime_error("type error: bool cannot comparison not bool and number.");
+    }
+
+    return Value();
+}
+
+Value Value::operator == (const Value& a) {
+    if (this->valueNull) {
+        if (a.valueNull)   return Value(true);
+        if (a.valueNumber) return Value(a.numberValue == 0);
+        if (a.valueString) return Value(a.stringValue == "");
+        if (a.valueBool)   return Value(false);
+    }
+
+    if (this->valueNumber) {
+        if (a.valueNull)   return Value(a.numberValue == 0);
+        if (a.valueNumber) return Value(a.numberValue == this->numberValue);
+
+        if (a.valueBool) {
+            if (a.boolValue)
+                return Value(this->numberValue >= 1);
+            else
+                return Value(this->numberValue <= 0);
+        }
+
+        if (a.valueString)
+            throw std::runtime_error("type error: cannot comparison number with string.");
+    }
+
+    if (this->valueString) {
+        if (a.valueNull)   return Value(this->stringValue == "");
+        if (a.valueString) return Value(this->stringValue == a.stringValue);
+
+        throw std::runtime_error("type error: string cannot comparison not null and string.");
+    }
+
+    if (this->valueBool) {
+        if (a.valueBool) return Value(this->boolValue == a.boolValue);
+
+        if (a.valueNumber) {
+            if (this->boolValue)
+                return Value(a.numberValue >= 1);
+            else
+                return Value(a.numberValue <= 0);
+        }
+
+        throw std::runtime_error("type error: bool cannot comparison not bool and number.");
+    }
+
+    return Value();
 }

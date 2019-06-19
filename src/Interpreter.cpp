@@ -90,6 +90,8 @@ Value Interpreter::executeBinaryExpression(Expression* expr) {
     if (a->token.type == TOKEN_GREATER_EQUAL) return l >= r;
     if (a->token.type == TOKEN_LESS)          return l < r;
     if (a->token.type == TOKEN_LESS_EQUAL)    return l <= r;
+    if (a->token.type == TOKEN_BANG_EQUAL)    return l != r;
+    if (a->token.type == TOKEN_EQUAL_EQUAL)   return l == r;
 
     throw std::runtime_error("type error: unknow operator for binary expression.");
 }

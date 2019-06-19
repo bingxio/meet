@@ -78,7 +78,7 @@ Expression* Parser::expression() {
 }
 
 Expression* Parser::assignment() {
-    Expression* expr = addition();
+    Expression* expr = logicalOr();
 
     if (look(TOKEN_EQUAL)) {
         Expression* initializer = assignment();
@@ -142,7 +142,7 @@ Expression* Parser::logicalAnd() {
 Expression* Parser::equality() {
     Expression* expr = comparison();
 
-    while (look(TOKEN_EQUAL) || look(TOKEN_BANG_EQUAL)) {
+    while (look(TOKEN_EQUAL_EQUAL) || look(TOKEN_BANG_EQUAL)) {
         Token op = previous();
         Expression* right = comparison();
 
