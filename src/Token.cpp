@@ -30,6 +30,10 @@ bool isTyped(const Token& token) {
         token.type == TOKEN_LIST || token.type == TOKEN_BOOLEAN;
 }
 
+bool Token::operator < (const Token& token) const {
+    return false;
+}
+
 std::string getTokenLiteralWithType(const TokenType& tokenType) {
     if (tokenType == TOKEN_LPAREN)           return "TOKEN_LPAREN";
     if (tokenType == TOKEN_RPAREN)           return "TOKEN_RPAREN";

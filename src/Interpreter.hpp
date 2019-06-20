@@ -32,8 +32,10 @@
 #include "expressions/BinaryExpression.hpp"
 #include "expressions/GroupExpression.hpp"
 #include "expressions/UnaryExpression.hpp"
+#include "expressions/AssignExpression.hpp"
 
 #include "statements/ExpressionStatement.hpp"
+#include "statements/VarStatement.hpp"
 
 class Interpreter {
     private:
@@ -61,6 +63,7 @@ class Interpreter {
         Value executeBinaryExpression(Expression* expr);
         Value executeGroupExpression(Expression* expr);
         Value executeUnaryExpression(Expression* expr);
+        Value executeAssignExpression(Expression* expr);
     public:
         explicit Interpreter(std::vector<Statement *> statements, bool replMode);
 

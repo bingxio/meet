@@ -29,10 +29,17 @@ Interpreter::Interpreter(std::vector<Statement *> statements, bool replMode) {
 
 void Interpreter::assign(Token token, Value value) {
     this->environment.insert(std::pair<Token, Value>(token, value));
+
+    this->get(token).printValue(); // NULL
 }
 
 Value Interpreter::get(Token token) {
+    std::map<Token, Value>::iterator a = this->environment.find(token);
 
+    if (a == this->environment.end())
+        throw std::runtime_error("undefined variable: '" + token.literal + "'.");
+
+    return a->second;
 }
 
 Statement* Interpreter::look() {
@@ -76,6 +83,9 @@ Value Interpreter::executeExpression(Expression* expr) {
 
     if (expr->classType() == EXPRESSION_UNARY)
         return executeUnaryExpression(expr);
+
+    if (expr->classType() == EXPRESSION_ASSIGN)
+        return executeAssignExpression(expr);
 
     throw std::runtime_error("type error: unknow expression.");
 }
@@ -136,6 +146,16 @@ Value Interpreter::executeUnaryExpression(Expression* expr) {
     throw std::runtime_error("type error: unknow operator for unary expression.");
 }
 
+Value Interpreter::executeAssignExpression(Expression* expr) {
+    AssignExpression* assignExpr = (AssignExpression *) expr;
+
+    Value value = executeExpression(assignExpr->initializer);
+
+    this->assign(assignExpr->name, value);
+
+    return value;
+}
+
 Value Interpreter::executeExpressionStatement() {
     Value a = executeExpression(((ExpressionStatement *) look())->expression);
 
@@ -146,5 +166,8 @@ Value Interpreter::executeExpressionStatement() {
 }
 
 void Interpreter::executeVarStatement() {
+    VarStatement* stmt = (VarStatement *) look();
 
+    for (auto i : stmt->list)
+        executeExpression(i);
 }

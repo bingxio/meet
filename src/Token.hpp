@@ -105,6 +105,8 @@ class Token {
         int line;
 
         explicit Token(TokenType type, std::string literal, int line);
+
+        bool operator < (const Token& token) const;
 };
 
 std::string getTokenLiteralWithType(const TokenType& tokenType);
