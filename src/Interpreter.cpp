@@ -29,6 +29,8 @@ Interpreter::Interpreter(std::vector<Statement *> statements, bool replMode) {
 
 void Interpreter::assign(Token token, Value value) {
     this->environment.insert(std::pair<Token, Value>(token, value));
+
+    this->get(token).printValue();
 }
 
 Value Interpreter::get(Token token) {
