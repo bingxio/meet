@@ -33,6 +33,8 @@
 #include "expressions/GroupExpression.hpp"
 #include "expressions/UnaryExpression.hpp"
 #include "expressions/AssignExpression.hpp"
+#include "expressions/LogicalExpression.hpp"
+#include "expressions/VariableExpression.hpp"
 
 #include "statements/ExpressionStatement.hpp"
 #include "statements/VarStatement.hpp"
@@ -64,6 +66,8 @@ class Interpreter {
         Value executeGroupExpression(Expression* expr);
         Value executeUnaryExpression(Expression* expr);
         Value executeAssignExpression(Expression* expr);
+        Value executeLogicalExpression(Expression* expr);
+        Value executeVariableExpression(Expression* expr);
     public:
         explicit Interpreter(std::vector<Statement *> statements, bool replMode);
 

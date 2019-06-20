@@ -44,6 +44,8 @@ class Value {
         Value operator <= (const Value& b);
         Value operator != (const Value& b);
         Value operator == (const Value& b);
+        Value operator || (const Value& b);
+        Value operator && (const Value& b);
 
         bool valueNumber = false;
         bool valueString = false;

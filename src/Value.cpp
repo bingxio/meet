@@ -236,3 +236,39 @@ Value Value::operator == (const Value& a) {
 
     return Value();
 }
+
+Value Value::operator || (const Value& b) {
+    if (this->valueNumber) return Value(this->numberValue > 0);
+    if (this->valueBool)   return Value(this->boolValue);
+    if (this->valueNull)   return Value(false);
+
+    throw std::runtime_error("interpret error: cannot execute logical expression unknown value.");
+}
+
+Value Value::operator && (const Value& b) {
+    if (this->valueNumber) {
+        if (b.valueNumber) return Value(this->numberValue > 0 && b.numberValue > 0);
+        if (b.valueBool)   return Value(this->numberValue > 0 && b.boolValue);
+        if (b.valueNull)   return Value(false);
+
+        throw std::runtime_error("interpret error: cannot execute logical expression unknown value.");
+    }
+
+    if (this->valueBool) {
+        if (b.valueNumber) return Value(this->boolValue && b.numberValue > 0);
+        if (b.valueBool)   return Value(this->boolValue && b.boolValue);
+        if (b.valueNull)    return Value(this->boolValue == false);
+
+        throw std::runtime_error("interpret error: cannot execute logical expression unknown value.");
+    }
+
+    if (this->valueNull) {
+        if (b.valueNumber) return Value(b.numberValue <= 0);
+        if (b.valueBool)   return Value(b.boolValue == false);
+        if (b.valueNull)   return Value(true);
+
+        throw std::runtime_error("interpret error: cannot execute logical expression unknown value.");
+    }
+
+    return Value();
+}

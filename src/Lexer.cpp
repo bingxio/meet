@@ -272,7 +272,7 @@ void Lexer::lexSymbol() {
             addToken(TOKEN_MODULAR);
             break;
         default:
-            error("syntax error: unexpect character.");
+            error("syntax error: unexpect character '" + std::string(1, look()) + "'.");
     }
 }
 

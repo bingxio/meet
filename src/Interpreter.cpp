@@ -29,8 +29,6 @@ Interpreter::Interpreter(std::vector<Statement *> statements, bool replMode) {
 
 void Interpreter::assign(Token token, Value value) {
     this->environment.insert(std::pair<Token, Value>(token, value));
-
-    this->get(token).printValue(); // NULL
 }
 
 Value Interpreter::get(Token token) {
@@ -87,7 +85,13 @@ Value Interpreter::executeExpression(Expression* expr) {
     if (expr->classType() == EXPRESSION_ASSIGN)
         return executeAssignExpression(expr);
 
-    throw std::runtime_error("type error: unknow expression.");
+    if (expr->classType() == EXPRESSION_LOGICAL)
+        return executeLogicalExpression(expr);
+
+    if (expr->classType() == EXPRESSION_VARIABLE)
+        return executeVariableExpression(expr);
+
+    throw std::runtime_error("interpret error: unknow expression.");
 }
 
 Value Interpreter::executeLiteralExpression(Expression* expr) {
@@ -112,7 +116,7 @@ Value Interpreter::executeBinaryExpression(Expression* expr) {
     if (a->token.type == TOKEN_BANG_EQUAL)    return l != r;
     if (a->token.type == TOKEN_EQUAL_EQUAL)   return l == r;
 
-    throw std::runtime_error("type error: unknow operator for binary expression.");
+    throw std::runtime_error("interpret error: unknow operator for binary expression.");
 }
 
 Value Interpreter::executeGroupExpression(Expression* expr) {
@@ -125,25 +129,23 @@ Value Interpreter::executeUnaryExpression(Expression* expr) {
     Value a = executeExpression(unaryExpr->expression);
 
     if (unaryExpr->token.type == TOKEN_BANG) {
+        if (a.valueNumber)
+            return Value(!a.numberValue);
 
         if (a.valueBool)
             return Value(!a.boolValue);
 
-        if (a.valueNumber)
-            return Value(!a.numberValue);
-
-        throw std::runtime_error("type error: unknow operator for unary expression.");
+        throw std::runtime_error("interpret error: unknow operator for unary expression.");
     }
 
     if (unaryExpr->token.type == TOKEN_MINUS) {
-
         if (a.valueNumber)
             return Value(-a.numberValue);
 
-        throw std::runtime_error("type error: unknow operator for unary expression.");
+        throw std::runtime_error("interpret error: unknow operator for unary expression.");
     }
 
-    throw std::runtime_error("type error: unknow operator for unary expression.");
+    throw std::runtime_error("interpret error: unknow operator for unary expression.");
 }
 
 Value Interpreter::executeAssignExpression(Expression* expr) {
@@ -154,6 +156,24 @@ Value Interpreter::executeAssignExpression(Expression* expr) {
     this->assign(assignExpr->name, value);
 
     return value;
+}
+
+Value Interpreter::executeLogicalExpression(Expression* expr) {
+    LogicalExpression* logicalExpr = (LogicalExpression *) expr;
+
+    Value a = executeExpression(logicalExpr->left);
+    Value b = executeExpression(logicalExpr->right);
+
+    if (logicalExpr->token.type == TOKEN_OR)
+        return a || b;
+
+    return a && b;
+}
+
+Value Interpreter::executeVariableExpression(Expression* expr) {
+    VariableExpression* varExpr = (VariableExpression *) expr;
+
+    return this->get(varExpr->name);
 }
 
 Value Interpreter::executeExpressionStatement() {
