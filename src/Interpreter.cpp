@@ -169,21 +169,23 @@ Value Interpreter::executeAssignExpression(Expression* expr) {
 
     value.varAny = true;
 
-    if ((value.valueNumber && assignExpr->typed.literal != TOKEN_INT) ||
-        (value.valueString && assignExpr->typed.literal != TOKEN_STRING) ||
-        (value.valueBool && assignExpr->typed.literal != TOKEN_BOOLEAN)) {
-            throw std::runtime_error("interpret error: the initialization value type is different from the specified type.");
-        }
-
     if (assignExpr->isVar) {
-        if (assignExpr->typed.literal == TOKEN_ANY)
-            value.varAny = true;
-        else if (assignExpr->typed.literal == TOKEN_INT)
-            value.varNumber = true;
-        else if (assignExpr->typed.literal == TOKEN_STRING)
-            value.varString = true;
-        else if (assignExpr->typed.literal == TOKEN_BOOLEAN)
-            value.varBoolean = true;
+        if (this->haveObject(assignExpr->name.literal))
+            throw std::runtime_error("interpret error: repeatedly defining variavle '" + assignExpr->name.literal + "'");
+
+        if (assignExpr->typed.literal != "") {
+            if (assignExpr->typed.literal == TOKEN_ANY)
+                value.varAny = true;
+            else if (assignExpr->typed.literal == TOKEN_INT && value.valueNumber)
+                value.varNumber = true;
+            else if (assignExpr->typed.literal == TOKEN_STRING && value.valueString)
+                value.varString = true;
+            else if (assignExpr->typed.literal == TOKEN_BOOLEAN && value.valueBool)
+                value.varBoolean = true;
+
+            if (!value.varNumber && !value.varString && !value.varBoolean)
+                throw std::runtime_error("interpret error: the initialization value type is defferent from the specified type.");
+        }
 
         this->assign(assignExpr->name.literal, value);
     } else {
@@ -191,7 +193,7 @@ Value Interpreter::executeAssignExpression(Expression* expr) {
 
         if ((a.varNumber && value.valueNumber == false) || (a.varString && value.valueString == false) ||
             (a.varBoolean && value.valueBool == false)) {
-                throw std::runtime_error("interpret error: cannot defined as other type.");
+            throw std::runtime_error("interpret error: cannot defined as other type.");
         }
 
         this->reAssign(assignExpr->name.literal, value);
