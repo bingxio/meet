@@ -2,3 +2,5 @@
 # this is debug file.
 
 var a = 20
+
+a

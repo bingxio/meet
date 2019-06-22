@@ -19,25 +19,24 @@
  */
 #include "Interpreter.hpp"
 
-Interpreter::Interpreter(std::vector<Statement *> statements, bool replMode) {
+Interpreter::Interpreter(std::vector<Statement *> statements, std::map<std::string, Value>* environment,
+        bool replMode) {
     this->statements = std::move(statements);
-    this->environment = std::map<Token, Value>();
+    this->environment = environment;
     this->size = this->statements.size();
     this->position = 0;
     this->replMode = replMode;
 }
 
-void Interpreter::assign(Token token, Value value) {
-    this->environment.insert(std::pair<Token, Value>(token, value));
-
-    this->get(token).printValue();
+void Interpreter::assign(std::string name, Value value) {
+    this->environment->insert(std::pair<std::string, Value>(name, value));
 }
 
-Value Interpreter::get(Token token) {
-    std::map<Token, Value>::iterator a = this->environment.find(token);
+Value Interpreter::get(std::string name) {
+    std::map<std::string, Value>::iterator a = this->environment->find(name);
 
-    if (a == this->environment.end())
-        throw std::runtime_error("undefined variable: '" + token.literal + "'.");
+    if (a == this->environment->end())
+        throw std::runtime_error("undefined variable: '" + name + "'.");
 
     return a->second;
 }
@@ -49,7 +48,7 @@ Statement* Interpreter::look() {
 int Interpreter::removeStatement(int pos) {
     std::vector<Statement *>::iterator a = this->statements.begin() + pos;
 
-    if (*a == NULL)
+    if (a == this->statements.end())
         return 0;
     else {
         this->statements.erase(a);
@@ -155,7 +154,7 @@ Value Interpreter::executeAssignExpression(Expression* expr) {
 
     Value value = executeExpression(assignExpr->initializer);
 
-    this->assign(assignExpr->name, value);
+    this->assign(assignExpr->name.literal, value);
 
     return value;
 }
@@ -175,7 +174,12 @@ Value Interpreter::executeLogicalExpression(Expression* expr) {
 Value Interpreter::executeVariableExpression(Expression* expr) {
     VariableExpression* varExpr = (VariableExpression *) expr;
 
-    return this->get(varExpr->name);
+    Value a = this->get(varExpr->name.literal);
+
+    if (this->replMode == false)
+        a.printValue();
+
+    return a;
 }
 
 Value Interpreter::executeExpressionStatement() {

@@ -42,7 +42,7 @@
 class Interpreter {
     private:
         std::vector<Statement *> statements;
-        std::map<Token, Value> environment;
+        std::map<std::string, Value>* environment;
 
         int size;
         int position;
@@ -53,11 +53,11 @@ class Interpreter {
 
         Statement* look();
 
-        void assign(Token token, Value value);
+        void assign(std::string name, Value value);
 
         void executeVarStatement();
 
-        Value get(Token token);
+        Value get(std::string);
 
         Value executeExpressionStatement();
         Value executeExpression(Expression* expr);
@@ -69,7 +69,8 @@ class Interpreter {
         Value executeLogicalExpression(Expression* expr);
         Value executeVariableExpression(Expression* expr);
     public:
-        explicit Interpreter(std::vector<Statement *> statements, bool replMode);
+        explicit Interpreter(std::vector<Statement *> statements, std::map<std::string, Value>* environment,
+            bool replMode);
 
         void execute();
 };

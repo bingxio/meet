@@ -27,8 +27,11 @@
 #include "Common.hpp"
 #include "Parser.hpp"
 #include "Interpreter.hpp"
+#include "Value.hpp"
 
 using namespace std;
+
+map<string, Value> *environment = new map<string, Value>();
 
 static void partitionLine() {
     for (int i = 0; i < 92; i ++)
@@ -101,7 +104,7 @@ static void run(const string& source, bool replMode) {
     i = 0;
 #endif
 
-    Interpreter* interpret = new Interpreter(statements, replMode);
+    Interpreter* interpret = new Interpreter(statements, environment, replMode);
 
     interpret->execute();
 
