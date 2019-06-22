@@ -1,15 +1,8 @@
 
-# this is debug file
+# this is debug file.
 
-var a = 34      # Type: any
+var h: int = 3
 
-var b: int = 50 # Type: int
+h = ''
 
-println a
-println b
-
-var q: int = 89, w = 34, e = 54
-
-println q
-println w
-println e
+println h
