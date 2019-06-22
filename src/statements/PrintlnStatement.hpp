@@ -17,20 +17,33 @@
  * Email: 1171840237@qq.com
  * Github: https://github.com/turaiiao
  */
-#ifndef MEET_STATEMENT_H
-#define MEET_STATEMENT_H
+#ifndef MEET_PRINTLN_STATEMENT_H
+#define MEET_PRINTLN_STATEMENT_H
 
-#include <iostream>
+#include "../Statement.hpp"
+#include "../Expression.hpp"
 
-#define STATEMENT_EXPRESSION "STATEMENT_EXPRESSION"
-#define STATEMENT_VAR        "STATEMENT_VAR"
-#define STATEMENT_PRINTLN    "STATEMENT_PRINTLN"
-
-class Statement {
+class PrintlnStatement: public Statement {
     public:
-        virtual ~Statement() = default;
-        virtual std::string classType() = 0;
-        virtual std::string toString() = 0;
+        Expression* expression;
+
+        bool cls;
+
+        PrintlnStatement(Expression* expression, bool cls): expression(std::move(expression)), cls(cls) {}
+
+        ~PrintlnStatement() {
+            delete expression;
+            delete &cls;
+        }
+
+        std::string classType() {
+            return STATEMENT_PRINTLN;
+        }
+
+        std::string toString() {
+            return "[ PrintlnStatement: expr = " + expression->toString() + 
+                ", cls = " + (cls ? "true" : "false") + " ]";
+        }
 };
 
 #endif

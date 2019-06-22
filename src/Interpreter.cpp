@@ -66,6 +66,9 @@ void Interpreter::execute() {
         if (look()->classType() == STATEMENT_VAR)
             executeVarStatement();
 
+        if (look()->classType() == STATEMENT_PRINTLN)
+            executePrintlnStatement();
+
         this->size = removeStatement(this->position ++);
     }
 }
@@ -174,19 +177,14 @@ Value Interpreter::executeLogicalExpression(Expression* expr) {
 Value Interpreter::executeVariableExpression(Expression* expr) {
     VariableExpression* varExpr = (VariableExpression *) expr;
 
-    Value a = this->get(varExpr->name.literal);
-
-    if (this->replMode == false)
-        a.printValue();
-
-    return a;
+    return this->get(varExpr->name.literal);
 }
 
 Value Interpreter::executeExpressionStatement() {
     Value a = executeExpression(((ExpressionStatement *) look())->expression);
 
     if (this->replMode)
-        a.printValue();
+        a.printLineValue();
 
     return a;
 }
@@ -196,4 +194,15 @@ void Interpreter::executeVarStatement() {
 
     for (auto i : stmt->list)
         executeExpression(i);
+}
+
+void Interpreter::executePrintlnStatement() {
+    PrintlnStatement* stmt = (PrintlnStatement *) look();
+
+    Value a = executeExpression(stmt->expression);
+
+    if (stmt->cls)
+        a.printLineValue();
+    else
+        a.printValue();
 }

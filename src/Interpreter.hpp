@@ -38,6 +38,7 @@
 
 #include "statements/ExpressionStatement.hpp"
 #include "statements/VarStatement.hpp"
+#include "statements/PrintlnStatement.hpp"
 
 class Interpreter {
     private:
@@ -56,6 +57,7 @@ class Interpreter {
         void assign(std::string name, Value value);
 
         void executeVarStatement();
+        void executePrintlnStatement();
 
         Value get(std::string);
 

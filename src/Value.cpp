@@ -40,6 +40,29 @@ Value::Value() {
 
 void Value::printValue() {
     if (this->valueNumber) {
+        std::cout << this->numberValue;
+
+        return;
+    }
+
+    if (this->valueString) {
+        std::cout << this->stringValue;
+
+        return;
+    }
+
+    if (this->valueBool) {
+        this->boolValue ? std::cout << "true" << std::endl : std::cout << "false";
+
+        return;
+    }
+
+    if (this->valueNull)
+        std::cout << "null";
+}
+
+void Value::printLineValue() {
+    if (this->valueNumber) {
         std::cout << this->numberValue << std::endl;
 
         return;

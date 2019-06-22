@@ -1,2 +1,2 @@
 
-var her = 'ä½™æ˜¥èŽ‰', me = 'é»„è'.then -> for 1 to 3000 -> println '$me çˆ± $her $i é';
+var her = 'Óà´ºÀò', me = '»ÆÝ¼'.then -> for 1 to 3000 -> println '$me °® $her $i ±é'

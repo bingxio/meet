@@ -57,6 +57,7 @@ class Value {
         std::string stringValue = std::string();
 
         void printValue();
+        void printLineValue();
 };
 
 Value backValueWithToken(Token token);

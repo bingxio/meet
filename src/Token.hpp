@@ -93,6 +93,8 @@ typedef std::string TokenType;
 #define TOKEN_FOR      "for"
 #define TOKEN_WHILE    "while"
 #define TOKEN_MATCH    "match"
+#define TOKEN_PRINTLN  "println"
+#define TOKEN_PRINT    "print"
 
 #define TOKEN_EOF     "EOF"
 

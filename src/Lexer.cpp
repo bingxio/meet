@@ -63,6 +63,8 @@ Lexer::Lexer(std::string source) {
     this->keywords["for"]      = TOKEN_FOR;
     this->keywords["while"]    = TOKEN_WHILE;
     this->keywords["match"]    = TOKEN_MATCH;
+    this->keywords["println"]  = TOKEN_PRINTLN;
+    this->keywords["print"]    = TOKEN_PRINT;
 }
 
 std::vector<Token> Lexer::tokenizer() {

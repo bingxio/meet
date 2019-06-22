@@ -70,6 +70,10 @@ void Parser::error(std::string message) {
 Statement* Parser::statement() {
     if (look(TOKEN_VAR))
         return varStatement();
+    
+    if (look(TOKEN_PRINTLN) || look(TOKEN_PRINT))
+        return printlnStatement();
+
     return expressionStatement();
 }
 
@@ -262,4 +266,10 @@ Statement* Parser::varStatement() {
     }
 
     return new VarStatement(list);
+}
+
+Statement* Parser::printlnStatement() {
+    bool cls = look(-1).literal == TOKEN_PRINTLN ? true : false;
+
+    return new PrintlnStatement(expression(), cls);
 }
