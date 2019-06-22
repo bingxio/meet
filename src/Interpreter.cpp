@@ -19,8 +19,7 @@
  */
 #include "Interpreter.hpp"
 
-Interpreter::Interpreter(std::vector<Statement *> statements, std::map<std::string, Value>* environment,
-        bool replMode) {
+Interpreter::Interpreter(std::vector<Statement *> statements, std::map<std::string, Value>* environment) {
     this->statements = std::move(statements);
     this->environment = environment;
     this->size = this->statements.size();
@@ -32,6 +31,13 @@ void Interpreter::assign(std::string name, Value value) {
     this->environment->insert(std::pair<std::string, Value>(name, value));
 }
 
+void Interpreter::reAssign(std::string name, Value value) {
+    std::map<std::string, Value>::iterator a = this->environment->find(name);
+
+    this->environment->erase(a);
+    this->assign(name, value);
+}
+
 Value Interpreter::get(std::string name) {
     std::map<std::string, Value>::iterator a = this->environment->find(name);
 
@@ -39,6 +45,10 @@ Value Interpreter::get(std::string name) {
         throw std::runtime_error("undefined variable: '" + name + "'.");
 
     return a->second;
+}
+
+bool Interpreter::haveObject(std::string name) {
+    return this->environment->find(name) != this->environment->end();
 }
 
 Statement* Interpreter::look() {
@@ -157,7 +167,27 @@ Value Interpreter::executeAssignExpression(Expression* expr) {
 
     Value value = executeExpression(assignExpr->initializer);
 
-    this->assign(assignExpr->name.literal, value);
+    if (assignExpr->isVar) {
+        if (assignExpr->typed.literal == TOKEN_ANY)
+            value.varAny = true;
+        else if (assignExpr->typed.literal == TOKEN_INT)
+            value.varNumber = true;
+        else if (assignExpr->typed.literal == TOKEN_STRING)
+            value.varString = true;
+        else if (assignExpr->typed.literal == TOKEN_BOOLEAN)
+            value.varBoolean = true;
+
+        this->assign(assignExpr->name.literal, value);
+    } else {
+        Value a = this->get(assignExpr->name.literal);
+
+        if ((a.varNumber && value.varNumber == false) || (a.varString && value.varString == false) ||
+                (a.varBoolean && value.varBoolean == false)) {
+                    throw std::runtime_error("interpret error: cannot defined as other type.");
+                }
+
+        this->reAssign(assignExpr->name.literal, value);
+    }
 
     return value;
 }
@@ -182,9 +212,6 @@ Value Interpreter::executeVariableExpression(Expression* expr) {
 
 Value Interpreter::executeExpressionStatement() {
     Value a = executeExpression(((ExpressionStatement *) look())->expression);
-
-    if (this->replMode)
-        a.printLineValue();
 
     return a;
 }

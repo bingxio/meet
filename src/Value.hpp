@@ -56,6 +56,11 @@ class Value {
         bool boolValue = false;
         std::string stringValue = std::string();
 
+        bool varAny = false;
+        bool varNumber = false;
+        bool varString = false;
+        bool varBoolean = false;
+
         void printValue();
         void printLineValue();
 };

@@ -51,10 +51,12 @@ class Interpreter {
         int removeStatement(int pos);
 
         bool replMode = false;
+        bool haveObject(std::string name);
 
         Statement* look();
 
         void assign(std::string name, Value value);
+        void reAssign(std::string name, Value value);
 
         void executeVarStatement();
         void executePrintlnStatement();
@@ -71,8 +73,7 @@ class Interpreter {
         Value executeLogicalExpression(Expression* expr);
         Value executeVariableExpression(Expression* expr);
     public:
-        explicit Interpreter(std::vector<Statement *> statements, std::map<std::string, Value>* environment,
-            bool replMode);
+        explicit Interpreter(std::vector<Statement *> statements, std::map<std::string, Value>* environment);
 
         void execute();
 };

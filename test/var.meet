@@ -15,5 +15,7 @@ g = false
 
 var h: int = 3 # type of specified variable.
 
+# 可以在变量名后指定类型，即可声明固定类型的变量。
+
 h = 12
 h = 1.2 # error in type: cannot be defined as other types, the current type is an integer.

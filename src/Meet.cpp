@@ -39,7 +39,7 @@ static void partitionLine() {
     cout << endl;
 }
 
-static void run(const string& source, bool replMode);
+static void run(const string& source);
 
 static void repl() {
     char* line = (char *) malloc(1024);
@@ -54,7 +54,7 @@ static void repl() {
         if (strlen(line) == 0)
             continue;
         
-        run(line, true);
+        run(line);
     }
 }
 
@@ -71,12 +71,12 @@ static void runFile(const char* path) {
 
     string source((istreambuf_iterator<char>(fileStream)), (istreambuf_iterator<char>()));
 
-    run(source, false);
+    run(source);
 
     fileStream.close();
 }
 
-static void run(const string& source, bool replMode) {
+static void run(const string& source) {
     int i = 0;
 
     Lexer* lexer = new Lexer(source);
@@ -104,7 +104,7 @@ static void run(const string& source, bool replMode) {
     i = 0;
 #endif
 
-    Interpreter* interpret = new Interpreter(statements, environment, replMode);
+    Interpreter* interpret = new Interpreter(statements, environment);
 
     interpret->execute();
 
