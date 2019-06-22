@@ -167,6 +167,14 @@ Value Interpreter::executeAssignExpression(Expression* expr) {
 
     Value value = executeExpression(assignExpr->initializer);
 
+    value.varAny = true;
+
+    if ((value.valueNumber && assignExpr->typed.literal != TOKEN_INT) ||
+        (value.valueString && assignExpr->typed.literal != TOKEN_STRING) ||
+        (value.valueBool && assignExpr->typed.literal != TOKEN_BOOLEAN)) {
+            throw std::runtime_error("interpret error: the initialization value type is different from the specified type.");
+        }
+
     if (assignExpr->isVar) {
         if (assignExpr->typed.literal == TOKEN_ANY)
             value.varAny = true;
@@ -181,10 +189,10 @@ Value Interpreter::executeAssignExpression(Expression* expr) {
     } else {
         Value a = this->get(assignExpr->name.literal);
 
-        if ((a.varNumber && value.varNumber == false) || (a.varString && value.varString == false) ||
-                (a.varBoolean && value.varBoolean == false)) {
-                    throw std::runtime_error("interpret error: cannot defined as other type.");
-                }
+        if ((a.varNumber && value.valueNumber == false) || (a.varString && value.valueString == false) ||
+            (a.varBoolean && value.valueBool == false)) {
+                throw std::runtime_error("interpret error: cannot defined as other type.");
+        }
 
         this->reAssign(assignExpr->name.literal, value);
     }

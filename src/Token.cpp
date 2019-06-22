@@ -27,7 +27,7 @@ Token::Token(TokenType type, std::string literal, int line): literal(std::move(l
 
 bool isTyped(const Token& token) {
     return token.type == TOKEN_INT || token.type == TOKEN_STRING || token.type == TOKEN_FLOAT ||
-        token.type == TOKEN_LIST || token.type == TOKEN_BOOLEAN;
+        token.type == TOKEN_LIST || token.type == TOKEN_BOOLEAN || token.type == TOKEN_ANY;
 }
 
 bool Token::operator < (Token token) const {
