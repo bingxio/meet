@@ -214,6 +214,9 @@ Expression* Parser::primary() {
     if (look(TOKEN_VALUE_IDENTIFIER))
         return new VariableExpression(previous());
     
+    if (look(TOKEN_NULL) || look(TOKEN_TRUE) || look(TOKEN_FALSE))
+        return new LiteralExpression(previous());
+
     if (look(TOKEN_LPAREN)) {
         Expression* expr = expression();
 
@@ -222,9 +225,6 @@ Expression* Parser::primary() {
         
         return new GroupExpression(expr);
     }
-
-    if (look(TOKEN_NULL) || look(TOKEN_TRUE) || look(TOKEN_FALSE))
-        return new LiteralExpression(previous());
 
     error("syntax error: illegal expression, token '" + look().literal + "'.");
 
@@ -264,6 +264,8 @@ Statement* Parser::varStatement() {
 
         firstParseStatement = false;
     }
+
+    for (auto i : list) i->isVar = true;
 
     return new VarStatement(list);
 }

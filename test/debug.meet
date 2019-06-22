@@ -1,7 +1,6 @@
 
-# this is debug file.
+# this is a debug file.
 
-println 'Meet Programming Language !'
+var a: int = 12
 
-print 1
-print 2
+a = 45

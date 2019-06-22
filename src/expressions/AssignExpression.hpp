@@ -31,6 +31,8 @@ class AssignExpression: public Expression {
 
         Token typed;
 
+        bool isVar = false;
+
         AssignExpression(Token name, Expression* initializer, Token typed): name(std::move(name)),
             initializer(std::move(initializer)), typed(std::move(typed)) {}
 
@@ -38,6 +40,7 @@ class AssignExpression: public Expression {
             delete &name;
             delete initializer;
             delete &typed;
+            delete &isVar;
         }
 
         std::string classType() {
@@ -46,7 +49,7 @@ class AssignExpression: public Expression {
 
         std::string toString() {
             return "[ AssignExpression: name = " + name.literal + ", initializer = " +
-                initializer->toString() + " ]";
+                initializer->toString() + ", isVar = " + (isVar ? "true" : "false") + " ]";
         }
 };
 

@@ -1,0 +1,9 @@
+
+println 'Meet Programming Language !'
+
+print 1
+print 2
+
+println ''
+
+println 1 + 2 * 3 - (2 + 5) + 0.05
