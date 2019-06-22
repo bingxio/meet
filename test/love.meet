@@ -1,0 +1,2 @@
+
+var her = '余春莉', me = '黄菁'.then -> for 1 to 3000 -> println '$me 爱 $her $i 遍';
