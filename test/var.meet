@@ -15,3 +15,7 @@ var e: int = 2300
 # e = c # interpret error !
 
 println e
+
+var f: float = 1.2
+
+println f

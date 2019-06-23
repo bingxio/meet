@@ -27,7 +27,8 @@
 
 class Value {
     public:
-        explicit Value(double value);
+        explicit Value(int value);
+        explicit Value(float value);
         explicit Value(std::string value);
         explicit Value(bool value);
 
@@ -48,21 +49,26 @@ class Value {
         Value operator && (const Value& b);
 
         bool valueNumber = false;
+        bool valueFloat = false;
         bool valueString = false;
         bool valueBool = false;
         bool valueNull = false;
 
-        double numberValue = 0;
+        int numberValue = 0;
+        float floatValue = 0;
         bool boolValue = false;
         std::string stringValue = std::string();
 
         bool varAny = false;
         bool varNumber = false;
+        bool varFloat = false;
         bool varString = false;
         bool varBoolean = false;
 
         void printValue();
         void printLineValue();
+
+        std::string toString();
 };
 
 Value backValueWithToken(Token token);

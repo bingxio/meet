@@ -111,6 +111,14 @@ static void run(const string& source) {
     delete lexer;
     delete parser;
     delete interpret;
+
+#ifdef DEBUG_ENVIR
+    for (auto obj : *environment)
+        printf("%-5d %-25s : %s \n", i ++, obj.first.c_str(), obj.second.toString().c_str());
+    partitionLine();
+
+    i = 0;
+#endif
 }
 
 int main(int argc, char** argv) {

@@ -22,5 +22,6 @@
 
 #define DEBUG_LEXER
 #define DEBUG_PARSE
+#define DEBUG_ENVIR
 
 #endif
