@@ -1,2 +1,4 @@
 
-var a = 'Óà´ºÀò, b = '»Æİ¼' -> for var i = 0; i < 10; i ++ -> println i;
+var her = 'ä½™æ˜¥è‰', me = 'é»„è' -> for var i = 1000; i <= 3000; i += 1 ->
+
+    println '$me çˆ± $her $i é'
