@@ -35,7 +35,12 @@ Value::Value(std::string value) {
     bool haveDollarString = false;
 
     for (int i = 0; i < value.length(); i ++) {
-        if (value.at(i) == '$') {
+        char c = value.at(i);
+
+        if (isspace(c) || isblank(c))
+            continue;
+
+        if (c == '$') {
             haveDollarString = true;
 
             continue;
@@ -44,18 +49,23 @@ Value::Value(std::string value) {
         if (haveDollarString) {
             std::stringstream stream;
 
-            
+            while (isalpha(c)) {
+                if (isspace(c) || isblank(c))
+                    break;
+                else {
+                    stream << c;
 
-            // while (isalpha(value.at(i)) && i < value.length()) {
-            //     stream << value.at(i);
+                    c = value.at(++ i);
+                }
+            }
 
-            //     i ++;
-            // }
+            values.push_back(stream.str());
+
+            haveDollarString = false;
+
+            std::cout << "pushed value = " << stream.str() << std::endl;
         }
     }
-
-    for (auto i : values)
-        std::cout << "value = " << i << std::endl;
 
     this->valueString = true;
     this->stringValue = std::move(value);

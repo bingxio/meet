@@ -1,7 +1,4 @@
 
 # this is a debug file.
 
-var turaiiao: string = 'hello, '
-var frank: string = 'world !'
-
-println '$turaiiao $frank'
+var a = '$hello world !'
