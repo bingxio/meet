@@ -1,4 +1,9 @@
 
 # this is a debug file.
 
-var a = '$hello world !'
+var a: string = 'hello,'
+var b: string = ' world !'
+
+var c = '$a $b'
+
+println c

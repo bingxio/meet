@@ -49,20 +49,24 @@ Value::Value(std::string value) {
         if (haveDollarString) {
             std::stringstream stream;
 
-            while (isalpha(c)) {
-                if (isspace(c) || isblank(c))
-                    break;
-                else {
-                    stream << c;
+            while (isalpha(c) && i < value.length()) {
+                stream << c;
 
-                    c = value.at(++ i);
-                }
+                if (i >= value.length() - 1)
+                    break;
+
+                c = value.at(++ i);
             }
 
-            values.push_back(stream.str());
+            if (stream.str().length() != 0)
+                values.push_back(stream.str());
 
-            haveDollarString = false;
+            c == '$' ? haveDollarString = true : haveDollarString = false;
         }
+    }
+
+    for (auto i : values) {
+        std::cout << "value = " << i << std::endl;
     }
 
     this->valueString = true;
