@@ -1,11 +1,7 @@
 
 # this is a debug file.
 
-var a: string = 'hello,'
-var b: string = 'world !'
+var turaiiao: string = 'hello, '
+var frank: string = 'world !'
 
-println a + ' ' + b
-
-var c: string = '$a $b'
-
-println c
+println '$turaiiao $frank'
