@@ -1,0 +1,6 @@
+
+var a: string = 'hello'
+var c: string = 'world'
+
+println a + ' ' + c
+println '$a $c'

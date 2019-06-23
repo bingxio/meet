@@ -30,45 +30,6 @@ Value::Value(float value) {
 }
 
 Value::Value(std::string value) {
-    std::vector<std::string> values = std::vector<std::string>();
-
-    bool haveDollarString = false;
-
-    for (int i = 0; i < value.length(); i ++) {
-        char c = value.at(i);
-
-        if (isspace(c) || isblank(c))
-            continue;
-
-        if (c == '$') {
-            haveDollarString = true;
-
-            continue;
-        }
-
-        if (haveDollarString) {
-            std::stringstream stream;
-
-            while (isalpha(c) && i < value.length()) {
-                stream << c;
-
-                if (i >= value.length() - 1)
-                    break;
-
-                c = value.at(++ i);
-            }
-
-            if (stream.str().length() != 0)
-                values.push_back(stream.str());
-
-            c == '$' ? haveDollarString = true : haveDollarString = false;
-        }
-    }
-
-    for (auto i : values) {
-        std::cout << "value = " << i << std::endl;
-    }
-
     this->valueString = true;
     this->stringValue = std::move(value);
 }
@@ -146,9 +107,9 @@ std::string Value::toString() {
     if (this->valueFloat)  return std::to_string(this->floatValue);
     if (this->valueString) return this->stringValue;
     if (this->valueBool)   return (this->boolValue) ? "true" : "false";
-    if (this->valueBool)   return "null";
+    if (this->valueNull)   return "null";
 
-    return "undefind";
+    throw std::runtime_error("interpret error: cannot to string.");
 }
 
 Value backValueWithToken(Token token) {
@@ -157,9 +118,6 @@ Value backValueWithToken(Token token) {
 
     if (token.type == TOKEN_VALUE_FLOAT)
         return Value(std::stof(token.literal));
-
-    if (token.type == TOKEN_VALUE_STRING)
-        return Value(token.literal);
 
     if (token.type == TOKEN_TRUE)
         return Value(true);

@@ -109,7 +109,57 @@ Value Interpreter::executeExpression(Expression* expr) {
 }
 
 Value Interpreter::executeLiteralExpression(Expression* expr) {
-    return backValueWithToken(((LiteralExpression *) expr)->token);
+    Token token = ((LiteralExpression *) expr)->token;
+
+    if (token.type == TOKEN_VALUE_STRING) {
+        std::stringstream data;
+
+        bool haveDollarString = false;
+
+        for (int i = 0; i < token.literal.length(); ) {
+            char c = token.literal.at(i);
+
+            if (c == '$') {
+                haveDollarString = true;
+
+                i ++;
+
+                continue;
+            }
+
+            if (haveDollarString) {
+                std::stringstream stream;
+
+                while (isalpha(c) && i < token.literal.length()) {
+                    stream << c;
+
+                    if (i >= token.literal.length() - 1)
+                        break;
+
+                    c = token.literal.at(++ i);
+                }
+
+                if (stream.str().length() != 0) {
+                    data << this->get(stream.str()).toString();
+
+                    if (i == token.literal.length() - 1)
+                        i ++;
+                }
+
+                c == '$' ? haveDollarString = true : haveDollarString = false;
+
+                continue;
+            }
+
+            data << c;
+
+            i ++;
+        }
+
+        return Value(data.str());
+    }
+
+    return backValueWithToken(token);
 }
 
 Value Interpreter::executeBinaryExpression(Expression* expr) {
