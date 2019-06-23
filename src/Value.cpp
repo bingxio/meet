@@ -62,8 +62,6 @@ Value::Value(std::string value) {
             values.push_back(stream.str());
 
             haveDollarString = false;
-
-            std::cout << "pushed value = " << stream.str() << std::endl;
         }
     }
 
