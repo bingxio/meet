@@ -146,7 +146,7 @@ Value Interpreter::executeLiteralExpression(Expression* expr) {
                         i ++;
                 }
 
-                c == '$' ? haveDollarString = true : haveDollarString = false;
+                haveDollarString = c == '$';
 
                 continue;
             }
