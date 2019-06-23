@@ -171,7 +171,8 @@ Value Interpreter::executeAssignExpression(Expression* expr) {
 
     if (assignExpr->isVar) {
         if (this->haveObject(assignExpr->name.literal))
-            throw std::runtime_error("interpret error: repeatedly defining variavle '" + assignExpr->name.literal + "'.");
+            throw std::runtime_error("interpret error: repeatedly defining variavle '" + 
+                assignExpr->name.literal + "'.");
 
         if (assignExpr->typed.literal != "") {
             if (assignExpr->typed.literal == TOKEN_ANY)
@@ -186,7 +187,8 @@ Value Interpreter::executeAssignExpression(Expression* expr) {
                 value.varBoolean = true;
 
             if (!value.varNumber && !value.varFloat && !value.varString && !value.varBoolean)
-                throw std::runtime_error("interpret error: the initialization value type is defferent from the specified type.");
+                throw std::runtime_error("interpret error: the initialization value type is " + 
+                    "defferent from the specified type.");
         }
 
         this->assign(assignExpr->name.literal, value);
