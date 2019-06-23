@@ -30,7 +30,7 @@ Value::Value(float value) {
 }
 
 Value::Value(std::string value) {
-    std::stringstream stream;
+    std::vector<std::string> values = std::vector<std::string>();
 
     bool haveDollarString = false;
 
@@ -41,14 +41,21 @@ Value::Value(std::string value) {
             continue;
         }
 
-        if (haveDollarString && isalpha(value.at(i)))
-            stream << value.at(i);
+        if (haveDollarString) {
+            std::stringstream stream;
 
-        if (isspace(value.at(i)))
-            break;
+            
+
+            // while (isalpha(value.at(i)) && i < value.length()) {
+            //     stream << value.at(i);
+
+            //     i ++;
+            // }
+        }
     }
 
-    std::cout << "value = " << stream.str() << std::endl;
+    for (auto i : values)
+        std::cout << "value = " << i << std::endl;
 
     this->valueString = true;
     this->stringValue = std::move(value);
