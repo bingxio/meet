@@ -22,6 +22,7 @@
 #include <cstring>
 #include <cstdio>
 #include <cstdlib>
+#include <sstream>
 
 #include "Lexer.hpp"
 #include "Token.hpp"
@@ -61,6 +62,17 @@ static void repl() {
 }
 
 static void runFile(const char* path) {
+    char* suffix = (char *) malloc(8);
+
+    for (int i = 1; i < 6; i ++)
+        suffix[i- 1] = path[strlen(path) - i];
+
+    if (strcmp(suffix, "teem.") != 0) {
+        cout << "read .meet file only." << endl;
+
+        exit(64);
+    }
+
     ifstream fileStream;
 
     fileStream.open(path);
@@ -76,6 +88,8 @@ static void runFile(const char* path) {
     run(source);
 
     fileStream.close();
+
+    delete suffix;
 }
 
 static void run(const string& source) {
