@@ -53,6 +53,7 @@ typedef std::string TokenType;
 #define TOKEN_MARK          "'"
 #define TOKEN_COLON         ":"
 #define TOKEN_MINUS_GREATER "->"
+#define TOKEN_DOLLAR        "$"
 
 #define TOKEN_VALUE_INT         "TOKEN_VALUE_INT"
 #define TOKEN_VALUE_FLOAT       "TOKEN_VALUE_FLOAT"

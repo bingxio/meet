@@ -30,6 +30,19 @@ Value::Value(float value) {
 }
 
 Value::Value(std::string value) {
+    std::stringstream stream;
+
+    for (int i = 0; i < value.length(); i ++) {
+        char c = value.at(i);
+
+        if (c == '$') {
+            while (isalpha(value.at(++ i)) != false)
+                stream << value.at(i);
+
+            std::cout << "value = " << stream.str() << std::endl;
+        }
+    }
+
     this->valueString = true;
     this->stringValue = std::move(value);
 }

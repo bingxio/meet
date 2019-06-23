@@ -64,6 +64,7 @@ std::string getTokenLiteralWithType(const TokenType& tokenType) {
     if (tokenType == TOKEN_MARK)             return "TOKEN_MARK";
     if (tokenType == TOKEN_COLON)            return "TOKEN_COLON";
     if (tokenType == TOKEN_MINUS_GREATER)    return "TOKEN_MINUS_GREATER";
+    if (tokenType == TOKEN_DOLLAR)           return "TOKEN_DOLLAR";
     if (tokenType == TOKEN_VALUE_INT)        return "TOKEN_VALUE_INT";
     if (tokenType == TOKEN_VALUE_FLOAT)      return "TOKEN_VALUE_FLOAT";
     if (tokenType == TOKEN_VALUE_STRING)     return "TOKEN_VALUE_STRING";

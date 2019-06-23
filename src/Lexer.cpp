@@ -273,6 +273,9 @@ void Lexer::lexSymbol() {
         case '%':
             addToken(TOKEN_MODULAR);
             break;
+        case '$':
+            addToken(TOKEN_DOLLAR);
+            break;
         default:
             error("syntax error: unexpect character '" + std::string(1, look()) + "'.");
     }

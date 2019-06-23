@@ -1,8 +1,11 @@
 
-# this is debug file.
+# this is a debug file.
 
-var h: int = 3
+var a: string = 'hello,'
+var b: string = 'world !'
 
-h = ''
+println a + ' ' + b
 
-println h
+var c: string = '$a $b'
+
+println c

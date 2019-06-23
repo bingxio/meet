@@ -22,6 +22,7 @@
 
 #include <iostream>
 #include <map>
+#include <sstream>
 
 #include "Token.hpp"
 
