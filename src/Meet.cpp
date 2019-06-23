@@ -21,10 +21,10 @@
 #include <fstream>
 #include <cstring>
 #include <cstdio>
+#include <cstdlib>
 
 #include "Lexer.hpp"
 #include "Token.hpp"
-#include "Common.hpp"
 #include "Parser.hpp"
 #include "Interpreter.hpp"
 #include "Value.hpp"
@@ -32,6 +32,8 @@
 using namespace std;
 
 map<string, Value> *environment = new map<string, Value>();
+
+bool isDebugMode = false;
 
 static void partitionLine() {
     for (int i = 0; i < 92; i ++)
@@ -83,26 +85,26 @@ static void run(const string& source) {
 
     vector<Token> tokens = lexer->tokenizer();
 
-#ifdef DEBUG_LEXER
-    for (auto token : tokens)
-        printf("%-5d %-25s : %-50s : %5d \n", i ++, getTokenLiteralWithType(token.type).c_str(), 
-            token.literal.c_str(), token.line);
-    partitionLine();
+    if (isDebugMode) {
+        for (auto token : tokens)
+            printf("%-5d %-25s : %-50s : %5d \n", i ++, getTokenLiteralWithType(token.type).c_str(), 
+                token.literal.c_str(), token.line);
+        partitionLine();
 
-    i = 0;
-#endif
+        i = 0;
+    }
 
     Parser* parser = new Parser(tokens);
 
     vector<Statement *> statements = parser->parseProgram();
 
-#ifdef DEBUG_PARSE
-    for (auto stmt : statements)
-        printf("%-5d %-50s \n", i ++, stmt->toString().c_str());
-    partitionLine();
+    if (isDebugMode) {
+        for (auto stmt : statements)
+            printf("%-5d %-50s \n", i ++, stmt->toString().c_str());
+        partitionLine();
 
-    i = 0;
-#endif
+        i = 0;
+    }
 
     Interpreter* interpret = new Interpreter(statements, environment);
 
@@ -112,21 +114,41 @@ static void run(const string& source) {
     delete parser;
     delete interpret;
 
-#ifdef DEBUG_ENVIR
-    for (auto obj : *environment)
-        printf("%-5d %-25s : %s \n", i ++, obj.first.c_str(), obj.second.toString().c_str());
-    partitionLine();
+    if (isDebugMode) {
+        for (auto obj : *environment)
+            printf("%-5d %-25s : %s \n", i ++, obj.first.c_str(), obj.second.toString().c_str());
+        partitionLine();
 
-    i = 0;
-#endif
+        i = 0;
+    }
 }
 
 int main(int argc, char** argv) {
-    if (argc == 1)
+    if (argc == 1) repl();
+
+    if (argc == 2 && strcmp(argv[1], "-d") == 0) {
+        isDebugMode = true;
+
         repl();
-    else if (argc == 2)
+
+        return 0;
+    }
+
+    if (argc == 2) {
         runFile(argv[1]);
-    else
-        cout << "usage: " << argv[0] << " [ .meet file path ] " << endl;
+
+        return 0;
+    }
+
+    if (argc == 3 && strcmp(argv[2], "-d") == 0) {
+        isDebugMode = true;
+
+        runFile(argv[1]);
+
+        return 0;
+    }
+
+    cout << "usage: " << argv[0] << " [ .meet file path ] " << endl;
+
     return 0;
 }
