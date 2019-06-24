@@ -26,11 +26,14 @@
 #define STATEMENT_VAR        "STATEMENT_VAR"
 #define STATEMENT_PRINTLN    "STATEMENT_PRINTLN"
 #define STATEMENT_BLOCK      "STATEMENT_BLOCK"
+#define STATEMENT_FOR        "STATEMENT_FOR"
 
 class Statement {
     public:
         virtual ~Statement() = default;
-        virtual std::string classType() = 0;
+        
+        std::string classType;
+        
         virtual std::string toString() = 0;
 };
 

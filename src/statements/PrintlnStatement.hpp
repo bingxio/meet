@@ -36,9 +36,7 @@ class PrintlnStatement: public Statement {
             delete &cls;
         }
 
-        std::string classType() {
-            return STATEMENT_PRINTLN;
-        }
+        std::string classType = STATEMENT_PRINTLN;
 
         std::string toString() {
             return "[ PrintlnStatement: expr = " + expression->toString() + 

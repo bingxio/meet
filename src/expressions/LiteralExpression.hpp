@@ -33,9 +33,7 @@ class LiteralExpression: public Expression {
             delete &token;
         }
 
-        std::string classType() {
-            return EXPRESSION_LITERAL;
-        }
+        std::string classType = EXPRESSION_LITERAL;
 
         std::string toString() {
             return "[ LiteralExpression: token = " + token.literal + " ]";

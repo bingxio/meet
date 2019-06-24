@@ -73,16 +73,16 @@ int Interpreter::removeStatement(int pos) {
 
 void Interpreter::execute() {
     while (this->size) {
-        if (look()->classType() == STATEMENT_EXPRESSION)
+        if (look()->classType == STATEMENT_EXPRESSION)
             executeExpressionStatement(look());
         
-        if (look()->classType() == STATEMENT_VAR)
+        if (look()->classType == STATEMENT_VAR)
             executeVarStatement(look());
 
-        if (look()->classType() == STATEMENT_PRINTLN)
+        if (look()->classType == STATEMENT_PRINTLN)
             executePrintlnStatement(look());
 
-        if (look()->classType() == STATEMENT_BLOCK)
+        if (look()->classType == STATEMENT_BLOCK)
             executeBlockStatement(look());
 
         this->size = removeStatement(this->position ++);
@@ -90,39 +90,39 @@ void Interpreter::execute() {
 }
 
 void Interpreter::executeStatement(Statement* stmt) {
-    if (stmt->classType() == STATEMENT_EXPRESSION)
+    if (stmt->classType == STATEMENT_EXPRESSION)
         executeExpressionStatement(stmt);
 
-    if (stmt->classType() == STATEMENT_VAR)
+    if (stmt->classType == STATEMENT_VAR)
         executeVarStatement(stmt);
 
-    if (stmt->classType() == STATEMENT_PRINTLN)
+    if (stmt->classType == STATEMENT_PRINTLN)
         executePrintlnStatement(stmt);
 
-    if (stmt->classType() == STATEMENT_BLOCK)
+    if (stmt->classType == STATEMENT_BLOCK)
         executeBlockStatement(stmt);
 }
 
 Value Interpreter::executeExpression(Expression* expr) {
-    if (expr->classType() == EXPRESSION_LITERAL)
+    if (expr->classType == EXPRESSION_LITERAL)
         return executeLiteralExpression(expr);
 
-    if (expr->classType() == EXPRESSION_BINARY)
+    if (expr->classType == EXPRESSION_BINARY)
         return executeBinaryExpression(expr);
 
-    if (expr->classType() == EXPRESSION_GROUP)
+    if (expr->classType == EXPRESSION_GROUP)
         return executeGroupExpression(expr);
 
-    if (expr->classType() == EXPRESSION_UNARY)
+    if (expr->classType == EXPRESSION_UNARY)
         return executeUnaryExpression(expr);
 
-    if (expr->classType() == EXPRESSION_ASSIGN)
+    if (expr->classType == EXPRESSION_ASSIGN)
         return executeAssignExpression(expr);
 
-    if (expr->classType() == EXPRESSION_LOGICAL)
+    if (expr->classType == EXPRESSION_LOGICAL)
         return executeLogicalExpression(expr);
 
-    if (expr->classType() == EXPRESSION_VARIABLE)
+    if (expr->classType == EXPRESSION_VARIABLE)
         return executeVariableExpression(expr);
 
     throw std::runtime_error("interpret error: unknow expression '" + expr->toString() + "'.");

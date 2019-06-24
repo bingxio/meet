@@ -34,9 +34,7 @@ class ExpressionStatement: public Statement {
             delete expression;
         }
 
-        std::string classType() {
-            return STATEMENT_EXPRESSION;
-        }
+        std::string classType = STATEMENT_EXPRESSION;
 
         std::string toString() {
             return "[ ExpressionStatement: expr = " + expression->toString() + " ]";

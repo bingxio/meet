@@ -17,35 +17,35 @@
  * Email: 1171840237@qq.com
  * Github: https://github.com/turaiiao
  */
-#ifndef MEET_BLOCK_STATEMENT_H
-#define MEET_BLOCK_STATEMENT_H
+#ifndef MEET_FOR_STATEMENT_H
+#define MEET_FOR_STATEMENT_H
 
-#include <vector>
 #include <sstream>
 
 #include "../Statement.hpp"
 
-class BlockStatement: public Statement {
+#include "BlockStatement.hpp"
+
+class ForStatement: public Statement {
     public:
-        std::vector<Statement *> block;
+        Statement* initializer;
+        Statement* condition;
+        Statement* renovate;
 
-        BlockStatement(std::vector<Statement *> block): block(std::move(block)) {}
+        BlockStatement* block;
 
-        ~BlockStatement() {
-            block.clear();
+        ForStatement(Statement* a, Statement* b, Statement* c, BlockStatement* d):
+            initializer(a), condition(b), renovate(c), block(d) {}
 
-            std::vector<Statement *>().swap(block);
-        }
-
-        std::string classType = STATEMENT_BLOCK;
+        std::string classType = STATEMENT_FOR;
 
         std::string toString() {
             std::stringstream data;
 
-            data << "[ BlockStatement: block = ";
+            data << "[ ForStatement: initializer = " << initializer->toString() << ", condition = ";
+            data << condition->toString() << ", renovate = " << renovate->toString() << ", block = ";
 
-            for (auto i : block)
-                data << i->toString() << " | ";
+            data << block->toString() << " ]";
 
             return data.str();
         }

@@ -77,6 +77,9 @@ Statement* Parser::statement() {
     if (look(TOKEN_LBRACE))
         return blockStatement();
 
+    if (look(TOKEN_FOR))
+        return forStatement();
+
     return expressionStatement();
 }
 
@@ -87,10 +90,12 @@ Expression* Parser::expression() {
 Expression* Parser::assignment() {
     Expression* expr = logicalOr();
 
+    std::cout << expr->classType << std::endl;
+
     if (look(TOKEN_EQUAL)) {
         Expression* initializer = assignment();
 
-        if (expr->classType() == EXPRESSION_VARIABLE) {
+        if (expr->classType == EXPRESSION_VARIABLE) {
             Token name = ((VariableExpression *) expr)->name;
 
             return new AssignExpression(name, initializer, Token(TOKEN_ANY, "", 0));
@@ -249,10 +254,10 @@ Statement* Parser::varStatement() {
 
         Expression* expr = expression();
 
-        if (expr->classType() == EXPRESSION_VARIABLE && look().type == TOKEN_COLON) {
+        if (expr->classType == EXPRESSION_VARIABLE && look().type == TOKEN_COLON) {
             expr = expression();
 
-            if (expr->classType() != EXPRESSION_ASSIGN)
+            if (expr->classType != EXPRESSION_ASSIGN)
                 error("syntax error: variable initializer must be assignment.");
 
             list.push_back((AssignExpression *) expr);
@@ -260,7 +265,7 @@ Statement* Parser::varStatement() {
             continue;
         }
 
-        if (expr->classType() != EXPRESSION_ASSIGN)
+        if (expr->classType != EXPRESSION_ASSIGN)
             error("syntax error: variable initializer must be assignment.");
         
         list.push_back((AssignExpression *) expr);
@@ -288,4 +293,9 @@ Statement* Parser::blockStatement() {
     this->position ++;
 
     return new BlockStatement(block);
+}
+
+Statement* Parser::forStatement() {
+    Statement* initializer = statement();
+
 }

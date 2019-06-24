@@ -43,9 +43,7 @@ class AssignExpression: public Expression {
             delete &isVar;
         }
 
-        std::string classType() {
-            return EXPRESSION_ASSIGN;
-        }
+        std::string classType = EXPRESSION_ASSIGN;
 
         std::string toString() {
             return "[ AssignExpression: name = " + name.literal + ", initializer = " +

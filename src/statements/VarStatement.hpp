@@ -38,9 +38,7 @@ class VarStatement: public Statement {
             std::vector<AssignExpression *>().swap(list);
         }
 
-        std::string classType() {
-            return STATEMENT_VAR;
-        }
+        std::string classType = STATEMENT_VAR;
 
         std::string toString() {
             std::stringstream stream;

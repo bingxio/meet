@@ -36,9 +36,7 @@ class UnaryExpression: public Expression {
             delete expression;
         }
 
-        std::string classType() {
-            return EXPRESSION_UNARY;
-        }
+        std::string classType = EXPRESSION_UNARY;
 
         std::string toString() {
             return "[ UnaryExpression: token = " + token.literal + ", expr = " + 
