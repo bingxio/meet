@@ -23,6 +23,7 @@
 #include <cstdio>
 #include <cstdlib>
 
+#include "Conversion.hpp"
 #include "Lexer.hpp"
 #include "Token.hpp"
 #include "Parser.hpp"
@@ -83,6 +84,8 @@ static void runFile(const char* path) {
     }
 
     string source((istreambuf_iterator<char>(fileStream)), (istreambuf_iterator<char>()));
+
+    string a = utf8ToGbk("source");
 
     run(source);
 
