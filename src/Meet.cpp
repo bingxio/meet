@@ -22,7 +22,6 @@
 #include <cstring>
 #include <cstdio>
 #include <cstdlib>
-#include <sstream>
 
 #include "Lexer.hpp"
 #include "Token.hpp"

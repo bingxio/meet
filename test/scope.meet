@@ -1,0 +1,12 @@
+
+var a: string = 'meet programming language'
+
+{
+    var b: string = 'this is test scope...'
+
+    println 'a = $a'
+    println 'b = $b'
+}
+
+println 'a = $a'
+println 'b = $b'

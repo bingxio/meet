@@ -37,6 +37,7 @@
 #include "statements/ExpressionStatement.hpp"
 #include "statements/VarStatement.hpp"
 #include "statements/PrintlnStatement.hpp"
+#include "statements/BlockStatement.hpp"
 
 class Parser {
     private:
@@ -72,6 +73,7 @@ class Parser {
         Statement* expressionStatement();
         Statement* varStatement();
         Statement* printlnStatement();
+        Statement* blockStatement();
     public:
         explicit Parser(std::vector<Token> tokens);
 

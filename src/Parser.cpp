@@ -74,6 +74,9 @@ Statement* Parser::statement() {
     if (look(TOKEN_PRINTLN) || look(TOKEN_PRINT))
         return printlnStatement();
 
+    if (look(TOKEN_LBRACE))
+        return blockStatement();
+
     return expressionStatement();
 }
 
@@ -274,4 +277,8 @@ Statement* Parser::printlnStatement() {
     bool cls = look(-1).literal == TOKEN_PRINTLN ? true : false;
 
     return new PrintlnStatement(expression(), cls);
+}
+
+Statement* Parser::blockStatement() {
+    std::cout << look().line << std::endl;
 }
