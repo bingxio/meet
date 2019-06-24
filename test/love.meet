@@ -1,4 +1,6 @@
 
-var her = '余春莉', me = '黄菁' -> for var i = 1000; i <= 3000; i += 1 ->
+var her: string = '余春莉', me: string = '黄菁'
 
+for var i = 1000; i <= 3000; i += 1 ->
     println '$me 爱 $her $i 遍'
+    
