@@ -80,6 +80,12 @@ Statement* Parser::statement() {
     if (look(TOKEN_FOR))
         return forStatement();
 
+    if (look(TOKEN_BREAK))
+        return breakStatement();
+
+    if (look(TOKEN_CONTINUE))
+        return continueStatement();
+
     return expressionStatement();
 }
 
@@ -90,12 +96,10 @@ Expression* Parser::expression() {
 Expression* Parser::assignment() {
     Expression* expr = logicalOr();
 
-    std::cout << expr->classType << std::endl;
-
     if (look(TOKEN_EQUAL)) {
         Expression* initializer = assignment();
 
-        if (expr->classType == EXPRESSION_VARIABLE) {
+        if (expr->defintion() == EXPRESSION_VARIABLE) {
             Token name = ((VariableExpression *) expr)->name;
 
             return new AssignExpression(name, initializer, Token(TOKEN_ANY, "", 0));
@@ -254,10 +258,10 @@ Statement* Parser::varStatement() {
 
         Expression* expr = expression();
 
-        if (expr->classType == EXPRESSION_VARIABLE && look().type == TOKEN_COLON) {
+        if (expr->defintion() == EXPRESSION_VARIABLE && look().type == TOKEN_COLON) {
             expr = expression();
 
-            if (expr->classType != EXPRESSION_ASSIGN)
+            if (expr->defintion() != EXPRESSION_ASSIGN)
                 error("syntax error: variable initializer must be assignment.");
 
             list.push_back((AssignExpression *) expr);
@@ -265,7 +269,7 @@ Statement* Parser::varStatement() {
             continue;
         }
 
-        if (expr->classType != EXPRESSION_ASSIGN)
+        if (expr->defintion() != EXPRESSION_ASSIGN)
             error("syntax error: variable initializer must be assignment.");
         
         list.push_back((AssignExpression *) expr);
@@ -287,15 +291,61 @@ Statement* Parser::printlnStatement() {
 Statement* Parser::blockStatement() {
     std::vector<Statement *> block = std::vector<Statement *>();
 
-    while (look().type != TOKEN_RBRACE)
-        block.push_back(this->statement());
+    while (look().type != TOKEN_RBRACE) {
+        block.push_back(statement());
+
+        if (isAtEnd())
+            throw std::runtime_error("syntax error: lost right '}' after block statement.");
+    }
 
     this->position ++;
 
     return new BlockStatement(block);
 }
 
+Statement* Parser::breakStatement() {
+    return new BreakStatement();
+}
+
+Statement* Parser::continueStatement() {
+    return new ContinueStatement();
+}
+
 Statement* Parser::forStatement() {
     Statement* initializer = statement();
 
+    if (look().type != TOKEN_SEMICOLON)
+        throw std::runtime_error("syntax error: expect ';' after initializer.");
+
+    this->position ++;
+
+    Statement* condition = statement();
+
+    if (look().type != TOKEN_SEMICOLON)
+        throw std::runtime_error("syntax error: expect ';' after condition.");
+
+    this->position ++;
+
+    Statement* renovate = statement();
+
+    if (look().type != TOKEN_MINUS_GREATER && look().type != TOKEN_LBRACE)
+        throw std::runtime_error("syntax error: expect '{' or '->' after renovate.");
+
+    std::vector<Statement *> block = std::vector<Statement *>();
+
+    if (look().type == TOKEN_MINUS_GREATER) {
+        this->position ++;
+
+        block.push_back(statement());
+    } else if (look().type == TOKEN_LBRACE) {
+        this->position ++;
+
+        BlockStatement* blockStmt = (BlockStatement *) blockStatement();
+
+        return new ForStatement(initializer, condition, renovate, blockStmt);
+    }
+
+    BlockStatement* blockStmt = new BlockStatement(block);
+
+    return new ForStatement(initializer, condition, renovate, blockStmt);
 }

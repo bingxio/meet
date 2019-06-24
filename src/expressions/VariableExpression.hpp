@@ -32,7 +32,9 @@ class VariableExpression: public Expression {
             delete &name;
         }
 
-        std::string classType = EXPRESSION_VARIABLE;
+        std::string defintion() {
+            return EXPRESSION_VARIABLE;
+        }
 
         std::string toString() {
             return "[ VariableExpression: name = " + name.literal + " ]";

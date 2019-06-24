@@ -1,5 +1,5 @@
 /**
- * Meet Programming Language Expression.
+ * Meet Programming Language Statement.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,32 +17,21 @@
  * Email: 1171840237@qq.com
  * Github: https://github.com/turaiiao
  */
-#ifndef MEET_UNARY_EXPRESSION_H
-#define MEET_UNARY_EXPRESSION_H
+#ifndef MEET_CONTINUE_STATEMENT_H
+#define MEET_CONTINUE_STATEMENT_H
 
-#include "../Expression.hpp"
+#include <exception>
 
-class UnaryExpression: public Expression {
+#include "../Statement.hpp"
+
+class ContinueStatement: public Statement, std::exception {
     public:
-        Token token;
-
-        Expression* expression;
-
-        UnaryExpression(Token token, Expression* expression): token(std::move(token)), 
-            expression(std::move(expression)) {}
-
-        ~UnaryExpression() {
-            delete &token;
-            delete expression;
-        }
-
         std::string defintion() {
-            return EXPRESSION_UNARY;
+            return STATEMENT_CONTINUE;
         }
 
         std::string toString() {
-            return "[ UnaryExpression: token = " + token.literal + ", expr = " + 
-                expression->toString() + " ]";
+            return "[ ContinueStatement ]";
         }
 };
 

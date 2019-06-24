@@ -104,6 +104,8 @@ std::string getTokenLiteralWithType(const TokenType& tokenType) {
     if (tokenType == TOKEN_MATCH)            return "TOKEN_MATCH";
     if (tokenType == TOKEN_PRINTLN)          return "TOKEN_PRINTLN";
     if (tokenType == TOKEN_PRINT)            return "TOKEN_PRINT";
+    if (tokenType == TOKEN_BREAK)            return "TOKEN_BREAK";
+    if (tokenType == TOKEN_CONTINUE)         return "TOKEN_CONTINUE";
     if (tokenType == TOKEN_EOF)              return "TOKEN_EOF";
 
     return "UNKNOWN";

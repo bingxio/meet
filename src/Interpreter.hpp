@@ -40,6 +40,9 @@
 #include "statements/VarStatement.hpp"
 #include "statements/PrintlnStatement.hpp"
 #include "statements/BlockStatement.hpp"
+#include "statements/ForStatement.hpp"
+#include "statements/BreakStatement.hpp"
+#include "statements/ContinueStatement.hpp"
 
 class Interpreter {
     private:
@@ -64,6 +67,9 @@ class Interpreter {
         void executeVarStatement(Statement* stmt);
         void executePrintlnStatement(Statement* stmt);
         void executeBlockStatement(Statement* stmt);
+        void executeBreakStatement();
+        void executeContinueStatement();
+        void executeForStatement(Statement* stmt);
 
         Value get(std::string);
 

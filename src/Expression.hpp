@@ -34,8 +34,8 @@ class Expression {
     public:
         virtual ~Expression() = default;
         
-        std::string classType;
-        
+        virtual std::string defintion() = 0;
+
         virtual std::string toString() = 0;
 };
 

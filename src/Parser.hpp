@@ -39,6 +39,8 @@
 #include "statements/PrintlnStatement.hpp"
 #include "statements/BlockStatement.hpp"
 #include "statements/ForStatement.hpp"
+#include "statements/BreakStatement.hpp"
+#include "statements/ContinueStatement.hpp"
 
 class Parser {
     private:
@@ -76,6 +78,8 @@ class Parser {
         Statement* printlnStatement();
         Statement* blockStatement();
         Statement* forStatement();
+        Statement* breakStatement();
+        Statement* continueStatement();
     public:
         explicit Parser(std::vector<Token> tokens);
 

@@ -73,56 +73,42 @@ int Interpreter::removeStatement(int pos) {
 
 void Interpreter::execute() {
     while (this->size) {
-        if (look()->classType == STATEMENT_EXPRESSION)
-            executeExpressionStatement(look());
-        
-        if (look()->classType == STATEMENT_VAR)
-            executeVarStatement(look());
-
-        if (look()->classType == STATEMENT_PRINTLN)
-            executePrintlnStatement(look());
-
-        if (look()->classType == STATEMENT_BLOCK)
-            executeBlockStatement(look());
+        executeStatement(look());
 
         this->size = removeStatement(this->position ++);
     }
 }
 
 void Interpreter::executeStatement(Statement* stmt) {
-    if (stmt->classType == STATEMENT_EXPRESSION)
-        executeExpressionStatement(stmt);
-
-    if (stmt->classType == STATEMENT_VAR)
-        executeVarStatement(stmt);
-
-    if (stmt->classType == STATEMENT_PRINTLN)
-        executePrintlnStatement(stmt);
-
-    if (stmt->classType == STATEMENT_BLOCK)
-        executeBlockStatement(stmt);
+    if (stmt->defintion() == STATEMENT_EXPRESSION) executeExpressionStatement(stmt);
+    if (stmt->defintion() == STATEMENT_VAR)        executeVarStatement(stmt);
+    if (stmt->defintion() == STATEMENT_PRINTLN)    executePrintlnStatement(stmt);
+    if (stmt->defintion() == STATEMENT_BLOCK)      executeBlockStatement(stmt);
+    if (stmt->defintion() == STATEMENT_BREAK)      executeBreakStatement();
+    if (stmt->defintion() == STATEMENT_CONTINUE)   executeContinueStatement();
+    if (stmt->defintion() == STATEMENT_FOR)        executeForStatement(stmt);
 }
 
 Value Interpreter::executeExpression(Expression* expr) {
-    if (expr->classType == EXPRESSION_LITERAL)
+    if (expr->defintion() == EXPRESSION_LITERAL)
         return executeLiteralExpression(expr);
 
-    if (expr->classType == EXPRESSION_BINARY)
+    if (expr->defintion() == EXPRESSION_BINARY)
         return executeBinaryExpression(expr);
 
-    if (expr->classType == EXPRESSION_GROUP)
+    if (expr->defintion() == EXPRESSION_GROUP)
         return executeGroupExpression(expr);
 
-    if (expr->classType == EXPRESSION_UNARY)
+    if (expr->defintion() == EXPRESSION_UNARY)
         return executeUnaryExpression(expr);
 
-    if (expr->classType == EXPRESSION_ASSIGN)
+    if (expr->defintion() == EXPRESSION_ASSIGN)
         return executeAssignExpression(expr);
 
-    if (expr->classType == EXPRESSION_LOGICAL)
+    if (expr->defintion() == EXPRESSION_LOGICAL)
         return executeLogicalExpression(expr);
 
-    if (expr->classType == EXPRESSION_VARIABLE)
+    if (expr->defintion() == EXPRESSION_VARIABLE)
         return executeVariableExpression(expr);
 
     throw std::runtime_error("interpret error: unknow expression '" + expr->toString() + "'.");
@@ -355,6 +341,50 @@ void Interpreter::executeBlockStatement(Statement* stmt) {
 
     for (auto i : blockStmt->block)
         executeStatement(i);
+
+    this->environment->clear();
+    this->environment = env;
+}
+
+void Interpreter::executeBreakStatement() {
+    throw BreakStatement();
+}
+
+void Interpreter::executeContinueStatement() {
+    throw ContinueStatement();
+}
+
+void Interpreter::executeForStatement(Statement* stmt) {
+    ForStatement* forStmt = (ForStatement *) stmt;
+
+    std::map<std::string, Value>* env = new std::map<std::string, Value>();
+
+    env->insert(this->environment->begin(), this->environment->end());
+
+    executeStatement(forStmt->initializer);
+
+    Value condition = executeExpressionStatement(forStmt->condition);
+
+    if (!condition.valueBool)
+        throw std::runtime_error("interpret error: the renovate must be bool expression.");
+
+    while (condition.boolValue) {
+        try {
+            executeBlockStatement(forStmt->block);
+        } catch (BreakStatement operation) {
+            break;
+        } catch (ContinueStatement operation) {
+            executeStatement(forStmt->renovate);
+
+            condition = executeExpressionStatement(forStmt->condition);
+
+            continue;
+        }
+
+        executeStatement(forStmt->renovate);
+
+        condition = executeExpressionStatement(forStmt->condition);
+    }
 
     this->environment->clear();
     this->environment = env;

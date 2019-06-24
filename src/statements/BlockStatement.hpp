@@ -37,7 +37,9 @@ class BlockStatement: public Statement {
             std::vector<Statement *>().swap(block);
         }
 
-        std::string classType = STATEMENT_BLOCK;
+        std::string defintion() {
+            return STATEMENT_BLOCK;
+        }
 
         std::string toString() {
             std::stringstream data;

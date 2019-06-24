@@ -40,7 +40,9 @@ class LogicalExpression: public Expression {
             delete right;
         }
 
-        std::string classType = EXPRESSION_LOGICAL;
+        std::string defintion() {
+            return EXPRESSION_LOGICAL;
+        }
 
         std::string toString() {
             return "[ LogicalExpr: left = " + left->toString() + ", operator = " + token.literal + ", right = "

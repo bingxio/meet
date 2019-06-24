@@ -37,7 +37,15 @@ class ForStatement: public Statement {
         ForStatement(Statement* a, Statement* b, Statement* c, BlockStatement* d):
             initializer(a), condition(b), renovate(c), block(d) {}
 
-        std::string classType = STATEMENT_FOR;
+        ~ForStatement() {
+            delete initializer;
+            delete condition;
+            delete renovate;
+        }
+
+        std::string defintion() {
+            return STATEMENT_FOR;
+        }
 
         std::string toString() {
             std::stringstream data;

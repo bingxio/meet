@@ -32,7 +32,9 @@ class GroupExpression: public Expression {
             delete expression;
         }
 
-        std::string classType = EXPRESSION_GROUP;
+        std::string defintion() {
+            return EXPRESSION_GROUP;
+        }
 
         std::string toString() {
             return "[ GroupExpression: expr = " + expression->toString() + " ]";
