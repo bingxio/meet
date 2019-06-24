@@ -1,6 +1,6 @@
 
-var her: string = 'Óà´ºÀò', me: string = '»Æİ¼'
+var her: string = 'ä½™æ˜¥è‰', me: string = 'é»„è'
 
 for var i = 1000; i <= 3000; i += 1 ->
-    println '$me °® $her $i ±é'
-        
+    println '$me çˆ± $her $i é'
+    
