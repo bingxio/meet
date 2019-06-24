@@ -1,9 +1,6 @@
 
-# this is a debug file.
+# this is debug file
 
-var a: string = 'hello,'
-var b: string = ' world !'
-
-var c = '$a $b'
-
-println c
+for var i = 0; i < 10; i += 1 ->
+    println 'hello world'
+    

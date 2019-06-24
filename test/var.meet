@@ -19,3 +19,9 @@ println e
 var f: float = 1.2
 
 println f
+
+a = 23
+
+a += 3
+
+println a

@@ -291,6 +291,12 @@ Value Value::operator != (const Value& a) {
         throw std::runtime_error("type error: string cannot comparison not null and string.");
     }
 
+    if (this->valueFloat) {
+        if (a.valueFloat) return Value(this->floatValue != a.floatValue);
+
+        throw std::runtime_error("type error: cannot use '!=' operator without two float.");
+    }
+
     if (this->valueBool) {
         if (a.valueBool) return Value(this->boolValue != a.boolValue);
 
@@ -337,6 +343,12 @@ Value Value::operator == (const Value& a) {
 
         if (a.valueString)
             throw std::runtime_error("type error: cannot comparison number with string.");
+    }
+
+    if (this->valueFloat) {
+        if (a.valueFloat) return Value(this->floatValue == a.floatValue);
+
+        throw std::runtime_error("type error: cannot use '==' operator without two float.");
     }
 
     if (this->valueString) {

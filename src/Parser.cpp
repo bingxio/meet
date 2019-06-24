@@ -176,7 +176,7 @@ Expression* Parser::comparison() {
 Expression* Parser::addition() {
     Expression* expr = multiplication();
 
-    while (look(TOKEN_PLUS) || look(TOKEN_MINUS)) { 
+    while (look(TOKEN_PLUS) || look(TOKEN_MINUS) || look(TOKEN_PLUS_EQUAL) || look(TOKEN_MINUS_EQUAL)) { 
         Token op = previous();
         Expression* right = multiplication();
 
@@ -189,7 +189,7 @@ Expression* Parser::addition() {
 Expression* Parser::multiplication() {
     Expression* expr = unary();
 
-    while (look(TOKEN_STAR) || look(TOKEN_SLASH)) {
+    while (look(TOKEN_STAR) || look(TOKEN_SLASH) || look(TOKEN_STAR_EQUAL) || look(TOKEN_SLASH_EQUAL)) {
         Token op = previous();
         Expression* right = unary();
 
@@ -202,7 +202,7 @@ Expression* Parser::multiplication() {
 Expression* Parser::unary() {
     if (look(TOKEN_BANG) || look(TOKEN_MINUS)) {
         Token op = previous();
-        Expression* expression = unary();
+        Expression* expression =    unary();
 
         return new UnaryExpression(op, expression);
     }

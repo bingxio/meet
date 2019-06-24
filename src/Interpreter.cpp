@@ -34,6 +34,9 @@ void Interpreter::assign(std::string name, Value value) {
 void Interpreter::reAssign(std::string name, Value value) {
     std::map<std::string, Value>::iterator a = this->environment->find(name);
 
+    if (a == this->environment->end())
+        throw std::runtime_error("interpret error: undefind variable '" + name + "'.");
+
     this->environment->erase(a);
     this->assign(name, value);
 }
@@ -42,7 +45,7 @@ Value Interpreter::get(std::string name) {
     std::map<std::string, Value>::iterator a = this->environment->find(name);
 
     if (a == this->environment->end())
-        throw std::runtime_error("undefined variable: '" + name + "'.");
+        throw std::runtime_error("interpret error: undefined variable: '" + name + "'.");
 
     return a->second;
 }
@@ -196,6 +199,36 @@ Value Interpreter::executeBinaryExpression(Expression* expr) {
     if (a->token.type == TOKEN_LESS_EQUAL)    return l <= r;
     if (a->token.type == TOKEN_BANG_EQUAL)    return l != r;
     if (a->token.type == TOKEN_EQUAL_EQUAL)   return l == r;
+
+    bool isIdentifierLeftName = ((LiteralExpression *) a->left)->token.type == TOKEN_VALUE_IDENTIFIER;
+
+    if (isIdentifierLeftName) {
+        std::string name = ((LiteralExpression *) a->left)->token.literal;
+
+        if (a->token.type == TOKEN_PLUS_EQUAL) {
+            this->reAssign(name, l + r);
+
+            return l + r;
+        }
+
+        if (a->token.type == TOKEN_MINUS_EQUAL) {
+            this->reAssign(name, l - r);
+
+            return l -r;
+        }
+
+        if (a->token.type == TOKEN_STAR_EQUAL) {
+            this->reAssign(name, l * r);
+
+            return l * r;
+        }
+
+        if (a->token.type == TOKEN_SLASH_EQUAL) {
+            this->reAssign(name, l / r);
+
+            return l / r;
+        }
+    }
 
     throw std::runtime_error("interpret error: unknow operator for binary expression.");
 }

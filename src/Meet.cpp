@@ -85,8 +85,6 @@ static void runFile(const char* path) {
 
     string source((istreambuf_iterator<char>(fileStream)), (istreambuf_iterator<char>()));
 
-    string a = utf8ToGbk("source");
-
     run(source);
 
     fileStream.close();

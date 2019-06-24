@@ -31,9 +31,9 @@ struct DeletableFacet : Facet {
     DeletableFacet(Args& ...args): Facet(std::forward<Args>(args)...) {}
 
     ~DeletableFacet() {}
-}
+};
 
-inline std::string utf16ToGbk(const wstring &utf16) {
+inline std::string utf16ToGbk(const std::wstring &utf16) {
 #ifdef _MSC_VER
     const char* GBK_LOCALE_NAME = ".936";
 #else
@@ -49,10 +49,10 @@ inline std::string utf16ToGbk(const wstring &utf16) {
     return std::move(gbk);
 }
 
-inline wstring utf8ToUtf16(const std::string &utf8) {
+inline std::wstring utf8ToUtf16(const std::string &utf8) {
     std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
 
-    wstring utf16 = conv.from_bytes(utf8);
+    std::wstring utf16 = conv.from_bytes(utf8);
 
     return std::move(utf16);
 }
