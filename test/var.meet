@@ -12,7 +12,7 @@ println d
 
 var e: int = 2300
 
-# e = c # interpret error !
+e = c # interpret error !
 
 println e
 
