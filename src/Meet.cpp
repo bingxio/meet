@@ -31,7 +31,7 @@
 
 using namespace std;
 
-map<string, Value> *environment = new map<string, Value>();
+map<string, Value>* environment = new map<string, Value>();
 
 bool isDebugMode = false;
 

@@ -71,16 +71,33 @@ int Interpreter::removeStatement(int pos) {
 void Interpreter::execute() {
     while (this->size) {
         if (look()->classType() == STATEMENT_EXPRESSION)
-            executeExpressionStatement();
+            executeExpressionStatement(look());
         
         if (look()->classType() == STATEMENT_VAR)
-            executeVarStatement();
+            executeVarStatement(look());
 
         if (look()->classType() == STATEMENT_PRINTLN)
-            executePrintlnStatement();
+            executePrintlnStatement(look());
+
+        if (look()->classType() == STATEMENT_BLOCK)
+            executeBlockStatement(look());
 
         this->size = removeStatement(this->position ++);
     }
+}
+
+void Interpreter::executeStatement(Statement* stmt) {
+    if (stmt->classType() == STATEMENT_EXPRESSION)
+        executeExpressionStatement(stmt);
+
+    if (stmt->classType() == STATEMENT_VAR)
+        executeVarStatement(stmt);
+
+    if (stmt->classType() == STATEMENT_PRINTLN)
+        executePrintlnStatement(stmt);
+
+    if (stmt->classType() == STATEMENT_BLOCK)
+        executeBlockStatement(stmt);
 }
 
 Value Interpreter::executeExpression(Expression* expr) {
@@ -105,7 +122,7 @@ Value Interpreter::executeExpression(Expression* expr) {
     if (expr->classType() == EXPRESSION_VARIABLE)
         return executeVariableExpression(expr);
 
-    throw std::runtime_error("interpret error: unknow expression.");
+    throw std::runtime_error("interpret error: unknow expression '" + expr->toString() + "'.");
 }
 
 Value Interpreter::executeLiteralExpression(Expression* expr) {
@@ -274,26 +291,38 @@ Value Interpreter::executeVariableExpression(Expression* expr) {
     return this->get(varExpr->name.literal);
 }
 
-Value Interpreter::executeExpressionStatement() {
-    Value a = executeExpression(((ExpressionStatement *) look())->expression);
-
-    return a;
+Value Interpreter::executeExpressionStatement(Statement* stmt) {
+    return executeExpression(((ExpressionStatement *) stmt)->expression);
 }
 
-void Interpreter::executeVarStatement() {
-    VarStatement* stmt = (VarStatement *) look();
+void Interpreter::executeVarStatement(Statement* stmt) {
+    VarStatement* varStmt = (VarStatement *) stmt;
 
-    for (auto i : stmt->list)
+    for (auto i : varStmt->list)
         executeExpression(i);
 }
 
-void Interpreter::executePrintlnStatement() {
-    PrintlnStatement* stmt = (PrintlnStatement *) look();
+void Interpreter::executePrintlnStatement(Statement* stmt) {
+    PrintlnStatement* printlnStmt = (PrintlnStatement *) stmt;
 
-    Value a = executeExpression(stmt->expression);
+    Value a = executeExpression(printlnStmt->expression);
 
-    if (stmt->cls)
+    if (printlnStmt->cls)
         a.printLineValue();
     else
         a.printValue();
+}
+
+void Interpreter::executeBlockStatement(Statement* stmt) {
+    BlockStatement* blockStmt = (BlockStatement *) stmt;
+
+    std::map<std::string, Value>* env = new std::map<std::string, Value>();
+
+    env->insert(this->environment->begin(), this->environment->end());
+
+    for (auto i : blockStmt->block)
+        executeStatement(i);
+
+    this->environment->clear();
+    this->environment = env;
 }

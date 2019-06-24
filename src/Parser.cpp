@@ -280,5 +280,12 @@ Statement* Parser::printlnStatement() {
 }
 
 Statement* Parser::blockStatement() {
-    std::cout << look().line << std::endl;
+    std::vector<Statement *> block = std::vector<Statement *>();
+
+    while (look().type != TOKEN_RBRACE)
+        block.push_back(this->statement());
+
+    this->position ++;
+
+    return new BlockStatement(block);
 }

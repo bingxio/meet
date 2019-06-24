@@ -39,6 +39,7 @@
 #include "statements/ExpressionStatement.hpp"
 #include "statements/VarStatement.hpp"
 #include "statements/PrintlnStatement.hpp"
+#include "statements/BlockStatement.hpp"
 
 class Interpreter {
     private:
@@ -58,12 +59,15 @@ class Interpreter {
         void assign(std::string name, Value value);
         void reAssign(std::string name, Value value);
 
-        void executeVarStatement();
-        void executePrintlnStatement();
+        void executeStatement(Statement* stmt);
+
+        void executeVarStatement(Statement* stmt);
+        void executePrintlnStatement(Statement* stmt);
+        void executeBlockStatement(Statement* stmt);
 
         Value get(std::string);
 
-        Value executeExpressionStatement();
+        Value executeExpressionStatement(Statement* stmt);
         Value executeExpression(Expression* expr);
         Value executeLiteralExpression(Expression* expr);
         Value executeBinaryExpression(Expression* expr);
