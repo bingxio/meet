@@ -3,4 +3,4 @@ var her: string = '”‡¥∫¿Ú', me: string = 'ª∆›º'
 
 for var i = 1000; i <= 3000; i += 1 ->
     println '$me ∞Æ $her $i ±È'
-    
+        
