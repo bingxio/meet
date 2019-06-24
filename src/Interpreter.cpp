@@ -221,7 +221,7 @@ Value Interpreter::executeAssignExpression(Expression* expr) {
 
     if (assignExpr->isVar) {
         if (this->haveObject(assignExpr->name.literal))
-            throw std::runtime_error("interpret error: repeatedly defining variavle '" + 
+            throw std::runtime_error("interpret error: repeatedly defining variable '" + 
                 assignExpr->name.literal + "'.");
 
         if (assignExpr->typed.literal != "") {
