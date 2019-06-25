@@ -135,6 +135,16 @@ Value Interpreter::executeLiteralExpression(Expression* expr) {
                 continue;
             }
 
+            if (c == '\\' && i < token.literal.length() - 1) {
+                if (token.literal.at(i + 1) == 'n') {
+                    data << '\n';
+
+                    i += 2;
+
+                    continue;
+                }
+            }
+
             if (haveDollarString) {
                 std::stringstream stream;
 
