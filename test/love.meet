@@ -8,7 +8,7 @@ for var i = 1; i <= 10000; i += 1 {
         println '$me 最爱 $her $i 遍 !!!'
 
     if i == 3000 {
-        println '哈哈，先来个 3000 遍，10000 遍以后再说'
+        println '\n 哈哈，先来个 3000 遍，10000 遍以后再说 \n'
 
         break
     }
