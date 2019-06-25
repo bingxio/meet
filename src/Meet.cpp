@@ -19,6 +19,7 @@
  */
 #include <iostream>
 #include <fstream>
+#include <iomanip>
 #include <cstring>
 #include <cstdio>
 #include <cstdlib>
@@ -147,6 +148,8 @@ static void run(const string& source) {
 }
 
 int main(int argc, char** argv) {
+    cout.setf(ios::fixed);
+
     if (argc == 1) repl();
 
     if (argc == 2 && strcmp(argv[1], "-d") == 0) {

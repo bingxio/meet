@@ -42,6 +42,7 @@
 #include "statements/BreakStatement.hpp"
 #include "statements/ContinueStatement.hpp"
 #include "statements/IfStatement.hpp"
+#include "statements/WhileStatement.hpp"
 
 class Parser {
     private:
@@ -84,6 +85,7 @@ class Parser {
         Statement* breakStatement();
         Statement* continueStatement();
         Statement* ifStatement();
+        Statement* whileStatement();
     public:
         explicit Parser(std::vector<Token> tokens);
 

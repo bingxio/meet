@@ -35,6 +35,14 @@ class IfStatement: public Statement {
 
         BlockStatement* elseEstablish;
 
+        ~IfStatement() {
+            delete condition;
+            delete establish;
+            delete elifCondition;
+            delete elifEstablish;
+            delete elseEstablish;
+        }
+
         std::string defintion() {
             return STATEMENT_IF;
         }

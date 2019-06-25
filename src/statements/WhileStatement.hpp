@@ -17,28 +17,31 @@
  * Email: 1171840237@qq.com
  * Github: https://github.com/turaiiao
  */
-#ifndef MEET_STATEMENT_H
-#define MEET_STATEMENT_H
+#ifndef MEET_WHILE_STATEMENT_H
+#define MEET_WHILE_STATEMENT_H
 
-#include <iostream>
+#include "../Statement.hpp"
+#include "BlockStatement.hpp"
 
-#define STATEMENT_EXPRESSION "STATEMENT_EXPRESSION"
-#define STATEMENT_VAR        "STATEMENT_VAR"
-#define STATEMENT_PRINTLN    "STATEMENT_PRINTLN"
-#define STATEMENT_BLOCK      "STATEMENT_BLOCK"
-#define STATEMENT_FOR        "STATEMENT_FOR"
-#define STATEMENT_BREAK      "STATEMENT_BREAK"
-#define STATEMENT_CONTINUE   "STATEMENT_CONTINUE"
-#define STATEMENT_IF         "STATEMENT_IF"
-#define STATEMENT_WHILE      "STATEMENT_WHILE"
-
-class Statement {
+class WhileStatement: public Statement {
     public:
-        virtual ~Statement() = default;
-        
-        virtual std::string defintion() = 0;
+        Statement* condition;
 
-        virtual std::string toString() = 0;
+        BlockStatement* block;
+
+        ~WhileStatement() {
+            delete condition;
+            delete block;
+        }
+
+        std::string defintion() {
+            return STATEMENT_WHILE;
+        }
+
+        std::string toString() {
+            return "[ WhileStatement: condition = " + condition->toString() + 
+                ", block = " + block->toString() + " ]";
+        }
 };
 
 #endif

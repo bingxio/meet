@@ -89,6 +89,9 @@ Statement* Parser::statement() {
     if (look(TOKEN_IF))
         return ifStatement();
 
+    if (look(TOKEN_WHILE))
+        return whileStatement();
+
     return expressionStatement();
 }
 
@@ -201,7 +204,8 @@ Expression* Parser::addition() {
 Expression* Parser::multiplication() {
     Expression* expr = unary();
 
-    while (look(TOKEN_STAR) || look(TOKEN_SLASH) || look(TOKEN_STAR_EQUAL) || look(TOKEN_SLASH_EQUAL)) {
+    while (look(TOKEN_STAR) || look(TOKEN_SLASH) || look(TOKEN_STAR_EQUAL) || look(TOKEN_SLASH_EQUAL) || 
+            look(TOKEN_MODULAR)) {
         Token op = previous();
         Expression* right = unary();
 
@@ -214,7 +218,7 @@ Expression* Parser::multiplication() {
 Expression* Parser::unary() {
     if (look(TOKEN_BANG) || look(TOKEN_MINUS)) {
         Token op = previous();
-        Expression* expression =    unary();
+        Expression* expression = unary();
 
         return new UnaryExpression(op, expression);
     }
@@ -418,4 +422,22 @@ Statement* Parser::ifStatement() {
     }
 
     return ifStatement;
+}
+
+Statement* Parser::whileStatement() {
+    WhileStatement* whileStatement = new WhileStatement;
+
+    whileStatement->condition = statement();
+
+    if (look(TOKEN_MINUS_GREATER)) {
+        this->position ++;
+
+        whileStatement->block = (BlockStatement *) minusGreaterBlockStatement();
+    } else if (look(TOKEN_LBRACE)) {
+        this->position ++;
+
+        whileStatement->block = (BlockStatement *) blockStatement();
+    }
+
+    return whileStatement;
 }

@@ -192,10 +192,10 @@ Value Value::operator / (const Value& a) {
 
 Value Value::operator % (const Value& a) {
     if (this->valueNumber && a.valueNumber) {
-        int x = (int) this->valueNumber;
-        int y = (int) a.valueNumber;
+        int x = this->numberValue;
+        int y = a.numberValue;
 
-        int z = x % y;
+        float z = x % y;
 
         return Value(z);
     }
