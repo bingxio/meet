@@ -429,15 +429,10 @@ Statement* Parser::whileStatement() {
 
     whileStatement->condition = statement();
 
-    if (look(TOKEN_MINUS_GREATER)) {
-        this->position ++;
-
+    if (look(TOKEN_MINUS_GREATER))
         whileStatement->block = (BlockStatement *) minusGreaterBlockStatement();
-    } else if (look(TOKEN_LBRACE)) {
-        this->position ++;
-
+    else if (look(TOKEN_LBRACE))
         whileStatement->block = (BlockStatement *) blockStatement();
-    }
 
     return whileStatement;
 }

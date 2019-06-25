@@ -3,6 +3,6 @@ var a: int = 0
 
 while a < 10 {
     if a % 2 == 0 ->
-        print '$a '
+        println a
     a += 1
 }

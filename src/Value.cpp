@@ -346,7 +346,8 @@ Value Value::operator == (const Value& a) {
     }
 
     if (this->valueFloat) {
-        if (a.valueFloat) return Value(this->floatValue == a.floatValue);
+        if (a.valueFloat)  return Value(this->floatValue == a.floatValue);
+        if (a.valueNumber) return Value((int) this->floatValue == a.numberValue);
 
         throw std::runtime_error("type error: cannot use '==' operator without two float.");
     }

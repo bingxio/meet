@@ -7,3 +7,7 @@ print 2
 println ''
 
 println 1 + 2 * 3 - (2 + 5) + 0.05
+
+println 1 / 2.
+
+println 5 % 2 == 0

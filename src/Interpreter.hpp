@@ -44,6 +44,7 @@
 #include "statements/BreakStatement.hpp"
 #include "statements/ContinueStatement.hpp"
 #include "statements/IfStatement.hpp"
+#include "statements/WhileStatement.hpp"
 
 class Interpreter {
     private:
@@ -72,6 +73,7 @@ class Interpreter {
         void executeContinueStatement();
         void executeForStatement(Statement* stmt);
         void executeIfStatement(Statement* stmt);
+        void executeWhileStatement(Statement* stmt);
 
         Value get(std::string);
 

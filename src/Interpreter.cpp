@@ -88,6 +88,7 @@ void Interpreter::executeStatement(Statement* stmt) {
     if (stmt->defintion() == STATEMENT_CONTINUE)   executeContinueStatement();
     if (stmt->defintion() == STATEMENT_FOR)        executeForStatement(stmt);
     if (stmt->defintion() == STATEMENT_IF)         executeIfStatement(stmt);
+    if (stmt->defintion() == STATEMENT_WHILE)      executeWhileStatement(stmt);
 }
 
 Value Interpreter::executeExpression(Expression* expr) {
@@ -414,5 +415,26 @@ void Interpreter::executeIfStatement(Statement* stmt) {
 
         if (ifStmt->elseEstablish != nullptr)
             executeBlockStatement(ifStmt->elseEstablish);
+    }
+}
+
+void Interpreter::executeWhileStatement(Statement* stmt) {
+    WhileStatement* whileStmt = (WhileStatement *) stmt;
+
+    bool condition = executeExpressionStatement(whileStmt->condition).boolValue;
+
+    while(condition) {
+        try {
+            for (auto i : whileStmt->block->block)
+                executeStatement(i);
+        } catch (BreakStatement operation) {
+            break;
+        } catch (ContinueStatement operation) {
+            condition = executeExpressionStatement(whileStmt->condition).boolValue;
+
+            continue;
+        }
+
+        condition = executeExpressionStatement(whileStmt->condition).boolValue;
     }
 }

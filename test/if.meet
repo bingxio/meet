@@ -3,8 +3,9 @@ var a: int = 120
 
 var b: int = 45
 
-if a > b ->
-    println 'min'
+if a > b -> 
+    if 1 + 1 == 2 -> 
+        println 'min'
 elif a < b ->
     println 'max'
 else ->
