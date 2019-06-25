@@ -20,6 +20,9 @@
 #ifndef MEET_CONVERSION_H
 #define MEET_CONVERSION_H
 
-std::string utf8ToGbk(const std::string &utf8);
+#include <iostream>
+#include <string>
+
+std::string utf8ToGbk(const char* utf8);
 
 #endif

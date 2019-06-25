@@ -86,7 +86,15 @@ static void runFile(const char* path) {
 
     string source((istreambuf_iterator<char>(fileStream)), (istreambuf_iterator<char>()));
 
-    run(source);
+#ifdef _WIN32
+    run(utf8ToGbk(source.c_str()));
+#else
+    char data[strlen(source)] = { 0 };
+
+    utf8ToGbk(source.c_str(), strlen(source), data, strlen(data));
+
+    run(data);
+#endif
 
     fileStream.close();
 

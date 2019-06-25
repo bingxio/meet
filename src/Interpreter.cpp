@@ -405,7 +405,7 @@ void Interpreter::executeIfStatement(Statement* stmt) {
                 executeBlockStatement(ifStmt->elifEstablish);
 
                 return;
-            } else if (elifCondition == false) {
+            } else if (elifCondition == false && ifStmt->elseEstablish != nullptr) {
                 executeBlockStatement(ifStmt->elseEstablish);
 
                 return;

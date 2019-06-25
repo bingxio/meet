@@ -1,62 +1,65 @@
 /**
  * Meet Programming Language Conversion.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at:
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- * Copyright (c) 2019 Turaiiao
- * Email: 1171840237@qq.com
- * Github: https://github.com/turaiiao
  */
-#include <locale>
-#include <codecvt>
-#include <string>
+
+// https://blog.csdn.net/u012234115/article/details/83186386
 
 #include "Conversion.hpp"
 
-template <class Facet>
+#ifdef _WIN32
 
-struct DeletableFacet : Facet {
-    template <class ...Args>
+#include <windows.h>
 
-    DeletableFacet(Args& ...args): Facet(std::forward<Args>(args)...) {}
+std::string utf8ToGbk(const char* utf8) {
+    int len = MultiByteToWideChar(CP_UTF8, 0, utf8, -1, NULL, 0);
 
-    ~DeletableFacet() {}
-};
+    wchar_t* wszGBK = new wchar_t[len + 1];
 
-inline std::string utf16ToGbk(const std::wstring &utf16) {
-#ifdef _MSC_VER
-    const char* GBK_LOCALE_NAME = ".936";
+    memset(wszGBK, 0, len * 2 + 2);
+
+    MultiByteToWideChar(CP_UTF8, 0, utf8, -1, wszGBK, len);
+
+    len = WideCharToMultiByte(CP_ACP, 0, wszGBK, -1, NULL, 0, NULL, NULL);
+
+    char* szGBK = new char[len + 1];
+
+    memset(szGBK, 0, len + 1);
+
+    WideCharToMultiByte(CP_ACP, 0, wszGBK, -1, szGBK, len, NULL, NULL);
+
+    std::string strTemp(szGBK);
+
+    if (wszGBK) delete[] wszGBK;
+    if (szGBK) delete[] szGBK;
+    
+    return strTemp;
+}
+
 #else
-    const char* GBK_LOCALE_NAME = "zh_CN.GBK";
+
+#include <iconv.h>
+
+typedef long unsigned int size_t;
+
+int utf8ToGbk(char *inbuf, size_t inlen, char *outbuf, size_t outlen) {
+    iconv_t cd;
+
+    char **pin = &inbuf;
+    char **pout = &outbuf;
+    
+    cd = iconv_open("gbk", "utf-8");
+
+    if (0 == cd) 
+        return -1;
+    if (-1 == iconv(cd, pin, &inlen, pout, &outlen)) {
+        iconv_close(cd);
+
+        return -1;
+    }
+ 
+    iconv_close(cd);
+
+    return 0;
+}
+
 #endif
-
-    typedef DeletableFacet<std::codecvt_byname<wchar_t, char, std::mbstate_t>> GBFacet;
-
-    std::wstring_convert<GBFacet> conv(new GBFacet(GBK_LOCALE_NAME));
-
-    std::string gbk = conv.to_bytes(utf16);
-
-    return std::move(gbk);
-}
-
-inline std::wstring utf8ToUtf16(const std::string &utf8) {
-    std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
-
-    std::wstring utf16 = conv.from_bytes(utf8);
-
-    return std::move(utf16);
-}
-
-std::string utf8ToGbk(const std::string &utf8) {
-    return utf16ToGbk(utf8ToUtf16(utf8));
-}
