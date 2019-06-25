@@ -291,6 +291,14 @@ Statement* Parser::printlnStatement() {
     return new PrintlnStatement(expression(), cls);
 }
 
+Statement* Parser::minusGreaterBlockStatement() {
+    std::vector<Statement *> block = std::vector<Statement *>();
+
+    block.push_back(statement());
+
+    return new BlockStatement(block);
+}
+
 Statement* Parser::blockStatement() {
     std::vector<Statement *> block = std::vector<Statement *>();
 
@@ -298,7 +306,7 @@ Statement* Parser::blockStatement() {
         block.push_back(statement());
 
         if (isAtEnd())
-            throw std::runtime_error("syntax error: lost right '}' after block statement.");
+            error("syntax error: lost right '}' after block statement.");
     }
 
     this->position ++;
@@ -318,21 +326,21 @@ Statement* Parser::forStatement() {
     Statement* initializer = statement();
 
     if (look().type != TOKEN_SEMICOLON)
-        throw std::runtime_error("syntax error: expect ';' after initializer.");
+        error("syntax error: expect ';' after initializer.");
 
     this->position ++;
 
     Statement* condition = statement();
 
     if (look().type != TOKEN_SEMICOLON)
-        throw std::runtime_error("syntax error: expect ';' after condition.");
+        error("syntax error: expect ';' after condition.");
 
     this->position ++;
 
     Statement* renovate = statement();
 
     if (look().type != TOKEN_MINUS_GREATER && look().type != TOKEN_LBRACE)
-        throw std::runtime_error("syntax error: expect '{' or '->' after renovate.");
+        error("syntax error: expect '{' or '->' after renovate.");
 
     std::vector<Statement *> block = std::vector<Statement *>();
 
@@ -356,26 +364,58 @@ Statement* Parser::forStatement() {
 Statement* Parser::ifStatement() {
     IfStatement* ifStatement = new IfStatement;
 
-    Statement* condition = statement();
+    ifStatement->establish = nullptr;
+    ifStatement->elifCondition = nullptr;
+    ifStatement->elifEstablish = nullptr;
+    ifStatement->elseEstablish = nullptr;
+
+    ifStatement->condition = statement();
 
     if (look().type != TOKEN_MINUS_GREATER && look().type != TOKEN_LBRACE)
-        throw std::runtime_error("syntax error: expect '{' or '->' after condition.");
+        error("syntax error: expect '{' or '->' after condition.");
 
     if (look().type == TOKEN_MINUS_GREATER) {
         this->position ++;
 
-        std::vector<Statement *> block = std::vector<Statement *>();
-
-        block.push_back(statement());
-
-        ifStatement->establish = new BlockStatement(block);
+        ifStatement->establish = (BlockStatement *) minusGreaterBlockStatement();
     } else if (look().type == TOKEN_LBRACE) {
         this->position ++;
 
         ifStatement->establish = (BlockStatement *) blockStatement();
     }
 
-    std::cout << look().literal << std::endl;
+    if (look().type == TOKEN_ELIF) {
+        this->position ++;
+
+        ifStatement->elifCondition = statement();
+
+        if (look().type == TOKEN_MINUS_GREATER) {
+            this->position ++;
+
+            ifStatement->elifEstablish = (BlockStatement *) minusGreaterBlockStatement();
+        } else if (look().type == TOKEN_LBRACE) {
+            this->position ++;
+
+            ifStatement->elifEstablish = (BlockStatement *) blockStatement();
+        }
+    }
+    
+    if (look().type == TOKEN_ELSE) {
+        this->position ++;
+
+        if (look().type != TOKEN_MINUS_GREATER && look().type != TOKEN_LBRACE)
+            error("syntax error: expect '{' or '->' after condition.");
+
+        if (look().type == TOKEN_MINUS_GREATER) {
+            this->position ++;
+
+            ifStatement->elseEstablish = (BlockStatement *) minusGreaterBlockStatement();
+        } else if (look().type == TOKEN_LBRACE) {
+            this->position ++;
+
+            ifStatement->elseEstablish = (BlockStatement *) blockStatement();
+        }
+    }
 
     return ifStatement;
 }

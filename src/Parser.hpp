@@ -73,6 +73,8 @@ class Parser {
         Expression* finishCall();
         Expression* primary();
 
+        Statement* minusGreaterBlockStatement();
+
         Statement* statement();
         Statement* expressionStatement();
         Statement* varStatement();

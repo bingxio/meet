@@ -87,6 +87,7 @@ void Interpreter::executeStatement(Statement* stmt) {
     if (stmt->defintion() == STATEMENT_BREAK)      executeBreakStatement();
     if (stmt->defintion() == STATEMENT_CONTINUE)   executeContinueStatement();
     if (stmt->defintion() == STATEMENT_FOR)        executeForStatement(stmt);
+    if (stmt->defintion() == STATEMENT_IF)         executeIfStatement(stmt);
 }
 
 Value Interpreter::executeExpression(Expression* expr) {
@@ -365,9 +366,6 @@ void Interpreter::executeForStatement(Statement* stmt) {
 
     Value condition = executeExpressionStatement(forStmt->condition);
 
-    if (!condition.valueBool)
-        throw std::runtime_error("interpret error: the renovate must be bool expression.");
-
     while (condition.boolValue) {
         try {
             executeBlockStatement(forStmt->block);
@@ -388,4 +386,33 @@ void Interpreter::executeForStatement(Statement* stmt) {
 
     this->environment->clear();
     this->environment = env;
+}
+
+void Interpreter::executeIfStatement(Statement* stmt) {
+    IfStatement* ifStmt = (IfStatement *) stmt;
+
+    bool condition = executeExpressionStatement(ifStmt->condition).boolValue;
+
+    if (condition) {
+        if (ifStmt->establish != nullptr)
+            executeBlockStatement(ifStmt->establish);
+        return;
+    } else if (condition == false) {
+        if (ifStmt->elifCondition != nullptr) {
+            bool elifCondition = executeExpressionStatement(ifStmt->elifCondition).boolValue;
+
+            if (elifCondition) {
+                executeBlockStatement(ifStmt->elifEstablish);
+
+                return;
+            } else if (elifCondition == false) {
+                executeBlockStatement(ifStmt->elseEstablish);
+
+                return;
+            }
+        }
+
+        if (ifStmt->elseEstablish != nullptr)
+            executeBlockStatement(ifStmt->elseEstablish);
+    }
 }

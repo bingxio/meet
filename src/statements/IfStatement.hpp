@@ -42,7 +42,23 @@ class IfStatement: public Statement {
         std::string toString() {
             std::stringstream data;
 
-            data << "[ IfStatement: condition = ";
+            data << "[ IfStatement: ";
+            data << "condition = " << condition->toString();
+
+            if (establish != nullptr)
+                data << ", establish = " << establish->toString();
+
+            if (elifCondition != nullptr)
+                data << ", elifCondition = " << elifCondition->toString();
+
+            if (elifEstablish != nullptr)
+                data << ", elifEstablish = " << elifEstablish->toString();
+
+            if (elseEstablish != nullptr)
+                data << ", elseEstablish = " << elseEstablish->toString();
+
+            data << " ]";
+            
 
             return data.str();
         }
