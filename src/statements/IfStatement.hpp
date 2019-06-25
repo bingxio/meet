@@ -17,27 +17,35 @@
  * Email: 1171840237@qq.com
  * Github: https://github.com/turaiiao
  */
-#ifndef MEET_STATEMENT_H
-#define MEET_STATEMENT_H
+#ifndef MEET_IF_STATEMENT_H
+#define MEET_IF_STATEMENT_H
 
-#include <iostream>
+#include <sstream>
 
-#define STATEMENT_EXPRESSION "STATEMENT_EXPRESSION"
-#define STATEMENT_VAR        "STATEMENT_VAR"
-#define STATEMENT_PRINTLN    "STATEMENT_PRINTLN"
-#define STATEMENT_BLOCK      "STATEMENT_BLOCK"
-#define STATEMENT_FOR        "STATEMENT_FOR"
-#define STATEMENT_BREAK      "STATEMENT_BREAK"
-#define STATEMENT_CONTINUE   "STATEMENT_CONTINUE"
-#define STATEMENT_IF         "STATEMENT_IF"
+#include "../Statement.hpp"
+#include "BlockStatement.hpp"
 
-class Statement {
+class IfStatement: public Statement {
     public:
-        virtual ~Statement() = default;
-        
-        virtual std::string defintion() = 0;
+        Statement* condition;
+        BlockStatement* establish;
 
-        virtual std::string toString() = 0;
+        Statement* elifCondition;
+        BlockStatement* elifEstablish;
+
+        BlockStatement* elseEstablish;
+
+        std::string defintion() {
+            return STATEMENT_IF;
+        }
+
+        std::string toString() {
+            std::stringstream data;
+
+            data << "[ IfStatement: condition = ";
+
+            return data.str();
+        }
 };
 
 #endif

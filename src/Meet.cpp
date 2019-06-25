@@ -62,10 +62,11 @@ static void repl() {
 }
 
 static void runFile(const char* path) {
-    char* suffix = (char *) malloc(8);
+    char* suffix = (char *) malloc(5);
 
     for (int i = 1; i < 6; i ++)
         suffix[i- 1] = path[strlen(path) - i];
+    suffix[5] = '\0';
 
     if (strcmp(suffix, "teem.") != 0) {
         cout << "read .meet file only." << endl;

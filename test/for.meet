@@ -1,0 +1,13 @@
+
+for var i = 0; i < 10; i += 1 ->
+    println 'hello world'
+
+println ''
+println '   at two !'
+println ''
+
+for var i = 0; i < 10; i += 1 {
+
+    continue
+}
+    

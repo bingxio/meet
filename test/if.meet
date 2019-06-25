@@ -1,0 +1,12 @@
+
+var a = 120
+
+var b = 45
+
+if a > b ->
+    println 'min'
+elif a < b ->
+    println 'max'
+elif a == b ->
+    println "ok"
+    

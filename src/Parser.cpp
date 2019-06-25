@@ -86,6 +86,9 @@ Statement* Parser::statement() {
     if (look(TOKEN_CONTINUE))
         return continueStatement();
 
+    if (look(TOKEN_IF))
+        return ifStatement();
+
     return expressionStatement();
 }
 
@@ -348,4 +351,31 @@ Statement* Parser::forStatement() {
     BlockStatement* blockStmt = new BlockStatement(block);
 
     return new ForStatement(initializer, condition, renovate, blockStmt);
+}
+
+Statement* Parser::ifStatement() {
+    IfStatement* ifStatement = new IfStatement;
+
+    Statement* condition = statement();
+
+    if (look().type != TOKEN_MINUS_GREATER && look().type != TOKEN_LBRACE)
+        throw std::runtime_error("syntax error: expect '{' or '->' after condition.");
+
+    if (look().type == TOKEN_MINUS_GREATER) {
+        this->position ++;
+
+        std::vector<Statement *> block = std::vector<Statement *>();
+
+        block.push_back(statement());
+
+        ifStatement->establish = new BlockStatement(block);
+    } else if (look().type == TOKEN_LBRACE) {
+        this->position ++;
+
+        ifStatement->establish = (BlockStatement *) blockStatement();
+    }
+
+    std::cout << look().literal << std::endl;
+
+    return ifStatement;
 }
