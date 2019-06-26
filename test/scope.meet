@@ -16,5 +16,11 @@ println 'i = $i'
 
 println 'i = $i'
 
+var x: int = 0
+
+for x; x < 10; x += 1 {}
+
+println 'x = $x'
+
 println 'a = $a'
 println 'b = $b' # error

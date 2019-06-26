@@ -295,7 +295,7 @@ Value Interpreter::executeAssignExpression(Expression* expr) {
                 value.varBoolean = true;
 
             if (!value.varNumber && !value.varFloat && !value.varString && !value.varBoolean)
-                throw std::runtime_error("interpret error: the init value type is defferent from the specified type.");
+                throw std::runtime_error("interpret error: the value type is defferent from the specified.");
         }
 
         this->assign(assignExpr->name.literal, value);
