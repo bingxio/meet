@@ -261,6 +261,8 @@ Value Interpreter::executeUnaryExpression(Expression* expr) {
     if (unaryExpr->token.type == TOKEN_MINUS) {
         if (a.valueNumber)
             return Value(-a.numberValue);
+        if (a.valueFloat)
+            return Value(-a.floatValue);
 
         throw std::runtime_error("interpret error: unknow operator for unary expression.");
     }
@@ -293,8 +295,7 @@ Value Interpreter::executeAssignExpression(Expression* expr) {
                 value.varBoolean = true;
 
             if (!value.varNumber && !value.varFloat && !value.varString && !value.varBoolean)
-                throw std::runtime_error("interpret error: the initialization value type is \
-                    defferent from the specified type.");
+                throw std::runtime_error("interpret error: the initialization value type is defferent from the specified type.");
         }
 
         this->assign(assignExpr->name.literal, value);
