@@ -33,6 +33,7 @@ class Value {
         explicit Value(float value);
         explicit Value(std::string value);
         explicit Value(bool value);
+        explicit Value(std::vector<Value> value);
 
         Value(); // Null value.
 
@@ -55,17 +56,20 @@ class Value {
         bool valueString = false;
         bool valueBool = false;
         bool valueNull = false;
+        bool valueList = false;
 
         int numberValue = 0;
         float floatValue = 0;
         bool boolValue = false;
         std::string stringValue = std::string();
+        std::vector<Value> listValue = std::vector<Value>();
 
         bool varAny = false;
         bool varNumber = false;
         bool varFloat = false;
         bool varString = false;
         bool varBoolean = false;
+        bool varList = false;
 
         void printValue();
         void printLineValue();

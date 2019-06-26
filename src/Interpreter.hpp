@@ -35,6 +35,7 @@
 #include "expressions/AssignExpression.hpp"
 #include "expressions/LogicalExpression.hpp"
 #include "expressions/VariableExpression.hpp"
+#include "expressions/ListExpression.hpp"
 
 #include "statements/ExpressionStatement.hpp"
 #include "statements/VarStatement.hpp"
@@ -86,6 +87,7 @@ class Interpreter {
         Value executeAssignExpression(Expression* expr);
         Value executeLogicalExpression(Expression* expr);
         Value executeVariableExpression(Expression* expr);
+        Value executeListExpression(Expression* expr);
     public:
         explicit Interpreter(std::vector<Statement *> statements, std::map<std::string, Value>* environment);
 

@@ -39,6 +39,11 @@ Value::Value(bool value) {
     this->boolValue = value;
 }
 
+Value::Value(std::vector<Value> value) {
+    this->valueList = true;
+    this->listValue = std::move(value);
+}
+
 Value::Value() {
     this->valueNull = true;
 }

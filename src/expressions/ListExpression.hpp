@@ -1,5 +1,5 @@
 /**
- * Meet Programming Language Expression Statement.
+ * Meet Programming Language Expression.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,25 +17,30 @@
  * Email: 1171840237@qq.com
  * Github: https://github.com/turaiiao
  */
-#ifndef MEET_EXPRESSION_H
-#define MEET_EXPRESSION_H
+#ifndef MEET_LIST_EXPRESSION_H
+#define MEET_LIST_EXPRESSION_H
 
-#define EXPRESSION_ASSIGN   "EXPRESSION_ASSIGN"
-#define EXPRESSION_BINARY   "EXPRESSION_BINARY"
-#define EXPRESSION_GROUP    "EXPRESSION_GROUP"
-#define EXPRESSION_LITERAL  "EXPRESSION_LITERAL"
-#define EXPRESSION_UNARY    "EXPRESSION_UNARY"
-#define EXPRESSION_VARIABLE "EXPRESSION_VARIABLE"
-#define EXPRESSION_LOGICAL  "EXPRESSION_LOGICAL"
-#define EXPRESSION_LIST     "EXPRESSION_LIST"
+#include "../Expression.hpp"
 
-class Expression {
+class ListExpression: public Expression {
     public:
-        virtual ~Expression() = default;
-        
-        virtual std::string defintion() = 0;
+        std::vector<Value> values;
 
-        virtual std::string toString() = 0;
+        ListExpression(std::vector<Value> values): values(std::move(values)) {}
+
+        ~ListExpression() {
+            values.clear();
+
+            std::vector<Value>().swap(values);
+        }
+
+        std::string defintion() {
+            return EXPRESSION_LIST;
+        }
+
+        std::string toString() {
+            return "[ ListExpression: size = " + std::to_string(values.size()) + " ]";
+        }
 };
 
 #endif

@@ -25,6 +25,7 @@
 #include "Statement.hpp"
 #include "Expression.hpp"
 #include "Token.hpp"
+#include "Value.hpp"
 
 #include "expressions/LiteralExpression.hpp"
 #include "expressions/BinaryExpression.hpp"
@@ -33,6 +34,7 @@
 #include "expressions/UnaryExpression.hpp"
 #include "expressions/AssignExpression.hpp"
 #include "expressions/LogicalExpression.hpp"
+#include "expressions/ListExpression.hpp"
 
 #include "statements/ExpressionStatement.hpp"
 #include "statements/VarStatement.hpp"

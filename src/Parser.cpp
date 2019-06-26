@@ -245,6 +245,22 @@ Expression* Parser::primary() {
         return new GroupExpression(expr);
     }
 
+    if (look(TOKEN_LBRACKET)) {
+        std::vector<Value> values = std::vector<Value>();
+
+        while (look(TOKEN_RBRACKET) == false) {
+            if (look(TOKEN_COMMA)) {
+                continue;
+            }
+
+            values.push_back(backValueWithToken(look()));
+
+            this->position ++;
+        }
+
+        return new ListExpression(values);
+    }
+
     error("syntax error: illegal expression, token '" + look().literal + "'.");
 
     return NULL;
