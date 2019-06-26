@@ -143,6 +143,14 @@ Value Interpreter::executeLiteralExpression(Expression* expr) {
 
                     continue;
                 }
+
+                if (token.literal.at(i + 1) == 't') {
+                    data << '\t';
+
+                    i += 2;
+
+                    continue;
+                }
             }
 
             if (haveDollarString) {
