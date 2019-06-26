@@ -295,7 +295,7 @@ Value Interpreter::executeAssignExpression(Expression* expr) {
                 value.varBoolean = true;
 
             if (!value.varNumber && !value.varFloat && !value.varString && !value.varBoolean)
-                throw std::runtime_error("interpret error: the initialization value type is defferent from the specified type.");
+                throw std::runtime_error("interpret error: the init value type is defferent from the specified type.");
         }
 
         this->assign(assignExpr->name.literal, value);
@@ -356,15 +356,29 @@ void Interpreter::executePrintlnStatement(Statement* stmt) {
 void Interpreter::executeBlockStatement(Statement* stmt) {
     BlockStatement* blockStmt = (BlockStatement *) stmt;
 
-    std::map<std::string, Value>* env = new std::map<std::string, Value>();
+    std::map<std::string, Value>* old = new std::map<std::string, Value>();
 
-    env->insert(this->environment->begin(), this->environment->end());
+    old->insert(this->environment->begin(), this->environment->end());
 
     for (auto i : blockStmt->block)
         executeStatement(i);
 
-    this->environment->clear();
-    this->environment = env;
+    /**
+     * 遍历备份符号表，如果新的作用域里有不在全局符号表里的变量，执行删除
+     * 
+     * 防止新的作用域里改变了全局符号表的数据后丢失的问题
+     */
+    for (auto i : *this->environment) {
+        std::map<std::string, Value>::iterator name = old->find(i.first);
+
+        if (name == old->end()) {
+            auto a = this->environment->find(i.first);
+
+            this->environment->erase(a);
+        }
+    }
+
+    delete old;
 }
 
 void Interpreter::executeBreakStatement() {
@@ -377,10 +391,6 @@ void Interpreter::executeContinueStatement() {
 
 void Interpreter::executeForStatement(Statement* stmt) {
     ForStatement* forStmt = (ForStatement *) stmt;
-
-    std::map<std::string, Value>* env = new std::map<std::string, Value>();
-
-    env->insert(this->environment->begin(), this->environment->end());
 
     executeStatement(forStmt->initializer);
 
@@ -403,9 +413,6 @@ void Interpreter::executeForStatement(Statement* stmt) {
 
         condition = executeExpressionStatement(forStmt->condition);
     }
-
-    this->environment->clear();
-    this->environment = env;
 }
 
 void Interpreter::executeIfStatement(Statement* stmt) {
