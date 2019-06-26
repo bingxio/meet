@@ -118,22 +118,23 @@ std::string Value::toString() {
 }
 
 Value backValueWithToken(Token token) {
-    if (token.type == TOKEN_VALUE_INT)
-        return Value(std::stoi(token.literal));
-
-    if (token.type == TOKEN_VALUE_FLOAT)
-        return Value(std::stof(token.literal));
-
-    if (token.type == TOKEN_TRUE)
-        return Value(true);
-
-    if (token.type == TOKEN_FALSE)
-        return Value(false);
-
-    if (token.type == TOKEN_NULL)
-        return Value();
+    if (token.type == TOKEN_VALUE_INT)   return Value(std::stoi(token.literal));
+    if (token.type == TOKEN_VALUE_FLOAT) return Value(std::stof(token.literal));
+    if (token.type == TOKEN_TRUE)        return Value(true);
+    if (token.type == TOKEN_FALSE)       return Value(false);
+    if (token.type == TOKEN_NULL)        return Value();
 
     throw std::runtime_error("type error: unknow literal token decode to value.");
+}
+
+Value backValueWithNullTyped(std::string literal) {
+    if (literal == TOKEN_NULL || literal == TOKEN_ANY) return Value();
+    if (literal == TOKEN_INT)                          return Value(0);
+    if (literal == TOKEN_FLOAT)                        return Value((float) 0);
+    if (literal == TOKEN_BOOLEAN)                      return Value(false);
+    if (literal == TOKEN_STRING)                       return Value(std::string(""));
+
+    throw std::runtime_error("type error: unknown literal with Post-initialized variable.");
 }
 
 Value Value::operator + (const Value& a) {

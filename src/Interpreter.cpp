@@ -273,14 +273,23 @@ Value Interpreter::executeUnaryExpression(Expression* expr) {
 Value Interpreter::executeAssignExpression(Expression* expr) {
     AssignExpression* assignExpr = (AssignExpression *) expr;
 
+    if (assignExpr->isVar && assignExpr->initializer == nullptr) {
+        Value value = backValueWithNullTyped(assignExpr->typed.literal);
+
+        this->assign(assignExpr->name.literal, value);
+
+        return value;
+    }
+
     Value value = executeExpression(assignExpr->initializer);
 
     value.varAny = true;
 
     if (assignExpr->isVar) {
-        if (this->haveObject(assignExpr->name.literal))
+        if (this->haveObject(assignExpr->name.literal)) {
             throw std::runtime_error("interpret error: repeatedly defining variable '" + 
                 assignExpr->name.literal + "'.");
+        }
 
         if (assignExpr->typed.literal != "") {
             if (assignExpr->typed.literal == TOKEN_ANY)

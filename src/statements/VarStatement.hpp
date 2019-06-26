@@ -49,7 +49,11 @@ class VarStatement: public Statement {
 
             for (auto i : list) {
                 stream << "name = " << i->name.literal << ", value = ";
-                stream << i->initializer->toString() << ", type = ";
+
+                if (i->initializer != nullptr)
+                    stream << i->initializer->toString() << ", type = ";
+                else
+                    stream << "null, type = ";
 
                 if (i->typed.literal.length() != 0)
                     stream << i->typed.literal << " | ";

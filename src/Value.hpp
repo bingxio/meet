@@ -69,6 +69,7 @@ class Value {
         bool varFloat = false;
         bool varString = false;
         bool varBoolean = false;
+        bool varNull = false;
         bool varList = false;
 
         void printValue();
@@ -78,5 +79,6 @@ class Value {
 };
 
 Value backValueWithToken(Token token);
+Value backValueWithNullTyped(std::string literal);
 
 #endif

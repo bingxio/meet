@@ -108,7 +108,7 @@ Expression* Parser::assignment() {
         if (expr->defintion() == EXPRESSION_VARIABLE) {
             Token name = ((VariableExpression *) expr)->name;
 
-            return new AssignExpression(name, initializer, Token(TOKEN_ANY, "", 0));
+            return new AssignExpression(name, initializer, Token(TOKEN_ANY, "any", name.line));
         }
 
         error("syntax error: invalid assignment target.");
@@ -122,7 +122,7 @@ Expression* Parser::assignment() {
             this->position ++;
         
             if (look(TOKEN_EQUAL) == false)
-                error("syntax error: missing equal for assign expression.");
+                return new AssignExpression(name, nullptr, type);
 
             Expression* initializer = expression();
 

@@ -48,8 +48,13 @@ class AssignExpression: public Expression {
         }
 
         std::string toString() {
-            return "[ AssignExpression: name = " + name.literal + ", initializer = " +
-                initializer->toString() + ", isVar = " + (isVar ? "true" : "false") + " ]";
+            if (initializer != nullptr) {
+                return "[ AssignExpression: name = " + name.literal + ", initializer = " +
+                    initializer->toString() + ", isVar = " + (isVar ? "true" : "false") + " ]";
+            }
+
+            return "[ AssignExpression: name = " + name.literal + ", initializer = null" +
+                ", isVar = " + (isVar ? "true" : "false") + " ]";
         }
 };
 
