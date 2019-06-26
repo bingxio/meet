@@ -1,6 +1,8 @@
 
 # this is debug file
 
-var a: any
+var a: float
 
-println 'a = $a'
+a = -1.5
+
+println a

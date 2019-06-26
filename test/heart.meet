@@ -1,5 +1,5 @@
 
-var x = 0.0, y = 0.0, str = ''
+var x: float , y: float, str: string
 
 for var i = 1.5; i > -1.5; i -= 0.1 {
     str = ''

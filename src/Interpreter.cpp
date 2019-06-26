@@ -303,7 +303,7 @@ Value Interpreter::executeAssignExpression(Expression* expr) {
             else if (assignExpr->typed.literal == TOKEN_BOOLEAN && value.valueBool)
                 value.varBoolean = true;
 
-            if (!value.varNumber && !value.varFloat && !value.varString && !value.varBoolean)
+            if (!value.varNumber && !value.varFloat && !value.varString && !value.varBoolean && !value.varAny)
                 throw std::runtime_error("interpret error: the value type is defferent from the specified.");
         }
 
