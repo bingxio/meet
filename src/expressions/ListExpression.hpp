@@ -20,6 +20,8 @@
 #ifndef MEET_LIST_EXPRESSION_H
 #define MEET_LIST_EXPRESSION_H
 
+#include <sstream>
+
 #include "../Expression.hpp"
 
 class ListExpression: public Expression {
@@ -39,7 +41,14 @@ class ListExpression: public Expression {
         }
 
         std::string toString() {
-            return "[ ListExpression: size = " + std::to_string(values.size()) + " ]";
+            std::stringstream data;
+
+            data << "[ ListExpression = ";
+
+            for (auto i : values)
+                data << "[ " << i.toString() << " ] ";
+
+            return data.str();
         }
 };
 

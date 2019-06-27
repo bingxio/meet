@@ -1,4 +1,7 @@
 
 var a: list = [2, 4, 'hello world', 12.5, false, 15]
 
+var b: list = [12, 443, 6, 23, 23, 77, 8, 23, 11, 55]
+
 println a
+println b

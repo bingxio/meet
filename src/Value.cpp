@@ -76,6 +76,19 @@ void Value::printValue() {
 
     if (this->valueNull)
         std::cout << "null";
+
+    if (this->valueList) {
+        std::cout << "[ ";
+
+        for (std::vector<Value>::iterator a = listValue.begin(); a != listValue.end(); a ++) {
+            if ((a + 1) == listValue.end())
+                std::cout << a->toString();
+            else
+                std::cout << a->toString() << ", ";
+        }
+
+        std::cout << " ]" << std::endl;
+    }
 }
 
 void Value::printLineValue() {
@@ -105,6 +118,19 @@ void Value::printLineValue() {
 
     if (this->valueNull)
         std::cout << "null" << std::endl;
+
+    if (this->valueList) {
+        std::cout << "[ ";
+
+        for (std::vector<Value>::iterator a = listValue.begin(); a != listValue.end(); a ++) {
+            if ((a + 1) == listValue.end())
+                std::cout << a->toString();
+            else
+                std::cout << a->toString() << ", ";
+        }
+
+        std::cout << " ]" << std::endl;
+    }
 }
 
 std::string Value::toString() {
@@ -113,6 +139,23 @@ std::string Value::toString() {
     if (this->valueString) return this->stringValue;
     if (this->valueBool)   return (this->boolValue) ? "true" : "false";
     if (this->valueNull)   return "null";
+
+    if (this->valueList) {
+        std::stringstream data;
+
+        data << "[ ";
+
+        for (std::vector<Value>::iterator a = this->listValue.begin(); a != this->listValue.end(); a ++) {
+            if ((a + 1) == this->listValue.end()) 
+                data << a->toString();
+            else
+                data << a->toString() << ", ";
+        }
+
+        data << " ]";
+
+        return data.str();
+    }
 
     throw std::runtime_error("interpret error: cannot to string.");
 }
