@@ -3,5 +3,20 @@ var a: list = [2, 4, 'hello world', 12.5, false, 15]
 
 var b: list = [12, 443, 6, 23, 23, 77, 8, 23, 11, 55]
 
-println a
-println b
+println 'list a = $a'
+println 'list b = $b'
+
+print 'a first = '
+println a[0]
+
+print 'a second = '
+println a[1]
+
+print 'a third = '
+println a[2]
+
+print 'a end = '
+println a[5]
+
+print 'a end + 1 = '
+println a[5 + 1]

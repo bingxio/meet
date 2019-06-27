@@ -113,6 +113,9 @@ Value Interpreter::executeExpression(Expression* expr) {
     if (expr->defintion() == EXPRESSION_VARIABLE)
         return executeVariableExpression(expr);
 
+    if (expr->defintion() == EXPRESSION_GET)
+        return executeGetExpression(expr);
+
     throw std::runtime_error("interpret error: unknow expression '" + expr->toString() + "'.");
 }
 
@@ -348,6 +351,27 @@ Value Interpreter::executeVariableExpression(Expression* expr) {
     VariableExpression* varExpr = (VariableExpression *) expr;
 
     return this->get(varExpr->name.literal);
+}
+
+Value Interpreter::executeGetExpression(Expression* expr) {
+    GetExpression* getExpr = (GetExpression *) expr;
+
+    Value value = executeExpression(getExpr->expression);
+
+    if (getExpr->type == EXPRESSION_LIST) {
+        if (value.valueNumber == false)
+            throw std::runtime_error("interpret error: cannot use no number value to get array.");
+
+        std::vector<Value> a = this->get(getExpr->name.literal).listValue;
+
+        if (value.numberValue > a.size() - 1)
+            throw std::runtime_error("interpret error: out of array range '" + 
+                std::to_string(value.numberValue) + "'.");
+
+        return a.at(value.numberValue);
+    }
+
+    return Value();
 }
 
 Value Interpreter::executeExpressionStatement(Statement* stmt) {

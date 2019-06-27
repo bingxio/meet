@@ -35,6 +35,7 @@
 #include "expressions/AssignExpression.hpp"
 #include "expressions/LogicalExpression.hpp"
 #include "expressions/ListExpression.hpp"
+#include "expressions/GetExpression.hpp"
 
 #include "statements/ExpressionStatement.hpp"
 #include "statements/VarStatement.hpp"
@@ -72,8 +73,6 @@ class Parser {
         Expression* addition();
         Expression* multiplication();
         Expression* unary();
-        Expression* call();
-        Expression* finishCall();
         Expression* primary();
 
         Statement* minusGreaterBlockStatement();

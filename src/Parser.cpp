@@ -230,8 +230,20 @@ Expression* Parser::primary() {
     if (look(TOKEN_VALUE_INT) || look(TOKEN_VALUE_STRING) || look(TOKEN_VALUE_FLOAT))
         return new LiteralExpression(previous());
 
-    if (look(TOKEN_VALUE_IDENTIFIER))
-        return new VariableExpression(previous());
+    if (look(TOKEN_VALUE_IDENTIFIER)) {
+        Token name = previous();
+
+        if (look(TOKEN_LBRACKET)) {
+            Expression* expr = expression();
+
+            if (look(TOKEN_RBRACKET) == false)
+                error("syntax error: expect ']' after expression.");
+
+            return new GetExpression(name, expr, EXPRESSION_LIST);
+        }
+
+        return new VariableExpression(name);
+    }
     
     if (look(TOKEN_NULL) || look(TOKEN_TRUE) || look(TOKEN_FALSE))
         return new LiteralExpression(previous());
