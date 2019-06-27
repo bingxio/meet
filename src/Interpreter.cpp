@@ -346,7 +346,7 @@ Value Interpreter::executeVariableExpression(Expression* expr) {
 Value Interpreter::executeListExpression(Expression* expr) {
     ListExpression* listExpr = (ListExpression *) expr;
 
-    
+
 }
 
 Value Interpreter::executeExpressionStatement(Statement* stmt) {
@@ -467,7 +467,7 @@ void Interpreter::executeWhileStatement(Statement* stmt) {
 
     bool condition = executeExpressionStatement(whileStmt->condition).boolValue;
 
-    while(condition) {
+    while (condition) {
         try {
             for (auto i : whileStmt->block->block)
                 executeStatement(i);
