@@ -171,7 +171,7 @@ Value Interpreter::executeLiteralExpression(Expression* expr) {
                 if (stream.str().length() != 0) {
                     data << this->get(stream.str()).toString();
 
-                    if (i == token.literal.length() - 1)
+                    if (i == token.literal.length() - 1 && !isspace(token.literal.at(i)))
                         i ++;
                 }
 
@@ -469,8 +469,7 @@ void Interpreter::executeWhileStatement(Statement* stmt) {
 
     while (condition) {
         try {
-            for (auto i : whileStmt->block->block)
-                executeStatement(i);
+            executeBlockStatement(whileStmt->block);
         } catch (BreakStatement operation) {
             break;
         } catch (ContinueStatement operation) {
