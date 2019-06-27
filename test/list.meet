@@ -18,5 +18,9 @@ println a[2]
 print 'a end = '
 println a[5]
 
-print 'a end + 1 = '
-println a[5 + 1]
+# println a[5 + 1] error: out of range.
+
+a[1 + 4] = 'meet'
+
+print 'a end = '
+println a[1 + 4]

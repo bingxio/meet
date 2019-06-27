@@ -1,8 +1,8 @@
 
 # this is debug file
 
-var a: float
+var a: list
 
-a = -1.5
+a[0] = 'hello world'
 
 println a

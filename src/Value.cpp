@@ -178,6 +178,12 @@ Value backValueWithNullTyped(std::string literal) {
     if (literal == TOKEN_BOOLEAN)                      return Value(false);
     if (literal == TOKEN_STRING)                       return Value(std::string(""));
 
+    if (literal == TOKEN_LIST) {
+        std::vector<Value> a = std::vector<Value>();
+
+        return Value(a);
+    }
+
     throw std::runtime_error("type error: unknown literal with Post-initialized variable.");
 }
 

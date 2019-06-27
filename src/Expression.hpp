@@ -29,6 +29,7 @@
 #define EXPRESSION_LOGICAL  "EXPRESSION_LOGICAL"
 #define EXPRESSION_LIST     "EXPRESSION_LIST"
 #define EXPRESSION_GET      "EXPRESSION_GET"
+#define EXPRESSION_SET      "EXPRESSION_SET"
 
 class Expression {
     public:

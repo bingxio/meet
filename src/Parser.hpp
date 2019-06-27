@@ -36,6 +36,7 @@
 #include "expressions/LogicalExpression.hpp"
 #include "expressions/ListExpression.hpp"
 #include "expressions/GetExpression.hpp"
+#include "expressions/SetExpression.hpp"
 
 #include "statements/ExpressionStatement.hpp"
 #include "statements/VarStatement.hpp"
