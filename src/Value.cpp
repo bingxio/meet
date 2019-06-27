@@ -118,11 +118,12 @@ std::string Value::toString() {
 }
 
 Value backValueWithToken(Token token) {
-    if (token.type == TOKEN_VALUE_INT)   return Value(std::stoi(token.literal));
-    if (token.type == TOKEN_VALUE_FLOAT) return Value(std::stof(token.literal));
-    if (token.type == TOKEN_TRUE)        return Value(true);
-    if (token.type == TOKEN_FALSE)       return Value(false);
-    if (token.type == TOKEN_NULL)        return Value();
+    if (token.type == TOKEN_VALUE_INT)    return Value(std::stoi(token.literal));
+    if (token.type == TOKEN_VALUE_FLOAT)  return Value(std::stof(token.literal));
+    if (token.type == TOKEN_VALUE_STRING) return Value(token.literal);
+    if (token.type == TOKEN_TRUE)         return Value(true);
+    if (token.type == TOKEN_FALSE)        return Value(false);
+    if (token.type == TOKEN_NULL)         return Value();
 
     throw std::runtime_error("type error: unknow literal token decode to value.");
 }

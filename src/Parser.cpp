@@ -249,10 +249,9 @@ Expression* Parser::primary() {
         std::vector<Value> values = std::vector<Value>();
 
         while (look(TOKEN_RBRACKET) == false) {
-            if (look(TOKEN_COMMA)) {
+            if (look(TOKEN_COMMA))
                 continue;
-            }
-
+                
             values.push_back(backValueWithToken(look()));
 
             this->position ++;

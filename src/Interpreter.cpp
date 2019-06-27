@@ -113,6 +113,9 @@ Value Interpreter::executeExpression(Expression* expr) {
     if (expr->defintion() == EXPRESSION_VARIABLE)
         return executeVariableExpression(expr);
 
+    if (expr->defintion() == EXPRESSION_LIST)
+        return executeListExpression(expr);
+
     throw std::runtime_error("interpret error: unknow expression '" + expr->toString() + "'.");
 }
 
@@ -338,6 +341,12 @@ Value Interpreter::executeVariableExpression(Expression* expr) {
     VariableExpression* varExpr = (VariableExpression *) expr;
 
     return this->get(varExpr->name.literal);
+}
+
+Value Interpreter::executeListExpression(Expression* expr) {
+    ListExpression* listExpr = (ListExpression *) expr;
+
+    
 }
 
 Value Interpreter::executeExpressionStatement(Statement* stmt) {
