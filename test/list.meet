@@ -1,4 +1,4 @@
 
-var a: list = [2, 4, 6, 8, 10]
+var a: list = [2, 4, 'hello world', 12.5, false, 15]
 
 println a
