@@ -271,6 +271,7 @@ Value Interpreter::executeUnaryExpression(Expression* expr) {
     if (unaryExpr->token.type == TOKEN_MINUS) {
         if (a.valueNumber)
             return Value(-a.numberValue);
+            
         if (a.valueFloat)
             return Value(-a.floatValue);
 
