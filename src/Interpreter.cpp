@@ -271,7 +271,7 @@ Value Interpreter::executeUnaryExpression(Expression* expr) {
     if (unaryExpr->token.type == TOKEN_MINUS) {
         if (a.valueNumber)
             return Value(-a.numberValue);
-            
+
         if (a.valueFloat)
             return Value(-a.floatValue);
 
@@ -333,7 +333,7 @@ Value Interpreter::executeAssignExpression(Expression* expr) {
         Value a = this->get(assignExpr->name.literal);
 
         if ((a.varNumber && !value.valueNumber) || (a.varString && !value.valueString) ||
-            (a.varBoolean && !value.valueBool) || (a.varFloat && !value.valueFloat)) {
+                (a.varBoolean && !value.valueBool) || (a.varFloat && !value.valueFloat)) {
             throw std::runtime_error("interpret error: cannot defined as other type.");
         }
 
