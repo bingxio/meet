@@ -1,12 +1,10 @@
 
-fun hello () -> println 'hello world'
+# fun hello () -> println 'hello world'
 
-hello (12, 4, 'hello', false)
+# hello (12, 4, 'hello', false)
 
-# fun a (user: string, pass: string): int {
-#     println 'user = $user, pass = $pass'
-#
-#     return 200
-# }
+fun a (user: string, pass: string): int {
+    println 'user = $user, pass = $pass'
+}
 
-# a ('turaiiao', 'huangjing')
+a ('turaiiao', 'huangjing')

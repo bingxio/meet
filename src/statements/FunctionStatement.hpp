@@ -40,7 +40,7 @@ class FunctionStatement: public Statement {
         }
 
         std::string toString() {
-            return "";
+            return "[ FunctionStatement: name = " + name.literal + " ]";
         }
 };
 

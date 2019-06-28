@@ -89,6 +89,7 @@ void Interpreter::executeStatement(Statement* stmt) {
     if (stmt->defintion() == STATEMENT_FOR)        executeForStatement(stmt);
     if (stmt->defintion() == STATEMENT_IF)         executeIfStatement(stmt);
     if (stmt->defintion() == STATEMENT_WHILE)      executeWhileStatement(stmt);
+    if (stmt->defintion() == STATEMENT_FUN)        executeFunctionStatement(stmt);
 }
 
 Value Interpreter::executeExpression(Expression* expr) {
@@ -118,6 +119,9 @@ Value Interpreter::executeExpression(Expression* expr) {
 
     if (expr->defintion() == EXPRESSION_SET)
         return executeSetExpression(expr);
+
+    if (expr->defintion() == EXPRESSION_CALL)
+        return executeCallExpression(expr);
 
     throw std::runtime_error("interpret error: unknow expression '" + expr->defintion() + "'.");
 }
@@ -405,6 +409,17 @@ Value Interpreter::executeSetExpression(Expression* expr) {
     return Value();
 }
 
+Value Interpreter::executeCallExpression(Expression* expr) {
+    CallExpression* callExpr = (CallExpression *) expr;
+
+    Value a = this->get(callExpr->name.literal);
+
+    if (a.valueFun == false)
+        throw std::runtime_error("interpret error: name '" + callExpr->name.literal + "' is not a function.");
+
+    return a;
+}
+
 Value Interpreter::executeExpressionStatement(Statement* stmt) {
     return executeExpression(((ExpressionStatement *) stmt)->expression);
 }
@@ -437,11 +452,6 @@ void Interpreter::executeBlockStatement(Statement* stmt) {
     for (auto i : blockStmt->block)
         executeStatement(i);
 
-    /**
-     * 遍历备份符号表，如果新的作用域里有不在全局符号表里的变量，执行删除
-     * 
-     * 防止新的作用域里改变了全局符号表的数据后丢失的问题
-     */
     for (auto i : *this->environment) {
         std::map<std::string, Value>::iterator name = old->find(i.first);
 
@@ -536,4 +546,10 @@ void Interpreter::executeWhileStatement(Statement* stmt) {
 
         condition = executeExpressionStatement(whileStmt->condition).boolValue;
     }
+}
+
+void Interpreter::executeFunctionStatement(Statement* stmt) {
+    FunctionStatement* funStmt = (FunctionStatement *) stmt;
+
+    this->assign(funStmt->name.literal, Value(funStmt));
 }

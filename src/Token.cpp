@@ -33,7 +33,7 @@ bool isTyped(const Token& token) {
 }
 
 bool Token::operator < (Token token) const {
-    return true;
+    return false;
 }
 
 std::string getTokenLiteralWithType(const TokenType& tokenType) {

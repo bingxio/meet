@@ -27,6 +27,8 @@
 
 #include "Token.hpp"
 
+#include "statements/FunctionStatement.hpp"
+
 class Value {
     public:
         explicit Value(int value);
@@ -34,6 +36,7 @@ class Value {
         explicit Value(std::string value);
         explicit Value(bool value);
         explicit Value(std::vector<Value> value);
+        explicit Value(FunctionStatement* value);
 
         Value(); // Null value.
 
@@ -57,12 +60,14 @@ class Value {
         bool valueBool = false;
         bool valueNull = false;
         bool valueList = false;
+        bool valueFun = false;
 
         int numberValue = 0;
         float floatValue = 0;
         bool boolValue = false;
         std::string stringValue = std::string();
         std::vector<Value> listValue = std::vector<Value>();
+        FunctionStatement* funValue;
 
         bool varAny = false;
         bool varNumber = false;

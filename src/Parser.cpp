@@ -352,8 +352,7 @@ Statement* Parser::varStatement() {
     bool firstParseStatement = true;
 
     while (firstParseStatement || look().type == TOKEN_COMMA) {
-        if (look().type == TOKEN_COMMA)
-            this->position ++;
+        look(TOKEN_COMMA);
 
         Expression* expr = expression();
 
@@ -398,14 +397,12 @@ Statement* Parser::minusGreaterBlockStatement() {
 Statement* Parser::blockStatement() {
     std::vector<Statement *> block = std::vector<Statement *>();
 
-    while (look().type != TOKEN_RBRACE) {
+    while (look(TOKEN_RBRACE) == false) {
         block.push_back(statement());
 
         if (isAtEnd())
             error("syntax error: lost right '}' after block statement.");
     }
-
-    this->position ++;
 
     return new BlockStatement(block);
 }
@@ -421,39 +418,26 @@ Statement* Parser::continueStatement() {
 Statement* Parser::forStatement() {
     Statement* initializer = statement();
 
-    if (look().type != TOKEN_SEMICOLON)
+    if (look(TOKEN_SEMICOLON) == false)
         error("syntax error: expect ';' after initializer.");
-
-    this->position ++;
 
     Statement* condition = statement();
 
-    if (look().type != TOKEN_SEMICOLON)
+    if (look(TOKEN_SEMICOLON) == false)
         error("syntax error: expect ';' after condition.");
-
-    this->position ++;
 
     Statement* renovate = statement();
 
     std::vector<Statement *> block = std::vector<Statement *>();
 
-    if (look().type == TOKEN_MINUS_GREATER) {
-        this->position ++;
-
+    if (look(TOKEN_MINUS_GREATER))
         block.push_back(statement());
-    } else if (look().type == TOKEN_LBRACE) {
-        this->position ++;
-
-        BlockStatement* blockStmt = (BlockStatement *) blockStatement();
-
-        return new ForStatement(initializer, condition, renovate, blockStmt);
-    } else {
+    else if (look(TOKEN_LBRACE))
+        return new ForStatement(initializer, condition, renovate, (BlockStatement *) blockStatement());
+    else
         error("syntax error: exepct '{' or '->' after for statement.");
-    }
 
-    BlockStatement* blockStmt = new BlockStatement(block);
-
-    return new ForStatement(initializer, condition, renovate, blockStmt);
+    return new ForStatement(initializer, condition, renovate, new BlockStatement(block));
 }
 
 Statement* Parser::ifStatement() {
@@ -466,51 +450,31 @@ Statement* Parser::ifStatement() {
 
     ifStatement->condition = statement();
 
-    if (look().type == TOKEN_MINUS_GREATER) {
-        this->position ++;
-
+    if (look(TOKEN_MINUS_GREATER))
         ifStatement->establish = (BlockStatement *) minusGreaterBlockStatement();
-    } else if (look().type == TOKEN_LBRACE) {
-        this->position ++;
-
+    else if (look(TOKEN_LBRACE))
         ifStatement->establish = (BlockStatement *) blockStatement();
-    } else {
+    else
         error("syntax error: exepct '{' or '->' after if statement condition.");
-    }
 
-    if (look().type == TOKEN_ELIF) {
-        this->position ++;
-
+    if (look(TOKEN_ELIF)) {
         ifStatement->elifCondition = statement();
 
-        if (look().type == TOKEN_MINUS_GREATER) {
-            this->position ++;
-
+        if (look(TOKEN_MINUS_GREATER))
             ifStatement->elifEstablish = (BlockStatement *) minusGreaterBlockStatement();
-        } else if (look().type == TOKEN_LBRACE) {
-            this->position ++;
-
+        else if (look(TOKEN_LBRACE))
             ifStatement->elifEstablish = (BlockStatement *) blockStatement();
-        } else {
+        else
             error("syntax error: exepct '{' or '->' after if statement condition.");
-        }
     }
     
-    if (look().type == TOKEN_ELSE) {
-        this->position ++;
-
-        if (look().type == TOKEN_MINUS_GREATER) {
-            this->position ++;
-
+    if (look(TOKEN_ELSE))
+        if (look(TOKEN_MINUS_GREATER))
             ifStatement->elseEstablish = (BlockStatement *) minusGreaterBlockStatement();
-        } else if (look().type == TOKEN_LBRACE) {
-            this->position ++;
-
+        else if (look(TOKEN_LBRACE))
             ifStatement->elseEstablish = (BlockStatement *) blockStatement();
-        } else {
+        else
             error("syntax error: exepct '{' or '->' after if statement condition.");
-        }
-    }
 
     return ifStatement;
 }
@@ -538,20 +502,25 @@ Statement* Parser::funStatement() {
 
     Token name = previous();
 
-    if (look().type != TOKEN_LPAREN)
+    if (look(TOKEN_LPAREN) == false)
         error("syntax error: expect '(' after function name.");
 
     std::map<std::string, std::string> parameters = std::map<std::string, std::string>();
 
-    this->position ++;
-
     while (look(TOKEN_RPAREN) == false) {
+        if (look(TOKEN_COLON))
+            parameters.insert(std::pair<std::string, std::string>(look(-2).literal, look().literal));
         this->position ++;
     }
 
+    funStatement->name = name;
     funStatement->parameters = parameters;
 
-    // TODO: 添加函数返回值
+    if (look(TOKEN_COLON)) {
+        funStatement->returnType = look();
+
+        this->position ++;
+    }
 
     if (look(TOKEN_MINUS_GREATER))
         funStatement->block = (BlockStatement *) minusGreaterBlockStatement();

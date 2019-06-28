@@ -44,6 +44,11 @@ Value::Value(std::vector<Value> value) {
     this->listValue = std::move(value);
 }
 
+Value::Value(FunctionStatement* value) {
+    this->valueFun = true;
+    this->funValue = std::move(value);
+}
+
 Value::Value() {
     this->valueNull = true;
 }
@@ -146,7 +151,7 @@ std::string Value::toString() {
         data << "[ ";
 
         for (std::vector<Value>::iterator a = this->listValue.begin(); a != this->listValue.end(); a ++) {
-            if ((a + 1) == this->listValue.end()) 
+            if ((a + 1) == this->listValue.end())
                 data << a->toString();
             else
                 data << a->toString() << ", ";

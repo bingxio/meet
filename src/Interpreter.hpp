@@ -38,6 +38,7 @@
 #include "expressions/ListExpression.hpp"
 #include "expressions/GetExpression.hpp"
 #include "expressions/SetExpression.hpp"
+#include "expressions/CallExpression.hpp"
 
 #include "statements/ExpressionStatement.hpp"
 #include "statements/VarStatement.hpp"
@@ -48,6 +49,7 @@
 #include "statements/ContinueStatement.hpp"
 #include "statements/IfStatement.hpp"
 #include "statements/WhileStatement.hpp"
+#include "statements/FunctionStatement.hpp"
 
 class Interpreter {
     private:
@@ -77,6 +79,7 @@ class Interpreter {
         void executeForStatement(Statement* stmt);
         void executeIfStatement(Statement* stmt);
         void executeWhileStatement(Statement* stmt);
+        void executeFunctionStatement(Statement* stmt);
 
         Value get(std::string);
 
@@ -91,6 +94,7 @@ class Interpreter {
         Value executeVariableExpression(Expression* expr);
         Value executeGetExpression(Expression* expr);
         Value executeSetExpression(Expression* expr);
+        Value executeCallExpression(Expression* expr);
     public:
         explicit Interpreter(std::vector<Statement *> statements, std::map<std::string, Value>* environment);
 
