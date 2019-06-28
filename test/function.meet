@@ -1,8 +1,4 @@
 
-# fun hello () -> println 'hello world'
-
-# hello (12, 4, 'hello', false)
-
 fun a (user: string, pass: string): int {
     println 'user = $user, pass = $pass'
 }

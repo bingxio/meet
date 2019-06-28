@@ -410,6 +410,12 @@ Value Interpreter::executeSetExpression(Expression* expr) {
     return Value();
 }
 
+/**
+ * map<string -> name, string -> value>  : FunctionStatement Parameters.
+ * vector<Value>                         : CallExpression Parameters.
+ * 
+ * How to compare the parameters and fill in them in turn ?
+ */
 Value Interpreter::executeCallExpression(Expression* expr) {
     CallExpression* callExpr = (CallExpression *) expr;
 
@@ -422,11 +428,8 @@ Value Interpreter::executeCallExpression(Expression* expr) {
         throw std::runtime_error("interpret error: inconsistency of real parameters.");
 
     for (auto i : a.funValue->parameters) {
-        std::cout << "name = " << i.first << ", value = " << i.second << std::endl;
-    }
 
-    for (auto i : callExpr->parameters) {
-        std::cout << "name = " << i.first << ", value = " << i.second << std::endl;
+        std::cout << i.second << std::endl;
     }
 
     return a;
