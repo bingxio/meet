@@ -1,5 +1,5 @@
 /**
- * Meet Programming Language Statement.
+ * Meet Programming Language Expression.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,30 +17,30 @@
  * Email: 1171840237@qq.com
  * Github: https://github.com/turaiiao
  */
-#ifndef MEET_FUNCTION_STATEMENT_H
-#define MEET_FUNCTION_STATEMENT_H
+#ifndef MEET_CALL_EXPRESSION_H
+#define MEET_CALL_EXPRESSION_H
 
-#include "../Statement.hpp"
+#include "../Expression.hpp"
 #include "../Token.hpp"
+#include "../Value.hpp"
 
-#include "BlockStatement.hpp"
-
-class FunctionStatement: public Statement {
+class CallExpression: public Expression {
     public:
         Token name;
 
-        std::map<std::string, std::string> parameters;
+        std::vector<Value> parameters;
 
-        BlockStatement* block;
-
-        Token returnType;
+        CallExpression(Token name, std::vector<Value> parameters) {
+            this->name = std::move(name);
+            this->parameters = std::move(parameters);
+        }
 
         std::string defintion() {
-            return STATEMENT_FUN;
+            return EXPRESSION_CALL;
         }
 
         std::string toString() {
-            return "";
+            return "[ CallExpression: name = " + name.literal + ", parameters = ";
         }
 };
 

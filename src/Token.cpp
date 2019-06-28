@@ -21,6 +21,8 @@
 
 #include "Token.hpp"
 
+Token::Token() {}
+
 Token::Token(TokenType type, std::string literal, int line): literal(std::move(literal)), line(line) {
     this->type = std::move(type);
 }

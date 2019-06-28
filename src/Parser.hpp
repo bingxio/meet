@@ -37,6 +37,7 @@
 #include "expressions/ListExpression.hpp"
 #include "expressions/GetExpression.hpp"
 #include "expressions/SetExpression.hpp"
+#include "expressions/CallExpression.hpp"
 
 #include "statements/ExpressionStatement.hpp"
 #include "statements/VarStatement.hpp"
@@ -47,6 +48,7 @@
 #include "statements/ContinueStatement.hpp"
 #include "statements/IfStatement.hpp"
 #include "statements/WhileStatement.hpp"
+#include "statements/FunctionStatement.hpp"
 
 class Parser {
     private:
@@ -88,6 +90,7 @@ class Parser {
         Statement* continueStatement();
         Statement* ifStatement();
         Statement* whileStatement();
+        Statement* funStatement();
     public:
         explicit Parser(std::vector<Token> tokens);
 

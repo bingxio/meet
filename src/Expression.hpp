@@ -30,6 +30,7 @@
 #define EXPRESSION_LIST     "EXPRESSION_LIST"
 #define EXPRESSION_GET      "EXPRESSION_GET"
 #define EXPRESSION_SET      "EXPRESSION_SET"
+#define EXPRESSION_CALL     "EXPRESSION_CALL"
 
 class Expression {
     public:
