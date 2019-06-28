@@ -418,6 +418,17 @@ Value Interpreter::executeCallExpression(Expression* expr) {
     if (a.valueFun == false)
         throw std::runtime_error("interpret error: name '" + callExpr->name.literal + "' is not a function.");
 
+    if (a.funValue->parameters.size() != callExpr->parameters.size())
+        throw std::runtime_error("interpret error: inconsistency of real parameters.");
+
+    for (auto i : a.funValue->parameters) {
+        std::cout << "name = " << i.first << ", value = " << i.second << std::endl;
+    }
+
+    for (auto i : callExpr->parameters) {
+        std::cout << "name = " << i.first << ", value = " << i.second << std::endl;
+    }
+
     return a;
 }
 
