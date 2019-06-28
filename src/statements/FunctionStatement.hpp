@@ -17,29 +17,22 @@
  * Email: 1171840237@qq.com
  * Github: https://github.com/turaiiao
  */
-#ifndef MEET_STATEMENT_H
-#define MEET_STATEMENT_H
+#ifndef MEET_FUNCTION_STATEMENT_H
+#define MEET_FUNCTION_STATEMENT_H
 
-#include <iostream>
+#include "../Statement.hpp"
 
-#define STATEMENT_EXPRESSION "STATEMENT_EXPRESSION"
-#define STATEMENT_VAR        "STATEMENT_VAR"
-#define STATEMENT_PRINTLN    "STATEMENT_PRINTLN"
-#define STATEMENT_BLOCK      "STATEMENT_BLOCK"
-#define STATEMENT_FOR        "STATEMENT_FOR"
-#define STATEMENT_BREAK      "STATEMENT_BREAK"
-#define STATEMENT_CONTINUE   "STATEMENT_CONTINUE"
-#define STATEMENT_IF         "STATEMENT_IF"
-#define STATEMENT_WHILE      "STATEMENT_WHILE"
-#define STATEMENT_FUN        "STATEMENT_FUN"
-
-class Statement {
+class FunctionStatement: public Statement {
     public:
-        virtual ~Statement() = default;
         
-        virtual std::string defintion() = 0;
 
-        virtual std::string toString() = 0;
+        std::string defintion() {
+            return STATEMENT_FUN;
+        }
+
+        std::string toString() {
+            return "";
+        }
 };
 
 #endif

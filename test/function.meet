@@ -1,0 +1,12 @@
+
+fun hello () -> println 'hello world'
+
+hello()
+
+fun show (user: string, pass: string): int {
+    println 'user = $user, pass = $pass'
+
+    return 200
+}
+
+show('turaiiao', 'huangjing')
