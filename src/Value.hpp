@@ -67,7 +67,7 @@ class Value {
         bool boolValue = false;
         std::string stringValue = std::string();
         std::vector<Value> listValue = std::vector<Value>();
-        FunctionStatement* funValue;
+        FunctionStatement* funValue = nullptr;
 
         bool varAny = false;
         bool varNumber = false;

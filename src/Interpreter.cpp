@@ -427,9 +427,24 @@ Value Interpreter::executeCallExpression(Expression* expr) {
     if (a.funValue->parameters.size() != callExpr->parameters.size())
         throw std::runtime_error("interpret error: inconsistency of real parameters.");
 
-    for (auto i : a.funValue->parameters) {
+    int l = 0;
 
-        std::cout << i.second << std::endl;
+    for (std::map<std::string, std::string>::iterator i = a.funValue->parameters.begin();
+            i != a.funValue->parameters.end(); i ++) {
+                Value b = a.funValue->parameters.at(l);
+
+                if (i->second == TOKEN_STRING && b.valueString == false)
+                    throw std::runtime_error("interpret error: function string argument type error.");
+                if (i->second == TOKEN_INT && b.valueNumber == false)
+                    throw std::runtime_error("interpret error: function int argument type error.");
+                if (i->second == TOKEN_FLOAT && b.floatValue == false)
+                    throw std::runtime_error("interpret error: function float argument type error.");
+                if (i->second == TOKEN_BOOLEAN && b.boolValue == false)
+                    throw std::runtime_error("interpret error: function boolean argument type error.");
+                if (i->second == TOKEN_LIST && b.listValue == false)
+                    throw std::runtime_error("interpret error: function list argument type error.");
+
+                l ++;
     }
 
     return a;
