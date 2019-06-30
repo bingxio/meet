@@ -66,11 +66,12 @@ class Interpreter {
 
         Statement* look();
 
+        std::vector<std::string> executeStatementWithoutEnvironment(Statement* stmt);
+
         void assign(std::string name, Value value);
         void reAssign(std::string name, Value value);
 
         void executeStatement(Statement* stmt);
-
         void executeVarStatement(Statement* stmt);
         void executePrintlnStatement(Statement* stmt);
         void executeBlockStatement(Statement* stmt);

@@ -2,12 +2,10 @@
 for var i = 0; i < 10; i += 1 ->
     println 'hello world'
 
-println ''
-println '   at two !'
-println ''
+print '\n\t at two ! \n'
 
 for var i = 0; i < 10; i += 1 {
-
-    continue
+    if i % 2 == 0 ->
+        continue
+    println i
 }
-    

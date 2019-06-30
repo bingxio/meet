@@ -30,5 +30,3 @@ fun sum (a: int, b: int) {
 }
 
 sum (1 + 4 * 3, 5)
-
-var a: string = 'hello' # error: 

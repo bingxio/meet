@@ -519,6 +519,28 @@ void Interpreter::executeBlockStatement(Statement* stmt) {
     delete old;
 }
 
+std::vector<std::string> Interpreter::executeStatementWithoutEnvironment(Statement* stmt) {
+    std::map<std::string, Value>* old = new std::map<std::string, Value>();
+
+    std::vector<std::string> names = std::vector<std::string>();
+
+    old->insert(this->environment->begin(), this->environment->end());
+
+    executeStatement(stmt);
+
+    for (auto i : *this->environment) {
+        std::map<std::string, Value>::iterator name = old->find(i.first);
+
+        if (name == old->end()) {
+            names.push_back(i.first);
+        }
+    }
+
+    delete old;
+
+    return names;
+}
+
 void Interpreter::executeBreakStatement() {
     throw BreakStatement();
 }
@@ -530,7 +552,7 @@ void Interpreter::executeContinueStatement() {
 void Interpreter::executeForStatement(Statement* stmt) {
     ForStatement* forStmt = (ForStatement *) stmt;
 
-    executeStatement(forStmt->initializer);
+    std::vector<std::string> names = executeStatementWithoutEnvironment(forStmt->initializer);
 
     Value condition = executeExpressionStatement(forStmt->condition);
 
@@ -550,6 +572,10 @@ void Interpreter::executeForStatement(Statement* stmt) {
         executeStatement(forStmt->renovate);
 
         condition = executeExpressionStatement(forStmt->condition);
+    }
+
+    for (int i = 0; i < names.size(); i ++) {
+        this->environment->erase(this->environment->find(names.at(i)));
     }
 }
 
