@@ -40,7 +40,19 @@ class CallExpression: public Expression {
         }
 
         std::string toString() {
-            return "[ CallExpression: name = " + name.literal + ", parameters = ";
+            std::stringstream data;
+
+            data << "[ CallExpression: name = " << name.literal << ", parameters = ";
+
+            for (int i = 0; i < parameters.size(); i ++)
+                if ((i + 1) == parameters.size())
+                    data << parameters.at(i).toString();
+                else
+                    data << parameters.at(i).toString() << ", ";
+
+            data << " ]";
+
+            return data.str();
         }
 };
 

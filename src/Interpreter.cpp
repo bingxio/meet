@@ -427,6 +427,8 @@ Value Interpreter::executeCallExpression(Expression* expr) {
 
     int l = 0;
 
+    std::map<std::string, Value> backup = std::map<std::string, Value>();
+
     for (std::map<std::string, std::string>::iterator i = a.funValue->parameters.begin();
             i != a.funValue->parameters.end(); i ++) {
                 Value b = callExpr->parameters.at(l);
@@ -448,7 +450,12 @@ Value Interpreter::executeCallExpression(Expression* expr) {
                     throw std::runtime_error("interpret error: undefind object name '" + i->second + "'.");
                 }
 
-                this->assign(i->first, b);
+                if (this->haveObject(i->first)) {
+                    backup.insert(std::pair<std::string, Value>(i->first, this->get(i->first)));
+
+                    this->reAssign(i->first, b);
+                } else
+                    this->assign(i->first, b);
 
                 l ++;
     }
@@ -457,6 +464,12 @@ Value Interpreter::executeCallExpression(Expression* expr) {
 
     for (auto i : a.funValue->parameters)
         this->environment->erase(i.first);
+
+    if (backup.size() != 0) {
+        for (auto i : backup) {
+            this->assign(i.first, i.second);
+        }
+    }
 
     return a;
 }

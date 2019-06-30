@@ -40,7 +40,15 @@ class FunctionStatement: public Statement {
         }
 
         std::string toString() {
-            return "[ FunctionStatement: name = " + name.literal + " ]";
+            std::stringstream data;
+
+            data << "[ FunctionStatement: name = " << name.literal << ", parameters size = ";
+
+            data << parameters.size() << ", block = " << block->toString() << ", return = ";
+
+            data << returnType.literal << " ]";
+
+            return data.str();
         }
 };
 

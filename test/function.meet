@@ -3,4 +3,25 @@ fun a (user: string, pass: string): int {
     println 'user = $user, pass = $pass'
 }
 
+fun b (a: int, b: int) {
+    println a + b
+}
+
+fun assign (a: string, b: string, c: boolean) {
+    if c ->
+        println '$a $b'
+    else ->
+        println 'undefined'
+}
+
 a ('turaiiao', 'huangjing')
+b (12, 45)
+
+assign ('hello', 'world', false)
+assign ('hello', 'world', true)
+
+var meet = 'meet', lan = 'language'
+
+assign (meet, lan, true)
+
+var a: string = 'hello' # error: 

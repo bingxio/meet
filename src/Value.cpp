@@ -94,6 +94,9 @@ void Value::printValue() {
 
         std::cout << " ]" << std::endl;
     }
+
+    if (this->valueFun)
+        std::cout << "FunctionStatement";
 }
 
 void Value::printLineValue() {
@@ -136,6 +139,9 @@ void Value::printLineValue() {
 
         std::cout << " ]" << std::endl;
     }
+
+    if (this->valueFun)
+        std::cout << "FunctionStatement" << std::endl;
 }
 
 std::string Value::toString() {
@@ -144,6 +150,7 @@ std::string Value::toString() {
     if (this->valueString) return this->stringValue;
     if (this->valueBool)   return (this->boolValue) ? "true" : "false";
     if (this->valueNull)   return "null";
+    if (this->valueFun)    return "FunctionStatement";
 
     if (this->valueList) {
         std::stringstream data;
@@ -173,7 +180,7 @@ Value backValueWithToken(Token token) {
     if (token.type == TOKEN_FALSE)        return Value(false);
     if (token.type == TOKEN_NULL)         return Value();
 
-    throw std::runtime_error("type error: unknow literal token decode to value.");
+    throw std::runtime_error("type error: unknow literal token decode to value '" + token.literal + "'.");
 }
 
 Value backValueWithNullTyped(std::string literal) {
@@ -205,7 +212,7 @@ Value Value::operator + (const Value& a) {
 
     if (this->valueString && a.valueString)
         return Value(this->stringValue + a.stringValue);
-    
+
     throw std::runtime_error("type error: Operands '+' must be two numbers and floats or two strings.");
 }
 
