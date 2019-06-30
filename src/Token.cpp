@@ -32,6 +32,11 @@ bool isTyped(const Token& token) {
         token.type == TOKEN_LIST || token.type == TOKEN_BOOLEAN || token.type == TOKEN_ANY;
 }
 
+bool isNotlistFixedType(const Token& token) {
+    return token.type != TOKEN_INT && token.type != TOKEN_STRING && token.type != TOKEN_FLOAT &&
+        token.type != TOKEN_BOOLEAN && token.type != TOKEN_LIST && token.type != TOKEN_ANY;
+}
+
 bool Token::operator < (Token token) const {
     return false;
 }

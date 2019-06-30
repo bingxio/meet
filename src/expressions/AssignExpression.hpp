@@ -33,6 +33,10 @@ class AssignExpression: public Expression {
 
         bool isVar = false;
 
+        Token fixedListToken;
+
+        AssignExpression() {}
+
         AssignExpression(Token name, Expression* initializer, Token typed): name(std::move(name)),
             initializer(std::move(initializer)), typed(std::move(typed)) {}
 
@@ -48,13 +52,21 @@ class AssignExpression: public Expression {
         }
 
         std::string toString() {
-            if (initializer != nullptr) {
-                return "[ AssignExpression: name = " + name.literal + ", initializer = " +
-                    initializer->toString() + ", isVar = " + (isVar ? "true" : "false") + " ]";
-            }
+            std::stringstream data;
 
-            return "[ AssignExpression: name = " + name.literal + ", initializer = null" +
-                ", isVar = " + (isVar ? "true" : "false") + " ]";
+            data << "[ AssignExpression: name = " << name.literal;
+
+            if (initializer != nullptr)
+                data << ", initializer = " << initializer->toString();
+            else
+                data << ", type = " << typed.literal;
+
+            data << ", isVar = " << (isVar ? "true" : "false");
+            data << ", fixedListToken = " << fixedListToken.literal;
+            
+            data << " ]";
+
+            return data.str();
         }
 };
 

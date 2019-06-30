@@ -278,6 +278,26 @@ Value Interpreter::executeAssignExpression(Expression* expr) {
     if (assignExpr->initializer->defintion() == EXPRESSION_LIST) {
         ListExpression* listExpr = (ListExpression *) assignExpr->initializer;
 
+        if (assignExpr->fixedListToken.literal != "") {
+            for (int i = 0; i < listExpr->values.size(); i ++) {
+                if (assignExpr->fixedListToken.type == TOKEN_INT && !listExpr->values.at(i).valueNumber)
+                    throw std::runtime_error("interpret error: list fixed in different int formats.");
+
+                else if (assignExpr->fixedListToken.type == TOKEN_FLOAT && !listExpr->values.at(i).valueFloat)
+                    throw std::runtime_error("interpret error: list fixed in different float formats.");
+
+                else if (assignExpr->fixedListToken.type == TOKEN_STRING && !listExpr->values.at(i).valueString)
+                    throw std::runtime_error("interpret error: list fixed in different string formats.");
+
+                else if (assignExpr->fixedListToken.type == TOKEN_BOOLEAN && !listExpr->values.at(i).valueBool)
+                    throw std::runtime_error("interpret error: list fixed in different boolean formats.");
+
+                if (isNotlistFixedType(assignExpr->fixedListToken) &&
+                        this->haveObject(assignExpr->fixedListToken.literal) == false)
+                    throw std::runtime_error("interpret error: list fixed type undefined.");
+            }
+        }
+
         Value listValue = Value(listExpr->values);
 
         this->assign(assignExpr->name.literal, listValue);
@@ -419,12 +439,16 @@ Value Interpreter::executeCallExpression(Expression* expr) {
 
         if (i->second == TOKEN_STRING && !b.valueString)
             throw std::runtime_error("interpret error: function string argument type error.");
+
         else if (i->second == TOKEN_INT && !b.valueNumber)
             throw std::runtime_error("interpret error: function int argument type error.");
+
         else if (i->second == TOKEN_FLOAT && !b.valueFloat)
             throw std::runtime_error("interpret error: function float argument type error.");
+
         else if (i->second == TOKEN_BOOLEAN && !b.valueBool)
             throw std::runtime_error("interpret error: function boolean argument type error.");
+
         else if (i->second == TOKEN_LIST && !b.valueList)
             throw std::runtime_error("interpret error: function list argument type error.");
 
@@ -450,22 +474,21 @@ Value Interpreter::executeCallExpression(Expression* expr) {
 
         if (a.funValue->returnType.type == TOKEN_INT && !v.valueNumber)
             throw std::runtime_error("interpret error: return type is int different from defintion.");
+
         else if (a.funValue->returnType.type == TOKEN_FLOAT && !v.valueFloat)
             throw std::runtime_error("interpret error: return type is float different from defintion.");
+
         else if (a.funValue->returnType.type == TOKEN_STRING && !v.valueString)
             throw std::runtime_error("interpret error: return type is string different from defintion.");
+
         else if (a.funValue->returnType.type == TOKEN_BOOLEAN && !v.valueBool)
             throw std::runtime_error("interpret error: return type is boolean different from defintion.");
+
         else if (a.funValue->returnType.type == TOKEN_LIST && !v.valueList)
             throw std::runtime_error("interpret error: return type is list different from defintion.");
 
-        if (a.funValue->returnType.type != TOKEN_INT && a.funValue->returnType.type != TOKEN_FLOAT &&
-                a.funValue->returnType.type != TOKEN_STRING && a.funValue->returnType.type != TOKEN_BOOLEAN &&
-                a.funValue->returnType.type != TOKEN_LIST) {
-
-            if (this->haveObject(a.funValue->returnType.literal) == false)
-                throw std::runtime_error("interpret error: return type is different from defintion.");
-        }
+        if (isNotlistFixedType(a.funValue->returnType) && this->haveObject(a.funValue->returnType.literal) == false)
+            throw std::runtime_error("interpret error: return type is different from defintion.");
 
         for (auto i : a.funValue->parameters)
             this->environment->erase(i.first);

@@ -120,4 +120,6 @@ std::string getTokenLiteralWithType(const TokenType& tokenType);
 
 bool isTyped(const Token& token);
 
+bool isNotlistFixedType(const Token& token);
+
 #endif

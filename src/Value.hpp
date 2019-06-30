@@ -66,7 +66,10 @@ class Value {
         float floatValue = 0;
         bool boolValue = false;
         std::string stringValue = std::string();
+
+        std::string fixedListValue;
         std::vector<Value> listValue = std::vector<Value>();
+
         FunctionStatement* funValue = nullptr;
 
         bool varAny = false;

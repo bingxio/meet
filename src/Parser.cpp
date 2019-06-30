@@ -130,18 +130,30 @@ Expression* Parser::assignment() {
         Token name = look(-2);
         Token type = look();
 
-        if (isTyped(type)) {
+        AssignExpression* assignExpr = new AssignExpression;
+
+        assignExpr->name = name;
+        assignExpr->typed = type;
+
+        this->position ++;
+
+        if (look(TOKEN_LESS)) {
+            Token a = look();
+
             this->position ++;
-        
-            if (look(TOKEN_EQUAL) == false)
-                return new AssignExpression(name, nullptr, type);
 
-            Expression* initializer = expression();
+            if (look(TOKEN_GREATER) == false)
+                error("syntax error: expect '>' after list type.");
 
-            return new AssignExpression(name, initializer, type);
-
-            error("syntax error: unknown variable type " + look().literal + ".");
+            assignExpr->fixedListToken = a;
         }
+        
+        if (look(TOKEN_EQUAL) == false)
+            return new AssignExpression(name, nullptr, type);
+
+        assignExpr->initializer = expression();
+
+        return assignExpr;
     }
 
     return expr;
@@ -316,6 +328,9 @@ Expression* Parser::primary() {
         return new GroupExpression(expr);
     }
 
+    /**
+     * var a: list<int> = [2, 3, 4, 5, 6]   : ListExpression
+     */
     if (look(TOKEN_LBRACKET)) {
         std::vector<Value> values = std::vector<Value>();
 

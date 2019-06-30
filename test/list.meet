@@ -22,4 +22,8 @@ println a[5]
 
 a[1 + 4] = 'meet'
 
-print 'a end = ' + a [1 + 4]
+println 'a end = ' + a [1 + 4]
+
+var x: list<int> = [2, 3, 4, 5, 6]
+
+var y: list<string> = ['1', 2] # error
