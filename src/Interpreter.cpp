@@ -413,8 +413,6 @@ Value Interpreter::executeSetExpression(Expression* expr) {
 /**
  * map<string -> name, string -> value>  : FunctionStatement Parameters.
  * vector<Value>                         : CallExpression Parameters.
- * 
- * How to compare the parameters and fill in them in turn ?
  */
 Value Interpreter::executeCallExpression(Expression* expr) {
     CallExpression* callExpr = (CallExpression *) expr;
@@ -450,8 +448,15 @@ Value Interpreter::executeCallExpression(Expression* expr) {
                     throw std::runtime_error("interpret error: undefind object name '" + i->second + "'.");
                 }
 
+                this->assign(i->first, b);
+
                 l ++;
     }
+
+    executeBlockStatement(a.funValue->block);
+
+    for (auto i : a.funValue->parameters)
+        this->environment->erase(i.first);
 
     return a;
 }
