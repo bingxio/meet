@@ -5,10 +5,10 @@ fun fibonacci (l: int) -> list {
     while i < l {
         a[i] = a[i - 1] + a[i - 2]
       
-      	i += 1
+        i += 1
     }
     
-  	return a
+    return a
 }
 
 println fibonacci (20)
