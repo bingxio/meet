@@ -431,18 +431,22 @@ Value Interpreter::executeCallExpression(Expression* expr) {
 
     for (std::map<std::string, std::string>::iterator i = a.funValue->parameters.begin();
             i != a.funValue->parameters.end(); i ++) {
-                Value b = a.funValue->parameters.at(l);
+                Value b = callExpr->parameters.at(l);
 
                 if (i->second == TOKEN_STRING && b.valueString == false)
                     throw std::runtime_error("interpret error: function string argument type error.");
-                if (i->second == TOKEN_INT && b.valueNumber == false)
+                else if (i->second == TOKEN_INT && b.valueNumber == false)
                     throw std::runtime_error("interpret error: function int argument type error.");
-                if (i->second == TOKEN_FLOAT && b.floatValue == false)
+                else if (i->second == TOKEN_FLOAT && b.valueFloat== false)
                     throw std::runtime_error("interpret error: function float argument type error.");
-                if (i->second == TOKEN_BOOLEAN && b.boolValue == false)
+                else if (i->second == TOKEN_BOOLEAN && b.valueBool == false)
                     throw std::runtime_error("interpret error: function boolean argument type error.");
-                if (i->second == TOKEN_LIST && b.listValue == false)
+                else if (i->second == TOKEN_LIST && b.valueList == false)
                     throw std::runtime_error("interpret error: function list argument type error.");
+
+                if (i->second != TOKEN_STRING && i->second != TOKEN_INT && i->second != TOKEN_FLOAT &&
+                        i->second != TOKEN_BOOLEAN && i->second != TOKEN_LIST && this->haveObject(i->second) == false)
+                            throw std::runtime_error("interpret error: undefind object name '" + i->second + "'.");
 
                 l ++;
     }
