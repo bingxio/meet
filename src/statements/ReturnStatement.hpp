@@ -20,10 +20,12 @@
 #ifndef MEET_RETURN_STATEMENT_H
 #define MEET_RETURN_STATEMENT_H
 
+#include <exception>
+
 #include "../Statement.hpp"
 #include "../Expression.hpp"
 
-class ReturnStatement: public Statement {
+class ReturnStatement: public Statement, std::exception {
     public:
         Expression* expression;
 
