@@ -445,8 +445,10 @@ Value Interpreter::executeCallExpression(Expression* expr) {
                     throw std::runtime_error("interpret error: function list argument type error.");
 
                 if (i->second != TOKEN_STRING && i->second != TOKEN_INT && i->second != TOKEN_FLOAT &&
-                        i->second != TOKEN_BOOLEAN && i->second != TOKEN_LIST && this->haveObject(i->second) == false)
-                            throw std::runtime_error("interpret error: undefind object name '" + i->second + "'.");
+                    i->second != TOKEN_BOOLEAN && i->second != TOKEN_LIST &&
+                        this->haveObject(i->second) == false) {
+                    throw std::runtime_error("interpret error: undefind object name '" + i->second + "'.");
+                }
 
                 l ++;
     }
