@@ -1,4 +1,4 @@
-# The Meet Programming Language
+# 🍧 The Meet Programming Language
 
 ```
 var her: string = '余春莉', me: string = '黄菁'
