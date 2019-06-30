@@ -292,16 +292,13 @@ Expression* Parser::primary() {
          * hello (a, 123, 'world')
          */
         if (look(TOKEN_LPAREN)) {
-            std::vector<Value> parameters = std::vector<Value>();
+            std::vector<Expression *> parameters = std::vector<Expression *>(); 
 
             while (look(TOKEN_RPAREN) == false) {
                 if (look(TOKEN_COMMA))
                     continue;
-                else {
-                    parameters.push_back(backValueWithToken(look()));
-
-                    this->position ++;
-                }
+                else
+                    parameters.push_back(expression());
             }
 
             return new CallExpression(name, parameters);

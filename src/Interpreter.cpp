@@ -431,7 +431,7 @@ Value Interpreter::executeCallExpression(Expression* expr) {
 
     for (std::map<std::string, std::string>::iterator i = a.funValue->parameters.begin();
             i != a.funValue->parameters.end(); i ++) {
-                Value b = callExpr->parameters.at(l);
+                Value b = executeExpression(callExpr->parameters.at(l));
 
                 if (i->second == TOKEN_STRING && b.valueString == false)
                     throw std::runtime_error("interpret error: function string argument type error.");

@@ -22,15 +22,14 @@
 
 #include "../Expression.hpp"
 #include "../Token.hpp"
-#include "../Value.hpp"
 
 class CallExpression: public Expression {
     public:
         Token name;
 
-        std::vector<Value> parameters;
+        std::vector<Expression *> parameters;
 
-        CallExpression(Token name, std::vector<Value> parameters) {
+        CallExpression(Token name, std::vector<Expression *> parameters) {
             this->name = std::move(name);
             this->parameters = std::move(parameters);
         }
@@ -46,9 +45,9 @@ class CallExpression: public Expression {
 
             for (int i = 0; i < parameters.size(); i ++)
                 if ((i + 1) == parameters.size())
-                    data << parameters.at(i).toString();
+                    data << parameters.at(i)->toString();
                 else
-                    data << parameters.at(i).toString() << ", ";
+                    data << parameters.at(i)->toString() << ", ";
 
             data << " ]";
 
