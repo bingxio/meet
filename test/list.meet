@@ -22,5 +22,4 @@ println a[5]
 
 a[1 + 4] = 'meet'
 
-print 'a end = '
-println a[1 + 4]
+print 'a end = ' + a [1 + 4]

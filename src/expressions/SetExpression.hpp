@@ -31,18 +31,12 @@ class SetExpression: public Expression {
         Expression* expression;
         Expression* value;
 
-        Statement* then;
-
         std::string type;
 
-        SetExpression(Token name, Expression* expression, Expression* value, Statement* then, std::string type): 
-                name(std::move(name)) {
-                    this->expression = std::move(expression);
-                    this->value = std::move(value);
-                    this->type = std::move(type);
-                    
-                    if (then != nullptr)
-                        this->then = then;
+        SetExpression(Token name, Expression* expression, Expression* value, std::string type): name(std::move(name)) {
+            this->expression = std::move(expression);
+            this->value = std::move(value);
+            this->type = std::move(type);
         }
 
         ~SetExpression() {
@@ -63,10 +57,7 @@ class SetExpression: public Expression {
             data << expression->toString() << ", value = ";
             data << value->toString();
 
-            if (then != nullptr)
-                data << ", then = " << then->toString() << ", type = " << type;
-            else
-                data << ", type = " << type;
+            data << ", type = " << type;
 
             data << " ]";
 

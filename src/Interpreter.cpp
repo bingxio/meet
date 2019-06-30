@@ -94,35 +94,17 @@ void Interpreter::executeStatement(Statement* stmt) {
 }
 
 Value Interpreter::executeExpression(Expression* expr) {
-    if (expr->defintion() == EXPRESSION_LITERAL)
-        return executeLiteralExpression(expr);
-
-    if (expr->defintion() == EXPRESSION_BINARY)
-        return executeBinaryExpression(expr);
-
-    if (expr->defintion() == EXPRESSION_GROUP)
-        return executeGroupExpression(expr);
-
-    if (expr->defintion() == EXPRESSION_UNARY)
-        return executeUnaryExpression(expr);
-
-    if (expr->defintion() == EXPRESSION_ASSIGN)
-        return executeAssignExpression(expr);
-
-    if (expr->defintion() == EXPRESSION_LOGICAL)
-        return executeLogicalExpression(expr);
-
-    if (expr->defintion() == EXPRESSION_VARIABLE)
-        return executeVariableExpression(expr);
-
-    if (expr->defintion() == EXPRESSION_GET)
-        return executeGetExpression(expr);
-
-    if (expr->defintion() == EXPRESSION_SET)
-        return executeSetExpression(expr);
-
-    if (expr->defintion() == EXPRESSION_CALL)
-        return executeCallExpression(expr);
+    if (expr->defintion() == EXPRESSION_LITERAL)  return executeLiteralExpression(expr);
+    if (expr->defintion() == EXPRESSION_BINARY)   return executeBinaryExpression(expr);
+    if (expr->defintion() == EXPRESSION_GROUP)    return executeGroupExpression(expr);
+    if (expr->defintion() == EXPRESSION_UNARY)    return executeUnaryExpression(expr);
+    if (expr->defintion() == EXPRESSION_ASSIGN)   return executeAssignExpression(expr);
+    if (expr->defintion() == EXPRESSION_LOGICAL)  return executeLogicalExpression(expr);
+    if (expr->defintion() == EXPRESSION_VARIABLE) return executeVariableExpression(expr);
+    if (expr->defintion() == EXPRESSION_GET)      return executeGetExpression(expr);
+    if (expr->defintion() == EXPRESSION_SET)      return executeSetExpression(expr);
+    if (expr->defintion() == EXPRESSION_CALL)     return executeCallExpression(expr);
+    if (expr->defintion() == EXPRESSION_LIST)     return executeListExpression(expr);
 
     throw std::runtime_error("interpret error: unknow expression '" + expr->defintion() + "'.");
 }
@@ -362,6 +344,10 @@ Value Interpreter::executeVariableExpression(Expression* expr) {
     return this->get(varExpr->name.literal);
 }
 
+Value Interpreter::executeListExpression(Expression* expr) {
+    return Value(((ListExpression *) expr)->values);
+}
+
 Value Interpreter::executeGetExpression(Expression* expr) {
     GetExpression* getExpr = (GetExpression *) expr;
 
@@ -401,9 +387,6 @@ Value Interpreter::executeSetExpression(Expression* expr) {
             a.at(initializer.numberValue) = value;
 
         this->reAssign(setExpr->name.literal, Value(a));
-
-        if (setExpr->then != nullptr)
-            executeStatement(setExpr->then);
 
         return value;
     }

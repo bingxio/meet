@@ -1,14 +1,6 @@
 
-# this is debug file
-
-var a: int = 12
-var b: int = 34
-
-fun plus (a: int, b: int) -> int {
-    if a > b ->
-        return a
-    else ->
-        return b
+fun fibonacci (i: int) -> list {
+    
 }
 
-println plus (a, b)
+println fibonacci (20)

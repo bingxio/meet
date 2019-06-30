@@ -276,14 +276,8 @@ Expression* Parser::primary() {
             if (look(TOKEN_RBRACKET) == false)
                 error("syntax error: expect ']' after expression.");
 
-            if (look(TOKEN_EQUAL)) {
-                Expression* value = expression();
-
-                if (look(TOKEN_MINUS_GREATER))
-                    return new SetExpression(name, initializer, value, statement(), EXPRESSION_LIST);
-
-                return new SetExpression(name, initializer, value, NULL, EXPRESSION_LIST);
-            }
+            if (look(TOKEN_EQUAL))
+                return new SetExpression(name, initializer, expression(), EXPRESSION_LIST);
 
             return new GetExpression(name, initializer, EXPRESSION_LIST);
         }

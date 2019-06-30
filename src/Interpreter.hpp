@@ -98,6 +98,7 @@ class Interpreter {
         Value executeGetExpression(Expression* expr);
         Value executeSetExpression(Expression* expr);
         Value executeCallExpression(Expression* expr);
+        Value executeListExpression(Expression* expr);
     public:
         explicit Interpreter(std::vector<Statement *> statements, std::map<std::string, Value>* environment);
 
