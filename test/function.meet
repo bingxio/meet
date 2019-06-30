@@ -24,4 +24,11 @@ var meet = 'meet', lan = 'language'
 
 assign (meet, lan, true)
 
+fun sum (a: int, b: int) {
+
+    println a + b
+}
+
+sum (1 + 4 * 3, 5)
+
 var a: string = 'hello' # error: 
