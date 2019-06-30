@@ -32,6 +32,7 @@
 #define STATEMENT_IF         "STATEMENT_IF"
 #define STATEMENT_WHILE      "STATEMENT_WHILE"
 #define STATEMENT_FUN        "STATEMENT_FUN"
+#define STATEMENT_RETURN     "STATEMENT_RETURN"
 
 class Statement {
     public:

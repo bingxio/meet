@@ -95,6 +95,9 @@ Statement* Parser::statement() {
     if (look(TOKEN_FUN))
         return funStatement();
 
+    if (look(TOKEN_RETURN))
+        return returnStatement();
+
     return expressionStatement();
 }
 
@@ -508,7 +511,7 @@ Statement* Parser::funStatement() {
     funStatement->name = name;
     funStatement->parameters = parameters;
 
-    if (look(TOKEN_COLON)) {
+    if (look(TOKEN_MINUS_GREATER)) {
         funStatement->returnType = look();
 
         this->position ++;
@@ -522,4 +525,8 @@ Statement* Parser::funStatement() {
         error("syntax error: exepct '{' or '->' after function statement.");
 
     return funStatement;
+}
+
+Statement* Parser::returnStatement() {
+    return new ReturnStatement(expression());
 }

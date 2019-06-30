@@ -90,6 +90,7 @@ void Interpreter::executeStatement(Statement* stmt) {
     if (stmt->defintion() == STATEMENT_IF)         executeIfStatement(stmt);
     if (stmt->defintion() == STATEMENT_WHILE)      executeWhileStatement(stmt);
     if (stmt->defintion() == STATEMENT_FUN)        executeFunctionStatement(stmt);
+    if (stmt->defintion() == STATEMENT_RETURN)     executeReturnStatement(stmt);
 }
 
 Value Interpreter::executeExpression(Expression* expr) {
@@ -431,33 +432,33 @@ Value Interpreter::executeCallExpression(Expression* expr) {
 
     for (std::map<std::string, std::string>::iterator i = a.funValue->parameters.begin();
             i != a.funValue->parameters.end(); i ++) {
-                Value b = executeExpression(callExpr->parameters.at(l));
+        Value b = executeExpression(callExpr->parameters.at(l));
 
-                if (i->second == TOKEN_STRING && b.valueString == false)
-                    throw std::runtime_error("interpret error: function string argument type error.");
-                else if (i->second == TOKEN_INT && b.valueNumber == false)
-                    throw std::runtime_error("interpret error: function int argument type error.");
-                else if (i->second == TOKEN_FLOAT && b.valueFloat== false)
-                    throw std::runtime_error("interpret error: function float argument type error.");
-                else if (i->second == TOKEN_BOOLEAN && b.valueBool == false)
-                    throw std::runtime_error("interpret error: function boolean argument type error.");
-                else if (i->second == TOKEN_LIST && b.valueList == false)
-                    throw std::runtime_error("interpret error: function list argument type error.");
+        if (i->second == TOKEN_STRING && b.valueString == false)
+            throw std::runtime_error("interpret error: function string argument type error.");
+        else if (i->second == TOKEN_INT && b.valueNumber == false)
+            throw std::runtime_error("interpret error: function int argument type error.");
+        else if (i->second == TOKEN_FLOAT && b.valueFloat== false)
+            throw std::runtime_error("interpret error: function float argument type error.");
+        else if (i->second == TOKEN_BOOLEAN && b.valueBool == false)
+            throw std::runtime_error("interpret error: function boolean argument type error.");
+        else if (i->second == TOKEN_LIST && b.valueList == false)
+            throw std::runtime_error("interpret error: function list argument type error.");
 
-                if (i->second != TOKEN_STRING && i->second != TOKEN_INT && i->second != TOKEN_FLOAT &&
+            if (i->second != TOKEN_STRING && i->second != TOKEN_INT && i->second != TOKEN_FLOAT &&
                     i->second != TOKEN_BOOLEAN && i->second != TOKEN_LIST &&
-                        this->haveObject(i->second) == false) {
-                    throw std::runtime_error("interpret error: undefind object name '" + i->second + "'.");
-                }
+                this->haveObject(i->second) == false) {
+                throw std::runtime_error("interpret error: undefind object name '" + i->second + "'.");
+            }
 
-                if (this->haveObject(i->first)) {
-                    backup.insert(std::pair<std::string, Value>(i->first, this->get(i->first)));
+            if (this->haveObject(i->first)) {
+                backup.insert(std::pair<std::string, Value>(i->first, this->get(i->first)));
 
-                    this->reAssign(i->first, b);
-                } else
-                    this->assign(i->first, b);
+                this->reAssign(i->first, b);
+            } else
+                this->assign(i->first, b);
 
-                l ++;
+            l ++;
     }
 
     executeBlockStatement(a.funValue->block);
@@ -632,4 +633,10 @@ void Interpreter::executeFunctionStatement(Statement* stmt) {
     FunctionStatement* funStmt = (FunctionStatement *) stmt;
 
     this->assign(funStmt->name.literal, Value(funStmt));
+}
+
+void Interpreter::executeReturnStatement(Statement* stmt) {
+    ReturnStatement* returnStmt = (ReturnStatement *) stmt;
+
+    std::cout << returnStmt->expression->toString() << std::endl;
 }

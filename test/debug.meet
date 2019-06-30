@@ -1,8 +1,14 @@
 
 # this is debug file
 
-var a: list
+var a: int = 12
+var b: int = 34
 
-a[0] = 'hello world'
+fun plus (a: int, b: int) -> int {
+    if a > b ->
+        return a
+    else ->
+        return b
+}
 
-println a
+println plus (a, b)

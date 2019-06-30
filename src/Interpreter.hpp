@@ -50,6 +50,7 @@
 #include "statements/IfStatement.hpp"
 #include "statements/WhileStatement.hpp"
 #include "statements/FunctionStatement.hpp"
+#include "statements/ReturnStatement.hpp"
 
 class Interpreter {
     private:
@@ -81,6 +82,7 @@ class Interpreter {
         void executeIfStatement(Statement* stmt);
         void executeWhileStatement(Statement* stmt);
         void executeFunctionStatement(Statement* stmt);
+        void executeReturnStatement(Statement* stmt);
 
         Value get(std::string);
 

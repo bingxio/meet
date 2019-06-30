@@ -1,6 +1,8 @@
 
-fun a (user: string, pass: string): int {
+fun a (user: string, pass: string) -> int {
     println 'user = $user, pass = $pass'
+
+    return 200
 }
 
 fun b (a: int, b: int) {

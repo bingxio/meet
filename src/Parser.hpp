@@ -49,6 +49,7 @@
 #include "statements/IfStatement.hpp"
 #include "statements/WhileStatement.hpp"
 #include "statements/FunctionStatement.hpp"
+#include "statements/ReturnStatement.hpp"
 
 class Parser {
     private:
@@ -91,6 +92,7 @@ class Parser {
         Statement* ifStatement();
         Statement* whileStatement();
         Statement* funStatement();
+        Statement* returnStatement();
     public:
         explicit Parser(std::vector<Token> tokens);
 
