@@ -28,12 +28,12 @@
 class IfStatement: public Statement {
     public:
         Statement* condition;
-        BlockStatement* establish;
+        BlockStatement* establish = nullptr;
 
-        Statement* elifCondition;
-        BlockStatement* elifEstablish;
+        Statement* elifCondition = nullptr;
+        BlockStatement* elifEstablish = nullptr;
 
-        BlockStatement* elseEstablish;
+        BlockStatement* elseEstablish = nullptr;
 
         ~IfStatement() {
             delete condition;

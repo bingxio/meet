@@ -440,11 +440,6 @@ Statement* Parser::forStatement() {
 Statement* Parser::ifStatement() {
     IfStatement* ifStatement = new IfStatement;
 
-    ifStatement->establish = nullptr;
-    ifStatement->elifCondition = nullptr;
-    ifStatement->elifEstablish = nullptr;
-    ifStatement->elseEstablish = nullptr;
-
     ifStatement->condition = statement();
 
     if (look(TOKEN_MINUS_GREATER))
