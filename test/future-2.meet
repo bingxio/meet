@@ -1,0 +1,19 @@
+
+# The Meet Programming Language Future Chapter 2.
+
+import 'os'
+
+var a: int, b = 200
+
+os.fetchInput (a)
+
+when a {
+
+    it > b -> println '大了'
+
+    it < b -> println '小了'
+
+    it == b {
+        println '对了'
+    }
+}

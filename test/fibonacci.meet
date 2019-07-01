@@ -1,12 +1,14 @@
 
-# fibonacci
-
-var a: list = [1, 1], x = 2
-
-while x < 20 {
-    a[x] = a[x - 1] + a[x - 2]
-
-    x += 1
+open fun a (l: int) -> list {
+    var a: list<int> = [1, 1], i = 2
+      
+    while i < l {
+        a[i] = a[i - 1] + a[i - 2]
+      
+        i += 1
+    }
+    
+    return a
 }
 
-println a
+println a (20)

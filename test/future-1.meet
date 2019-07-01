@@ -1,0 +1,15 @@
+
+# The Meet Programming Language Future Chapter 1.
+
+# import 'fibonacci.meet'
+import 'fibonacci.meet' show a
+import 'fibonacci.meet' show a as fib
+
+println a (20)
+println fib (20)
+
+import 'date'
+
+var now: string = new Date().now
+
+println now
