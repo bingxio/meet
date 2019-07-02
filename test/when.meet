@@ -1,5 +1,0 @@
-
-var a: int = 20
-
-println 'a = $a'
-

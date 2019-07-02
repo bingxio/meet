@@ -1,0 +1,19 @@
+
+fun counter () -> fun () -> int {
+    
+    var a: int = -1
+
+    fun generate () -> int {
+        a += 1
+
+        return a        
+    }
+
+    return generate
+}
+
+var a = counter ()
+
+println a () // 0
+println a () // 1
+println a () // 2

@@ -1,0 +1,16 @@
+
+var a: int = 20
+
+println 'a = $a'
+
+match a { it ->
+
+    it > 20 -> println 'max'
+
+    it < 20 -> println 'min'
+
+    it == 20 {
+        println 'ok'
+        println '=='
+    }
+}
