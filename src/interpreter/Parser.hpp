@@ -24,8 +24,9 @@
 
 #include "Statement.hpp"
 #include "Expression.hpp"
-#include "Token.hpp"
 #include "Value.hpp"
+
+#include "../Token.hpp"
 
 #include "../expressions/LiteralExpression.hpp"
 #include "../expressions/BinaryExpression.hpp"

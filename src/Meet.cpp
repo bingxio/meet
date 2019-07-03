@@ -30,7 +30,7 @@
 
 #include "interpreter/Parser.hpp"
 #include "interpreter/Interpreter.hpp"
-#include "interpreter/Value.hpp"    
+#include "interpreter/Value.hpp"
 
 using namespace std;
 

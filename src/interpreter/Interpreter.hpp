@@ -23,7 +23,8 @@
 #include <vector>
 #include <map>
 
-#include "Token.hpp"
+#include "../Token.hpp"
+
 #include "Value.hpp"
 #include "Statement.hpp"
 #include "Expression.hpp"
