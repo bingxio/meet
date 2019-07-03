@@ -20,7 +20,7 @@
 #ifndef MEET_ASSIGN_EXPRESSION_H
 #define MEET_ASSIGN_EXPRESSION_H
 
-#include "../Expression.hpp"
+#include "../interpreter/Expression.hpp"
 #include "../Token.hpp"
 
 class AssignExpression: public Expression {

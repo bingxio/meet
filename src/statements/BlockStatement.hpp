@@ -23,7 +23,7 @@
 #include <vector>
 #include <sstream>
 
-#include "../Statement.hpp"
+#include "../interpreter/Statement.hpp"
 
 class BlockStatement: public Statement {
     public:

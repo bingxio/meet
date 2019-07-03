@@ -23,7 +23,7 @@
 #include <vector>
 #include <sstream>
 
-#include "../Statement.hpp"
+#include "../interpreter/Statement.hpp"
 #include "../expressions/AssignExpression.hpp"
 
 class VarStatement: public Statement {

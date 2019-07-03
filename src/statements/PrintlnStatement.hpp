@@ -20,8 +20,8 @@
 #ifndef MEET_PRINTLN_STATEMENT_H
 #define MEET_PRINTLN_STATEMENT_H
 
-#include "../Statement.hpp"
-#include "../Expression.hpp"
+#include "../interpreter/Statement.hpp"
+#include "../interpreter/Expression.hpp"
 
 class PrintlnStatement: public Statement {
     public:

@@ -27,9 +27,10 @@
 #include "Conversion.hpp"
 #include "Lexer.hpp"
 #include "Token.hpp"
-#include "Parser.hpp"
-#include "Interpreter.hpp"
-#include "Value.hpp"
+
+#include "interpreter/Parser.hpp"
+#include "interpreter/Interpreter.hpp"
+#include "interpreter/Value.hpp"    
 
 using namespace std;
 

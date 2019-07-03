@@ -20,7 +20,7 @@
 #ifndef MEET_VARIABLE_EXPRESSION_H
 #define MEET_VARIABLE_EXPRESSION_H
 
-#include "../Expression.hpp"
+#include "../interpreter/Expression.hpp"
 
 class VariableExpression: public Expression {
     public:

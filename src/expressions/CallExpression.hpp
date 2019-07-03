@@ -20,7 +20,7 @@
 #ifndef MEET_CALL_EXPRESSION_H
 #define MEET_CALL_EXPRESSION_H
 
-#include "../Expression.hpp"
+#include "../interpreter/Expression.hpp"
 #include "../Token.hpp"
 
 class CallExpression: public Expression {

@@ -22,8 +22,8 @@
 
 #include <exception>
 
-#include "../Statement.hpp"
-#include "../Expression.hpp"
+#include "../interpreter/Statement.hpp"
+#include "../interpreter/Expression.hpp"
 
 class ReturnStatement: public Statement, std::exception {
     public:

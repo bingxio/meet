@@ -25,9 +25,9 @@
 #include <sstream>
 #include <vector>
 
-#include "Token.hpp"
+#include "../Token.hpp"
 
-#include "statements/FunctionStatement.hpp"
+#include "../statements/FunctionStatement.hpp"
 
 class Value {
     public:

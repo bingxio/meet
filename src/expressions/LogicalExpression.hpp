@@ -21,7 +21,7 @@
 #define MEET_LOGICAL_EXPRESSION_H
 
 #include "../Token.hpp"
-#include "../Expression.hpp"
+##include "../interpreter/Expression.hpp"
 
 class LogicalExpression: public Expression {
     public:

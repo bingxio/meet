@@ -22,7 +22,7 @@
 
 #include <sstream>
 
-#include "../Expression.hpp"
+#include "../interpreter/Expression.hpp"
 
 class ListExpression: public Expression {
     public:

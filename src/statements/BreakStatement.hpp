@@ -22,7 +22,7 @@
 
 #include <exception>
 
-#include "../Statement.hpp"
+#include "../interpreter/Statement.hpp"
 
 class BreakStatement: public Statement, std::exception {
     public:

@@ -20,8 +20,8 @@
 #ifndef MEET_EXPRESSION_STATEMENT_H
 #define MEET_EXPRESSION_STATEMENT_H
 
-#include "../Statement.hpp"
-#include "../Expression.hpp"
+#include "../interpreter/Statement.hpp"
+#include "../interpreter/Expression.hpp"
 
 class ExpressionStatement: public Statement {
     public:

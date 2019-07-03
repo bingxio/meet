@@ -20,7 +20,7 @@
 #ifndef MEET_UNARY_EXPRESSION_H
 #define MEET_UNARY_EXPRESSION_H
 
-#include "../Expression.hpp"
+#include "../interpreter/Expression.hpp"
 
 class UnaryExpression: public Expression {
     public:

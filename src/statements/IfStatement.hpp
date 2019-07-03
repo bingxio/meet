@@ -22,7 +22,7 @@
 
 #include <sstream>
 
-#include "../Statement.hpp"
+#include "../interpreter/Statement.hpp"
 #include "BlockStatement.hpp"
 
 class IfStatement: public Statement {

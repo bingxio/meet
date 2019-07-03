@@ -20,7 +20,7 @@
 #ifndef MEET_GROUP_EXPRESSION_H
 #define MEET_GROUP_EXPRESSION_H
 
-#include "../Expression.hpp"
+#include "../interpreter/Expression.hpp"
 
 class GroupExpression: public Expression {
     public:

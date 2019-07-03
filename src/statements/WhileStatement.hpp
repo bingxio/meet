@@ -20,7 +20,7 @@
 #ifndef MEET_WHILE_STATEMENT_H
 #define MEET_WHILE_STATEMENT_H
 
-#include "../Statement.hpp"
+#include "../interpreter/Statement.hpp"
 #include "BlockStatement.hpp"
 
 class WhileStatement: public Statement {

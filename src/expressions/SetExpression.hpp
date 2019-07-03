@@ -20,8 +20,8 @@
 #ifndef MEET_SET_EXPRESSION_H
 #define MEET_SET_EXPRESSION_H
 
-#include "../Expression.hpp"
-#include "../Statement.hpp"
+#include "../interpreter/Expression.hpp"
+#include "../interpreter/Statement.hpp"
 #include "../Token.hpp"
 
 class SetExpression: public Expression {

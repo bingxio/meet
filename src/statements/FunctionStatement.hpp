@@ -20,7 +20,7 @@
 #ifndef MEET_FUNCTION_STATEMENT_H
 #define MEET_FUNCTION_STATEMENT_H
 
-#include "../Statement.hpp"
+#include "../interpreter/Statement.hpp"
 #include "../Token.hpp"
 
 #include "BlockStatement.hpp"

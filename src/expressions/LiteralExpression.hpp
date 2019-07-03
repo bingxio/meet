@@ -21,7 +21,7 @@
 #define MEET_LITERAL_EXPRESSION_H
 
 #include "../Token.hpp"
-#include "../Expression.hpp"
+#include "../interpreter/Expression.hpp"
 
 class LiteralExpression: public Expression {
     public:

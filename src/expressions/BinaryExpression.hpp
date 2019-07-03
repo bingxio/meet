@@ -20,7 +20,7 @@
 #ifndef MEET_BINARY_EXPRESSION_HPP
 #define MEET_BINARY_EXPRESSION_HPP
 
-#include "../Expression.hpp"
+#include "../interpreter/Expression.hpp"
 #include "../Token.hpp"
 
 class BinaryExpression: public Expression {
