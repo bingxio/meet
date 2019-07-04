@@ -1,3 +1,4 @@
+// https://leetcode-cn.com/problems/two-sum/
 
 fun twoSum (arr: list<int>, target: int) -> list<int> {
     var result: list<int> = []
@@ -5,10 +6,11 @@ fun twoSum (arr: list<int>, target: int) -> list<int> {
     for i, v : arr {
         var k = i + 1
         
-        while k < listSize(arr) {
-            if v + listAt(arr) == target {
-                listPush(result, i);
-                listPush(result, k);
+        while k < arr.size () {
+        
+            if v + arr.at (k) == target {
+                result.insert (i);
+                result.insert (k);
             }
             
             k += 1
