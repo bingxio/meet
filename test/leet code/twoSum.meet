@@ -1,0 +1,21 @@
+
+fun twoSum (arr: list<int>, target: int) -> list<int> {
+    var result: list<int> = []
+    
+    for i, v : arr {
+        var k = i + 1
+        
+        while k < listSize(arr) {
+            if v + listAt(arr) == target {
+                listPush(result, i);
+                listPush(result, k);
+            }
+            
+            k += 1
+        }
+    }
+    
+    return result
+}
+
+println twoSum ([2, 7, 11, 15], 9) // [0, 1]
