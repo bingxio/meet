@@ -1,0 +1,17 @@
+
+// https://leetcode-cn.com/problems/valid-parentheses/
+
+fun valid (str: string) -> boolean {
+    
+    while str.contains('()') | str.contains('{}') | str.contains('[]') {
+        match str { i ->
+            i.contains('()') -> str = str.replace('()', '')
+
+            i.contains('{}') -> str = str.replace('{}', '')
+
+            i.contains('[]') -> str = str.replace('[]', '')
+        }
+    }
+
+    return str.length == 0
+}

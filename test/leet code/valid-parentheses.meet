@@ -1,6 +1,0 @@
-// https://leetcode-cn.com/problems/valid-parentheses/
-
-fun valid (str: string) -> boolean {
-    
-    return str.size()
-}
