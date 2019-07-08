@@ -5,7 +5,7 @@ impl Stack(fixed: boolean) {
 
   open enum Type -> INTEGER, STRING, FLOAT
 
-  open var stack: any = [], valueFixedType: Type = null
+  open var stack: any = [], valueFixedType: any = null
   
   init -> valueFixedType = this.fixed
   
