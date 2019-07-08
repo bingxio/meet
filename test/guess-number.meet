@@ -1,4 +1,6 @@
 
+// Guess number
+
 var a = input('Please enter the number to guess: ')
 var b = input('Ok, Please input your number: ')
 
