@@ -1,0 +1,19 @@
+
+var a = input('Please enter the number to guess: ')
+var b = input('Ok, Please input your number: ')
+
+if type(b) != int {
+    println 'Please input a number !'
+  
+    exit(64)
+}
+
+println match {
+    a > b -> 'min'
+    
+    a < b -> 'max'
+    
+    a == b {
+        println 'win'
+    }
+}
