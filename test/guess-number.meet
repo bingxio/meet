@@ -8,12 +8,16 @@ if type(b) != int {
     exit(64)
 }
 
-println match {
-    a > b -> 'min'
-    
-    a < b -> 'max'
-    
-    a == b {
-        println 'win'
+loop {
+    println match {
+        a > b -> 'max'
+        
+        a < b -> 'min'
+        
+        a == b {
+            break
+            
+            'win'
+        }
     }
 }
