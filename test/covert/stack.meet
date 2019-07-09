@@ -3,31 +3,31 @@
 
 impl Stack(fixed: boolean) {
 
-  open enum Type -> INTEGER, STRING, FLOAT
+    open enum Type -> INTEGER, STRING, FLOAT
 
-  open var stack: any = [], valueFixedType: any = null
+    open var stack: any = [], valueFixedType: any = null
   
-  init -> valueFixedType = this.fixed
+    init -> valueFixedType = this.fixed
   
-  fun push(value: any) -> any {
-    if valueFixedType -> valueFixedType = type(value)
+    fun push(value: any) -> any {
+        if valueFixedType -> valueFixedType = type(value)
     
-    if type(value) != valueFixedType {
-      println 'cannot push different value for fixed type.'
+        if type(value) != valueFixedType {
+            println 'cannot push different value for fixed type.'
       
-      return null
-    } else {
-      stack.insert(value)
+            return null
+        } else {
+            stack.insert(value)
       
-      return value
+            return value
+        }
     }
-  }
   
-  fun pop() -> any -> stack.remove(stack.length - 1)
+    fun pop() -> any -> stack.remove(stack.length - 1)
   
-  fun peek() -> any -> stack.at(stack.length - 1)
+    fun peek() -> any -> stack.at(stack.length - 1)
   
-  fun size() -> int -> stack.size()
+    fun size() -> int -> stack.size()
 }
 
 var a = new Stack(true)
