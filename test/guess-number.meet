@@ -2,24 +2,26 @@
 // Guess number
 
 var a = input('Please enter the number to guess: ')
-var b = input('Ok, Please input your number: ')
-
-if type(b) != int {
-    println 'Please input a number !'
-  
-    exit(64)
-}
 
 loop {
-    println match {
-        a > b -> 'max'
+    var b = input('Ok, Please input your number: ')
+
+    if (b is int) == false {
+        println 'Please input a integer !'
         
-        a < b -> 'min'
+        continue
+    }
+    
+    println 'You guessed: \(b)'
+    
+    match b { i ->
+        i > a -> println 'Too big !'
+        i < a -> println 'Too small !'
         
-        a == b {
-            break
+        i == a {
+            println 'You win !'
             
-            'win'
+            break
         }
     }
 }
