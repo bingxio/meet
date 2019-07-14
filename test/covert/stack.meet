@@ -5,11 +5,11 @@ impl Stack(fixed: boolean) {
 
     open enum Type -> INTEGER, STRING, FLOAT
 
-    open var stack: any = [], valueFixedType: any = null
+    open var stack: void = [], valueFixedType: void = null
   
     init -> valueFixedType = this.fixed
   
-    func push(value: any) -> any {
+    func push(value: void) -> void {
         if (valueFixedType) -> valueFixedType = type(value)
     
         if (type(value) != valueFixedType) {
@@ -23,9 +23,9 @@ impl Stack(fixed: boolean) {
         }
     }
   
-    func pop() -> any -> stack.remove(stack.length - 1)
+    func pop() -> void -> stack.remove(stack.length - 1)
   
-    func peek() -> any -> stack.at(stack.length - 1)
+    func peek() -> void -> stack.at(stack.length - 1)
   
     func size() -> int -> stack.size()
 }
