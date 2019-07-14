@@ -1,7 +1,7 @@
 
 // a simple stack write in meet.
 
-impl Stack(fixed: boolean) {
+open impl Stack(fixed: boolean) {
 
     open enum Type -> INTEGER, STRING, FLOAT
 
