@@ -15,3 +15,6 @@ func valid (str: string) -> boolean {
 
     return str.length == 0
 }
+
+println valid ('()[]{}') // true
+println valid ('(][]()') // false
