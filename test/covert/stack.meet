@@ -9,10 +9,10 @@ impl Stack(fixed: boolean) {
   
     init -> valueFixedType = this.fixed
   
-    fun push(value: any) -> any {
-        if valueFixedType -> valueFixedType = type(value)
+    func push(value: any) -> any {
+        if (valueFixedType) -> valueFixedType = type(value)
     
-        if type(value) != valueFixedType {
+        if (type(value) != valueFixedType) {
             println 'cannot push different value for fixed type.'
       
             return null
@@ -23,11 +23,11 @@ impl Stack(fixed: boolean) {
         }
     }
   
-    fun pop() -> any -> stack.remove(stack.length - 1)
+    func pop() -> any -> stack.remove(stack.length - 1)
   
-    fun peek() -> any -> stack.at(stack.length - 1)
+    func peek() -> any -> stack.at(stack.length - 1)
   
-    fun size() -> int -> stack.size()
+    func size() -> int -> stack.size()
 }
 
 var a = new Stack(true)

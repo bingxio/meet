@@ -1,15 +1,15 @@
 
 // https://leetcode-cn.com/problems/two-sum/
 
-fun twoSum (arr: list<int>, target: int) -> list<int> {
+func twoSum (arr: list<int>, target: int) -> list<int> {
     var result: list<int> = []
     
-    for i, v : arr {
+    for (i, v : arr) {
         var k = i + 1
         
-        while k < arr.size {
+        while (k < arr.size) {
         
-            if v + arr.at(k) == target {
+            if (v + arr.at(k) == target) {
                 result.insert(i);
                 result.insert(k);
             }
