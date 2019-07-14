@@ -23,11 +23,11 @@ impl Stack(fixed: boolean) {
         }
     }
   
-    func pop() -> void -> stack.remove(stack.length - 1)
+    func pop() -> void = stack.remove(stack.length - 1)
   
-    func peek() -> void -> stack.at(stack.length - 1)
+    func peek() -> void = stack.at(stack.length - 1)
   
-    func size() -> int -> stack.size()
+    func size() -> int = stack.size()
 }
 
 var a = new Stack(true)
