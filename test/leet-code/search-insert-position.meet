@@ -4,7 +4,7 @@
 func searchInsert (nums: list<int>, target: int) -> int {
     var position = -1
 
-    for (i, v in nums) -> if (v == target | v > target) {
+    for ((i, v) in nums) -> if (v == target | v > target) {
             position = i
 
             break
