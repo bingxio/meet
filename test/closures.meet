@@ -1,9 +1,9 @@
 
-fun counter () -> fun () -> int {
+func counter () -> func () -> int {
     
     var a: int = -1
 
-    fun generate () -> int {
+    func generate () -> int {
         a += 1
 
         return a        
