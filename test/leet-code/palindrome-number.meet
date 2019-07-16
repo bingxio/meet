@@ -2,12 +2,12 @@
 // https://leetcode-cn.com/problems/palindrome-number/
 
 func isPalindrome (x: int) -> boolean {
-    if (x < 0) -> 
+    if x < 0 -> 
         return false
-        
+
     var str: string = '\(x)', reverse: string = ''
     
-    for (i : 0..(str.length)) ->
+    for i : 0..(str.length) ->
         reverse.append(str.at(str.length - i - 1))
     
     return str == reverse
