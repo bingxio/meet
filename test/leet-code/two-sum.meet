@@ -8,12 +8,10 @@ func twoSum (arr: list<int>, target: int) -> list<int> {
         var k = i + 1
         
         while k < arr.size {
-        
             if v + arr.at(k) == target {
                 result.insert(i);
                 result.insert(k);
             }
-            
             k += 1
         }
     }

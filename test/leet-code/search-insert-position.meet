@@ -6,10 +6,9 @@ func searchInsert (nums: list<int>, target: int) -> int {
 
     for (i, v) <- nums -> if v == target | v > target {
             position = i
-
             break
         } elif v < target -> continue
-
+        
     if position == -1 ->
         position = nums.size()
 

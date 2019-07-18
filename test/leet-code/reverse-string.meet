@@ -6,7 +6,7 @@ func reverseString (arr: list<string>) -> list<string> {
 
     while k < arr.size / 2 {
         arr.swap(i, arr[k])
-
+        
         i += 1
         k -= 1
     }
