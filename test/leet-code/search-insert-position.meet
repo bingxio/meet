@@ -2,7 +2,7 @@
 // https://leetcode-cn.com/problems/search-insert-position/
 
 func searchInsert (nums: list<int>, target: int) -> int {
-    var position = -1
+    var mut position = -1
 
     for (i, v) <- nums -> if v == target | v > target {
             position = i

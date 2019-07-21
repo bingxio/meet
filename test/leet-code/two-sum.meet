@@ -2,10 +2,10 @@
 // https://leetcode-cn.com/problems/two-sum/
 
 func twoSum (arr: list<int>, target: int) -> list<int> {
-    var result: list<int> = []
+    var mut result: list<int> = []
     
     for i, v : arr {
-        var k = i + 1
+        var mut k = i + 1
         
         while k < arr.size {
             if v + arr.at(k) == target {
