@@ -5,7 +5,8 @@ open impl Stack(fixed: boolean) {
 
     open enum Type -> INTEGER, STRING, FLOAT
 
-    open var stack: void = [], valueFixedType: void = null
+    open var stack: void = []
+    open var valueFixedType: void = null
   
     init -> valueFixedType = this.fixed
   
