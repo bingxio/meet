@@ -1,0 +1,27 @@
+
+// https://leetcode-cn.com/problems/backspace-string-compare/
+
+func backspaceCompare (s: string, t: string) -> boolean {
+    
+    func parseString (s: string) -> string {
+        var mut chars = s.chars().iter()
+        var mut result = ''
+        
+        while var character = chars.next() {
+            if character == null {
+                break
+            } else if character == '#' {
+                result.pop()
+            } else {
+                result.push(character)
+            }
+        }
+        
+        return result
+    }
+    
+    return parseString(s) == parseString(t)
+}
+
+println backspaceComapre ('ab#c', 'ad#c') // true
+println backspaceCompare ('av#c', 'a#ab') // false
