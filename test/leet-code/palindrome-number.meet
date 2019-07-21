@@ -5,7 +5,9 @@ func isPalindrome (x: int) -> boolean {
     if x < 0 -> 
         return false
 
-    var str: string = '\(x)', reverse: string = ''
+    var str: string = '\(x)'
+    
+    var mut reverse: string = ''
     
     for i <- 0..(str.length) ->
         reverse.append(str.at(str.length - i - 1))
