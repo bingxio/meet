@@ -1,0 +1,17 @@
+
+// https://leetcode-cn.com/problems/to-lower-case/
+
+func toLowerCase (a: string) -> string {
+    var mut str = ''
+    
+    for v <- a -> if (v as int) >= 65 & (v as i32) <= 90 ->
+            str += v.toLowerCase()
+        else ->
+            str += v
+    
+    return str
+}
+
+println toLowerCase ('Hello')       // hello
+println toLowerCase ('Hello World') // hello world
+println toLowerCase ('FuckYou')     // fuckyou
