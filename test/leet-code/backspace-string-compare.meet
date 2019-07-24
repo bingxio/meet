@@ -4,7 +4,7 @@
 func backspaceCompare (s: string, t: string) -> boolean {
     
     func parseString (s: string) -> string {
-        var mut chars = s.chars().iter()
+        var mut chars = s.chars()
         var mut result = ''
         
         while var character = chars.next() {

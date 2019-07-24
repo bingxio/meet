@@ -10,7 +10,7 @@ func isPalindrome (x: int) -> boolean {
     var mut reverse: string = ''
     
     for i <- 0..(str.length) ->
-        reverse.append(str.at(str.length - i - 1))
+        reverse += str.at(str.length - i - 1)
     
     return str == reverse
 }

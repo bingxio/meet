@@ -11,15 +11,15 @@ open impl Stack(fixed: boolean) {
     init -> valueFixedType = this.fixed
   
     func push(value: void) -> void {
-        if valueFixedType -> valueFixedType = type(value)
+        if valueFixedType -> valueFixedType = typeof(value)
     
         if type(value) != valueFixedType {
             println 'cannot push different value for fixed type.'
-      
+
             return null
         } else {
             stack.insert(value)
-      
+
             return value
         }
     }
