@@ -4,7 +4,7 @@
 func toLowerCase (a: string) -> string {
     var mut str = ''
     
-    for v <- a -> if (v as int) >= 65 & (v as i32) <= 90 ->
+    for v <- a -> if (v as int) >= 65 & (v as int) <= 90 ->
             str += v.toLowerCase()
         else ->
             str += v
