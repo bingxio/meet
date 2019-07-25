@@ -4,7 +4,7 @@
 func twoSum (arr: list<int>, target: int) -> list<int> {
     var mut result: list<int> = []
     
-    for i, v <- arr {
+    for (i, v) <- arr {
         var mut k = i + 1
         
         while k < arr.size {
