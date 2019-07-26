@@ -1,0 +1,24 @@
+open func sum (a: func (int, int) -> int) -> int {
+    return a (23, 43) -> {
+        println 'OK'
+    }
+}
+
+println sum (func (a: int, b: int) -> int { a + b })
+
+// OK
+// 66
+
+open func sum (a: int, b: int) -> func () -> (int, int) {
+    var a = a + 2
+    var b = b + 2
+
+    return func () -> (int, int) {
+        return (a, b)
+    }
+}
+
+var a = sum (12, 32)
+
+println a.0 // 12
+println a.1 // 32
