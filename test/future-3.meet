@@ -4,7 +4,9 @@ open func sum (a: func (int, int) -> int) -> int {
     }
 }
 
-println sum (func (a: int, b: int) -> int { a + b })
+println sum (a = func (a: int, b: int) -> int {
+    return a + b
+})
 
 // OK
 // 66
