@@ -6,6 +6,16 @@
 
 [项目地址](https://github.com/Turaiiao/meet)
 
+编译 Meet 首先需要 CMake >= 3.15，在 Linux 下使用：
+
+```
+cmake .
+make
+./meet
+```
+
+在 Windows 平台需要安装 MinGW 和 CMake，使用 Clion 或者 CMake Vscode extension 进行编译。
+
 [leet-code](https://github.com/Turaiiao/meet/tree/master/test/leet-code) 文件夹里是我重订语法后写的结题参照程序。
 
 我的 blog 上也写了几篇关于编译原理方面的：[Turaiiao's Blog](https://blog.xyiio.cn/)
