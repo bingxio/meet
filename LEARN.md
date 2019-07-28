@@ -11,7 +11,7 @@
 #### 为什么想做编程语言？
 
 我觉得编程是很有趣的事情，雷军曾在毕业论文上写下 “愿意写一辈子程序，因为这就是我的兴趣。”，自己一步一步实现想要的功能真的很有意思。
-创建一个属于自己的编程语言，能够有优美的语法、不做过多的特性、轻量级和完美的包管理实现。
+创建一个属于自己的编程语言，能够有优美的语法、不做过多的特性、轻量级和完美的包管理实现，能应付简单的业务需求。
 
 #### 实现什么？
 
@@ -137,3 +137,114 @@ println assign ('hello', 'world', true)
 
 #### 词法分析
 
+编译器接受一个字符串，首先转换成词法列表，例如：
+
+**可以加入 -d 参数展示词法列表、语法节点**
+
+```
+var a: int = 20
+
+if a > 0 & a < 30 {
+    println 'hello world'
+}
+
+# turaiiao@DESKTOP-AH5VM1I:~/meet/test$ ../meet ./test.meet -d
+# 0     TOKEN_VAR                 : var                                                :     1
+# 1     TOKEN_VALUE_IDENTIFIER    : a                                                  :     1
+# 2     TOKEN_COLON               : :                                                  :     1
+# 3     TOKEN_INT                 : int                                                :     1
+# 4     TOKEN_EQUAL               : =                                                  :     1
+# 5     TOKEN_VALUE_INT           : 20                                                 :     1
+# 6     TOKEN_IF                  : if                                                 :     3
+# 7     TOKEN_VALUE_IDENTIFIER    : a                                                  :     3
+# 8     TOKEN_GREATER             : >                                                  :     3
+# 9     TOKEN_VALUE_INT           : 0                                                  :     3
+# 10    TOKEN_AND                 : &                                                  :     3
+# 11    TOKEN_VALUE_IDENTIFIER    : a                                                  :     3
+# 12    TOKEN_LESS                : <                                                  :     3
+# 13    TOKEN_VALUE_INT           : 30                                                 :     3
+# 14    TOKEN_LBRACE              : {                                                  :     3
+# 15    TOKEN_PRINTLN             : println                                            :     4
+# 16    TOKEN_VALUE_STRING        : hello world                                        :     4
+# 17    TOKEN_RBRACE              : }                                                  :     5
+# 18    TOKEN_EOF                 : EOF                                                :     6
+# --------------------------------------------------------------------------------------------
+
+hello world
+```
+
+[具体源码参考](https://github.com/Turaiiao/meet/blob/master/src/Lexer.cpp)
+
+#### 语法分析
+
+语法分析（Parser）我认为是最难的一个步骤，它考虑任意表达式的解析和复杂语法的解析，Lambda、等等。
+
+传入之前解析的词法列表，一一匹配，都将转换成各种语法节点。
+
+```
+var a: int = 20, b: int = 30
+
+if a > b -> println 'a greater than b'
+
+println 1 + 2 * 3 - (4 + 5)
+
+[ VarStatement: list = [ name = a, value = [ LiteralExpression: token = 20 ], type = int | name = b, value = [ LiteralExpression: token = 30 ], type = int | ]
+
+[ IfStatement: condition = [ ExpressionStatement: expr = [ BinaryExpression: left = [ VariableExpression: name = a ], token = >, right = [ VariableExpression: name = b ] ] ], establish = [ BlockStatement: block = [ PrintlnStatement: expr = [ VariableExpression: name = a ], cls = true ] | , elifCondition = [ ExpressionStatement: expr = [ BinaryExpression: left = [ VariableExpression: name = a ], token = ==, right = [ VariableExpression: name = b ] ] ], elifEstablish = [ BlockStatement: block = [ PrintlnStatement: expr = [ VariableExpression: name = b ], cls = true ] | , elseEstablish = [ BlockStatement: block = [ PrintlnStatement: expr = [ BinaryExpression: left = [ VariableExpression: name = a ], token = +, right = [ VariableExpression: name = b ] ], cls = true ] |  ]
+
+[ PrintlnStatement: expr = [ BinaryExpression: left = [ BinaryExpression: left = [ LiteralExpression: token = 1 ], token = +, right = [ BinaryExpression: left = [ LiteralExpression: token = 2 ], token = *, right = [ LiteralExpression: token = 3 ] ] ], token = -, right = [ GroupExpression: expr = [ BinaryExpression: left = [ LiteralExpression: token = 4 ], token = +, right = [ LiteralExpression: token = 5 ] ] ] ], cls = true ]
+
+```
+
+不好意思之前没有进行优化，直接挨着输出的所以不太美观。
+
+可以看出，每个节点都有一个特定的名称，例如：
+
+```
+a、12、'abc' -> LiteralExpr
+
+1 + 2 -> [ BinaryExpr = [ Left = LiteralExpr, Op = '+', Right = LiteralExpr ] ]
+
+println a -> [ PrintlnStmt = [ Expr = LiteralExpr ] ]
+
+if a + 1 -> println a
+
+[ IfStmt = [ Condition = [ BinaryExpr... ], Block = [ PrintlnStmt = [ Expr = LiteralExpr ] ] ] ]
+```
+
+解析表达式比较麻烦，通常使用自顶向下分析法。依次遍历词法列表，直到遇到最高优先级符号结束。
+
+自顶向下分析法参照 104 - 352 行。[Parser.cpp](https://github.com/Turaiiao/meet/blob/master/src/interpreter/Parser.cpp#L104)
+
+if, for, while, 等等的语法解析参照 Parser.cpp。
+
+各种语法节点参照 expressions 和 statements 文件夹。
+
+#### 符号表和运行环境
+
+通常解释器存储运行时数据、例如变量等等。[Interpreter.hpp](https://github.com/Turaiiao/meet/blob/master/src/interpreter/Interpreter.hpp#L59)
+
+都是使用 map 这个数据结构存储，K 代表名字，V 代表内容。
+
+我们只需要遍历一遍语法树就可以了。参照 82 行 [Interpreter.cpp](https://github.com/Turaiiao/meet/blob/master/src/interpreter/Interpreter.cpp#L82)
+
+map 里的 V 可以存储任意 Value，由此我定义了 Value.hpp 去存储各种类型。
+
+[Value.hpp](https://github.com/Turaiiao/meet/blob/master/src/interpreter/Value.hpp#L32)
+
+例如输出节点的处理：
+
+[Interpreter.cpp](https://github.com/Turaiiao/meet/blob/master/src/interpreter/Interpreter.cpp#L528)
+
+```c++
+void Interpreter::executePrintlnStatement(Statement* stmt) {
+    PrintlnStatement* printlnStmt = (PrintlnStatement *) stmt;
+
+    Value a = executeExpression(printlnStmt->expression);
+
+    if (printlnStmt->cls)
+        a.printLineValue();
+    else
+        a.printValue();
+}
+```
