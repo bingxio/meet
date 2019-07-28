@@ -420,7 +420,7 @@ Python 中可以引用 dis 模块进行字节码的反汇编然后输出。
 
 我们可以很清楚的看到字节码和运行流程。
 
-[ceval.c](https://github.com/python/cpython/blob/master/Python/ceval.c#L1319)
+Python 里执行字节码的 Switch 语句：[ceval.c](https://github.com/python/cpython/blob/master/Python/ceval.c#L1319)
 
 #### 更多参考
 
