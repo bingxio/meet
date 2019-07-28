@@ -59,6 +59,23 @@ while a > 0 {
 
 # 例如生成一个心？
 
+var x: float , y: float, str: string
+
+for var i = 1.5; i > -1.5; i -= 0.1 {
+    str = ''
+
+    for x = -1.5; x < 1.5; x += 0.05 {
+        y = x * x + i * i - 1
+
+        if y * y * y - x * x * i * i * i < 0.0 ->
+            str += '*'
+        else -> 
+            str += ' '
+    }
+
+    println str
+}
+
 # turaiiao@turaiiao-P45VJ:~/Desktop/meet$ ./meet ./test/heart.meet 
 #                                                              
 #                                                              
