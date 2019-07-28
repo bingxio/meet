@@ -274,17 +274,27 @@ void Interpreter::executePrintlnStatement(Statement* stmt) {
 波兰逻辑学家 J.Lukasiewicz 于 1929 年提出了另一种表示表达式的方法，按此方法，每一运算符都置于其运算对象之后，故称为后缀表示。
 
 ```
-1 + 2 * 3 - 4 -> 1 2 3 * + 4 -
-
-OP_LOCAL    1
-OP_LOCAL    2
-OP_LOCAL    3
+turaiiao@turaiiao-P45VJ:~/Desktop/stack-evaluate$ ./stack-four-operational-execute 
+1 + 2 * 3 - 4 -> 1 2 3 * + 4 - 
+OP_LOCAL         1
+OP_LOCAL         2
+OP_LOCAL         3
 OP_MULTIPLY
 OP_ADD
-OP_LOCAL    4
+OP_LOCAL         4
 OP_SUBTRACT
 OP_RETURN
-
+3.000000
+(1 + 2) * 3 - 4 -> 1 2 + 3 * 4 - 
+OP_LOCAL         1
+OP_LOCAL         2
+OP_ADD
+OP_LOCAL         3
+OP_MULTIPLY
+OP_LOCAL         4
+OP_SUBTRACT
+OP_RETURN
+5.000000
 1 + 2 * 3 - (4 + 5) / 6 -> 1 2 3 * + 4 5 + 6 / - 
 OP_LOCAL         1
 OP_LOCAL         2
@@ -298,6 +308,13 @@ OP_LOCAL         6
 OP_DIVIDE
 OP_SUBTRACT
 OP_RETURN
+5.500000
+7 / 9 -> 7 9 / 
+OP_LOCAL         7
+OP_LOCAL         9
+OP_DIVIDE
+OP_RETURN
+0.777778
 ```
 
 [解析函数](https://github.com/Turaiiao/stack-evaluate/blob/master/stack-four-operational-execute.rs#L50)
