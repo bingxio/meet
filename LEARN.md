@@ -139,7 +139,7 @@ println assign ('hello', 'world', true)
 
 编译器接受一个字符串，首先转换成词法列表，例如：
 
-**可以加入 -d 参数展示词法列表、语法节点**
+**在 Meet 中可以加入 -d 参数展示词法列表、语法节点**
 
 ```
 var a: int = 20
@@ -441,8 +441,18 @@ Python 里执行字节码的 Switch 语句：[ceval.c](https://github.com/python
 
 本人文笔不佳，以下教程可以对你更有帮助。
 
-[munificent](https://github.com/munificent)
+[munificent, Google 编译团队工程师，Dart、Wren 等语言创始人](https://github.com/munificent)
 
-[craftinginterpreters](http://www.craftinginterpreters.com/)
+[craftinginterpreters，利用栈实现 CLox 语言](http://www.craftinginterpreters.com/)
 
 [《自己动手实现 lua》](https://github.com/zxh0/luago-book)
+
+[两周实现 Stone 脚本语言](https://github.com/chibash/stone)
+
+[awesome-compilers](https://github.com/aalhour/awesome-compilers)
+
+[可能是最小的编译器](https://github.com/jamiebuilds/the-super-tiny-compiler)
+
+[let us build a simple interpreter](https://github.com/rspivak/lsbasi)
+
+[minimal lisp interpreter](https://github.com/mattn/cisp)
