@@ -281,6 +281,21 @@ OP_MULTIPLY
 OP_ADD
 OP_LOCAL    4
 OP_SUBTRACT
+OP_RETURN
+
+1 + 2 * 3 - (4 + 5) / 6 -> 1 2 3 * + 4 5 + 6 / - 
+OP_LOCAL         1
+OP_LOCAL         2
+OP_LOCAL         3
+OP_MULTIPLY
+OP_ADD
+OP_LOCAL         4
+OP_LOCAL         5
+OP_ADD
+OP_LOCAL         6
+OP_DIVIDE
+OP_SUBTRACT
+OP_RETURN
 ```
 
 [解析函数](https://github.com/Turaiiao/stack-evaluate/blob/master/stack-four-operational-execute.rs#L50)
