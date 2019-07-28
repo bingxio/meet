@@ -135,6 +135,10 @@ println assign ('hello', 'world', true)
 
 例如 JLox、Monkey、VimScript、TypeScript、 等等的语言玩具。
 
+借用一张 [Goby - Yet](https://github.com/goby-lang/goby) 的架构图: 
+
+![](https://github.com/goby-lang/goby/blob/master/wiki/goby_structure.png)
+
 本文将会讲解一个 Meet 的解释器。
 
 #### 词法分析
