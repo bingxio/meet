@@ -6,6 +6,8 @@
 
 [项目地址](https://github.com/Turaiiao/meet)
 
+[leet-code](https://github.com/Turaiiao/meet/tree/master/test/leet-code) 文件夹里是我重订语法后写的结题参照程序。
+
 我的 blog 上也写了几篇关于编译原理方面的：[Turaiiao's Blog](https://blog.xyiio.cn/)
 
 #### 为什么想做编程语言？
@@ -433,6 +435,81 @@ Python 中可以引用 dis 模块进行字节码的反汇编然后输出。
              22 RETURN_VALUE
 ```
 
+如果有条件语句呢，那么就会在栈内进行跳转。
+
+```
+>>> def a():
+...     x = 23
+...     if x > 0:
+...             print('123')
+...     elif x == 20:
+...             print('456')
+...     else:
+...             print('789')
+... 
+>>> dis.dis(a)
+  2           0 LOAD_CONST               1 (23)
+              2 STORE_FAST               0 (x)
+
+  3           4 LOAD_FAST                0 (x)
+              6 LOAD_CONST               2 (0)
+              8 COMPARE_OP               4 (>)
+             10 POP_JUMP_IF_FALSE       22
+
+  4          12 LOAD_GLOBAL              0 (print)
+             14 LOAD_CONST               3 ('123')
+             16 CALL_FUNCTION            1
+             18 POP_TOP
+             20 JUMP_FORWARD            26 (to 48)
+
+  5     >>   22 LOAD_FAST                0 (x)
+             24 LOAD_CONST               4 (20)
+             26 COMPARE_OP               2 (==)
+             28 POP_JUMP_IF_FALSE       40
+
+  6          30 LOAD_GLOBAL              0 (print)
+             32 LOAD_CONST               5 ('456')
+             34 CALL_FUNCTION            1
+             36 POP_TOP
+             38 JUMP_FORWARD             8 (to 48)
+
+  8     >>   40 LOAD_GLOBAL              0 (print)
+             42 LOAD_CONST               6 ('789')
+             44 CALL_FUNCTION            1
+             46 POP_TOP
+        >>   48 LOAD_CONST               0 (None)
+             50 RETURN_VALUE
+>>> def a():
+...     x = 100
+...     while x > 0:
+...             print(x)
+...             x -= 1
+... 
+>>> dis.dis(a)
+  2           0 LOAD_CONST               1 (100)
+              2 STORE_FAST               0 (x)
+
+  3           4 SETUP_LOOP              28 (to 34)
+        >>    6 LOAD_FAST                0 (x)
+              8 LOAD_CONST               2 (0)
+             10 COMPARE_OP               4 (>)
+             12 POP_JUMP_IF_FALSE       32
+
+  4          14 LOAD_GLOBAL              0 (print)
+             16 LOAD_FAST                0 (x)
+             18 CALL_FUNCTION            1
+             20 POP_TOP
+
+  5          22 LOAD_FAST                0 (x)
+             24 LOAD_CONST               3 (1)
+             26 INPLACE_SUBTRACT
+             28 STORE_FAST               0 (x)
+             30 JUMP_ABSOLUTE            6
+        >>   32 POP_BLOCK
+        >>   34 LOAD_CONST               0 (None)
+             36 RETURN_VALUE
+```
+
 我们可以很清楚的看到字节码和运行流程。
 
 Python 里执行字节码的 Switch 语句：[ceval.c](https://github.com/python/cpython/blob/master/Python/ceval.c#L1319)
@@ -441,7 +518,9 @@ Python 里执行字节码的 Switch 语句：[ceval.c](https://github.com/python
 
 本人文笔不佳，以下教程可以对你更有帮助。
 
-[munificent, Google 编译团队工程师，Dart、Wren 等语言创始人](https://github.com/munificent)
+[munificent, Google 编译团队工程师，Dart、Wren 等语言开发者](https://github.com/munificent)
+
+[500 Lines, 使用 Python 解释 Python，和 cpython 一样的流程](https://github.com/aosabook/500lines/tree/master/interpreter)
 
 [craftinginterpreters，利用栈实现 CLox 语言](http://www.craftinginterpreters.com/)
 
