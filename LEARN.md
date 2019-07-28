@@ -419,3 +419,11 @@ Python 中可以引用 dis 模块进行字节码的反汇编然后输出。
 ```
 
 我们可以很清楚的看到字节码和运行流程。
+
+#### 更多参考
+
+本人文笔不佳，以下教程可以对你更有帮助。
+
+[munificent](https://github.com/munificent)
+[craftinginterpreters](http://www.craftinginterpreters.com/)
+[《自己动手实现 lua》](https://github.com/zxh0/luago-book)
