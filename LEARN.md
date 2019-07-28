@@ -218,6 +218,25 @@ if a + 1 -> println a
 
 if, for, while, 等等的语法解析参照 Parser.cpp。
 
+例如解析一个 while 语句：[Interpreter.cpp](https://github.com/Turaiiao/meet/blob/master/src/interpreter/Parser.cpp#L486)
+
+```c++
+Statement* Parser::whileStatement() {
+    WhileStatement* whileStatement = new WhileStatement;
+
+    whileStatement->condition = statement();
+
+    if (look(TOKEN_MINUS_GREATER))
+        whileStatement->block = (BlockStatement *) minusGreaterBlockStatement();
+    else if (look(TOKEN_LBRACE))
+        whileStatement->block = (BlockStatement *) blockStatement();
+    else
+        error("syntax error: exepct '{' or '->' after while statement condition.");
+
+    return whileStatement;
+}
+```
+
 各种语法节点参照 expressions 和 statements 文件夹。
 
 #### 符号表和运行环境
@@ -232,9 +251,7 @@ map 里的 V 可以存储任意 Value，由此我定义了 Value.hpp 去存储�
 
 [Value.hpp](https://github.com/Turaiiao/meet/blob/master/src/interpreter/Value.hpp#L32)
 
-例如输出节点的处理：
-
-[Interpreter.cpp](https://github.com/Turaiiao/meet/blob/master/src/interpreter/Interpreter.cpp#L528)
+例如输出节点的处理：[Interpreter.cpp](https://github.com/Turaiiao/meet/blob/master/src/interpreter/Interpreter.cpp#L528)
 
 ```c++
 void Interpreter::executePrintlnStatement(Statement* stmt) {
@@ -248,3 +265,157 @@ void Interpreter::executePrintlnStatement(Statement* stmt) {
         a.printValue();
 }
 ```
+
+#### 逆波兰表达式和栈、字节码
+
+二元运算符总是置于与之相关的两个运算对象之间，这种表示法也称为中缀表示。
+波兰逻辑学家 J.Lukasiewicz 于 1929 年提出了另一种表示表达式的方法，按此方法，每一运算符都置于其运算对象之后，故称为后缀表示。
+
+```
+1 + 2 * 3 - 4 -> 1 2 3 * + 4 -
+
+OP_LOCAL    1
+OP_LOCAL    2
+OP_LOCAL    3
+OP_MULTIPLY
+OP_ADD
+OP_LOCAL    4
+OP_SUBTRACT
+```
+
+[解析函数](https://github.com/Turaiiao/stack-evaluate/blob/master/stack-four-operational-execute.rs#L50)
+
+然后转换成一个块（Chunk），通常传送给虚拟机只是一个块，里面包括几个栈，运算栈、字节码栈等等。
+
+```rust
+struct Chunk {
+    opcode_stack: Vec<OpCode>,
+    values_stack: Vec<i32>
+}
+
+trait ChunkImpl {
+    // emit a OP_LOCAL and some value to chunk.
+    fn emit_constant(&mut self, value: i32);
+    // only emit a opcode.
+    fn emit_opcode(&mut self, opcode: OpCode);
+    // display opcodes and values.
+    // display value if it is OP_LOCAL else only opcode.
+    fn display(&self);
+}
+
+fn transform(stack: Vec<char>) -> Chunk {
+    let a: Vec<OpCode> = Vec::new();
+    let b: Vec<i32> = Vec::new();
+
+    let mut chunk = Chunk {
+        opcode_stack: a,
+        values_stack: b
+    };
+
+    for i in stack {
+        match i {
+            '0'..='9' => chunk.emit_constant(
+                (i as i32) - 48
+            ),
+
+            '+' => chunk.emit_opcode(OpCode::OpAdd),
+            '-' => chunk.emit_opcode(OpCode::OpSubtract),
+            '*' => chunk.emit_opcode(OpCode::OpMultiply),
+            '/' => chunk.emit_opcode(OpCode::OpDivide),
+
+            _ => unimplemented!()
+        }
+    }
+
+    chunk.emit_opcode(OpCode::OpReturn);
+
+    return chunk;
+}
+```
+
+然后一个 visitor 执行，遍历字节码栈，如果是 OP_LOCAL 就入运算栈，如果遇到 OP_ADD 就运算栈出栈两个值进行运算并把值压栈。
+
+```rust
+fn visitor(chunk: Chunk) {
+    let mut stack: Vec<f32> = Vec::new();
+    
+    let mut k = 0;
+
+    for i in chunk.opcode_stack {
+        match i {
+            OpCode::OpLocal => {
+                stack.push(
+                    *chunk.values_stack.get(k).unwrap() as f32
+                );
+                k += 1;
+            }
+
+            OpCode::OpReturn => break,
+
+            _ => {
+                let a = stack.pop().unwrap();
+                let b = stack.pop().unwrap();
+
+                match i {
+                    OpCode::OpAdd => stack.push(b + a),
+                    OpCode::OpSubtract => stack.push(b - a),
+                    OpCode::OpMultiply => stack.push(b * a),
+                    OpCode::OpDivide => stack.push(b / a),
+
+                    _ => unimplemented!()
+                }
+            }
+        }
+    }
+
+    println!("{:.6}", stack.last().unwrap());
+}
+```
+
+#### CPython 字节码
+
+我们知道 CPython 是使用纯 C 语言编写的。仅仅使用栈结构。
+
+CPython 使用三种类型的栈：
+
+- 调用栈（CallStack），这是主要结构，每个当前活动使用了一个叫 帧（Frame），栈底是程序入口，每当调用函数就推送一个帧到栈里，结束函数则销毁。
+- 计算栈（EvaluationStack）在每个帧中有一个计算栈，大多数代码都是在这里运行，操作它们然后销毁它。
+- 块栈（BlockStack）它用于追踪某些特定的接口，例如 break、continue、try、with 块等，这个帮助 Python 表示任意时刻哪个块是活动的，例如 continue 会影响正确的块。
+
+Python 中可以引用 dis 模块进行字节码的反汇编然后输出。
+
+```
+>>> import dis
+>>> def a():
+...     print('Hello World')
+...
+>>> dis.dis(a)
+  2           0 LOAD_GLOBAL              0 (print)
+              2 LOAD_CONST               1 ('Hello World')
+              4 CALL_FUNCTION            1
+              6 POP_TOP
+              8 LOAD_CONST               0 (None)
+             10 RETURN_VALUE
+>>> def a():
+...     x = 2
+...     y = 5
+...     print(x + y)
+...
+>>> dis.dis(a)
+  2           0 LOAD_CONST               1 (2)
+              2 STORE_FAST               0 (x)
+
+  3           4 LOAD_CONST               2 (5)
+              6 STORE_FAST               1 (y)
+
+  4           8 LOAD_GLOBAL              0 (print)
+             10 LOAD_FAST                0 (x)
+             12 LOAD_FAST                1 (y)
+             14 BINARY_ADD
+             16 CALL_FUNCTION            1
+             18 POP_TOP
+             20 LOAD_CONST               0 (None)
+             22 RETURN_VALUE
+```
+
+我们可以很清楚的看到字节码和运行流程。
