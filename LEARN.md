@@ -331,6 +331,32 @@ struct Chunk {
     values_stack: Vec<i32>
 }
 
+impl ChunkImpl for Chunk {
+    fn emit_constant(&mut self, value: i32) {
+        self.opcode_stack.push(OpCode::OpLocal);
+        self.values_stack.push(value);
+    }
+
+    fn emit_opcode(&mut self, opcode: OpCode) {
+        self.opcode_stack.push(opcode);
+    }
+
+    fn display(&self) {
+        let mut k = 0;
+
+        for i in self.opcode_stack.iter() {
+            print!("{}", opcode_string(i));
+
+            if opcode_string(i) == opcode_string(&OpCode::OpLocal) {
+                println!("{:>10}", self.values_stack.get(k).unwrap());
+                k += 1;
+            } else {
+                println!();
+            }
+        }
+    }
+}
+
 trait ChunkImpl {
     // emit a OP_LOCAL and some value to chunk.
     fn emit_constant(&mut self, value: i32);
