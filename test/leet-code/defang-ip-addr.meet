@@ -1,0 +1,25 @@
+
+// https://leetcode-cn.com/problems/defanging-an-ip-address
+
+func defangIpAddr (address: string) -> string {
+    var mut chars = = address.chars()
+    var mut result = ''
+    
+    while var character = chars.next() {
+        if character == null {
+            break
+        } else {
+            result.push(
+                if character == '.' -> 
+                    '[.]' 
+                else -> 
+                    character
+            )
+        }
+    }
+    
+    return result
+}
+
+println defangIpAddr ('127.0.0.1') // '127[.]0[.]0[.]1'
+println defangIpAddr ('0.0.0.0')   // '0[.]0[.]0[.]0'
